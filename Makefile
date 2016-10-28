@@ -33,10 +33,7 @@ GL_LIBS = -lglut -lGLU -lGL -lm -s
 # a bit easier. GNU make uses $@ for the target and $^ for the dependencies.
 
 # specific targets
-bmpDisplay:	bmpDisplay.o bmpRead.o
-	$(LINK) -o $@ $^ $(GL_LIBS)
-
-orbit:	orbit.o
+solar:	solar.o orbit.o
 	$(LINK) -o $@ $^ $(GL_LIBS)
 
 # generic C and C++ targets for OpenGL programs consisting of only one file
