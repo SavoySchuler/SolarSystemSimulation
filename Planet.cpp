@@ -25,12 +25,12 @@ string Planet::getName()
     return Name;
 }
 
-int Planet::getHoursPerDay()
+float Planet::getHoursPerDay()
 {
     return HoursPerDay;
 }
 
-int Planet::getDaysPerYear()
+float Planet::getDaysPerYear()
 {
     return DaysPerYear;
 }
