@@ -285,11 +285,13 @@ void ResizeWindow( int w, int h )
     w = ( w == 0 ) ? 1 : w;
     glViewport( 0, 0, w, h );	// View port uses whole window
     aspectRatio = ( float ) w / ( float ) h;
-
+   
     // Set up the projection view matrix (not very well!)
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    gluPerspective( 60.0, aspectRatio, 1.0, 30.0 );
+    
+    gluPerspective( 60.0, aspectRatio, 1.0, 300.0 );
+    
 
     // Select the Modelview matrix
     glMatrixMode( GL_MODELVIEW );
@@ -306,7 +308,7 @@ int main( int argc, char** argv )
 
     // Create and position the graphics window
     glutInitWindowPosition( 0, 0 );
-    glutInitWindowSize( 600, 360 );
+    glutInitWindowSize( 1000, 1000 );
     glutCreateWindow( "Solar System Demo" );
 
     // Initialize OpenGL.
