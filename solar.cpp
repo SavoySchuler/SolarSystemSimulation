@@ -2,13 +2,14 @@
 #include <GL/freeglut.h>
 #include <iostream>
 #include <string>
+#include <cstring>
 #include "globals.h"
 
 // Main routine
 // Set up OpenGL, hook up callbacks, and start the main loop
 int main( int argc, char** argv )
 {
-	//char *filename = argc > 1 ? strdup( argv[1] ) : NULL;
+	char *filename = argc > 1 ? strdup( argv[1] ) : NULL;
 
 
     // Need to double buffer for animation
@@ -23,22 +24,26 @@ int main( int argc, char** argv )
     // Initialize OpenGL.
     OpenGLInit();
 
+	// Set up the callback function for resizing windows
+    glutReshapeFunc( ResizeWindow );
+
     // Set up callback functions for key presses
     glutKeyboardFunc( KeyPressFunc );
     glutSpecialFunc( SpecialKeyFunc );
-
-    // Set up the callback function for resizing windows
-    glutReshapeFunc( ResizeWindow );
 
     // Callback for graphics image redrawing   
 	glutDisplayFunc( Animate );
 	
 
-	if ( false )
-	{
-    //    initTextureMap( filename );
-	}
-	else
+	//MY WRONG ATTEMPT TO SURFACE
+
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );glShadeModel( GL_SMOOTH ); 
+
+//	if ( filename )
+//	{
+ //       initTextureMap( filename );
+//	}
+/*	else
 	{
 		GLubyte image[64][64][3];
 		makeTexture( image );
@@ -48,8 +53,8 @@ int main( int argc, char** argv )
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	}
-
-	glClearColor( 0.0, 0.0, 0.0, 1.0 );	
+*/
+	glClearColor( 1.0, 1.0, 1.0, 1.0 );	
 
     // Start the main loop.  glutMainLoop never returns.
     glutMainLoop( );

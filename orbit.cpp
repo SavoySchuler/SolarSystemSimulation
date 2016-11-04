@@ -58,8 +58,15 @@ float AnimateIncrement = 24.0;  // Time step for animation (hours)
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
+	static bool light = false, shade = false, wire = true;
+
     switch ( Key )
     {
+		case 'l':
+		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
+            glDisable( GL_TEXTURE_2D );
+			break;
+		
         case 'R':
         case 'r':
             Key_r();
@@ -70,6 +77,13 @@ void KeyPressFunc( unsigned char Key, int x, int y )
         case 'S':
             Key_s();
             break;
+	    case 'q':
+		    ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
+			break;
+
+		case 'w':
+		    ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+			break;
         case 27: 	// Escape key
             exit( 1 );
     }
