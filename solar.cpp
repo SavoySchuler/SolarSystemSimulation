@@ -35,10 +35,6 @@ int main( int argc, char** argv )
 	glutDisplayFunc( Animate );
 	
 
-	//MY WRONG ATTEMPT TO SURFACE
-
-	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );glShadeModel( GL_SMOOTH ); 
-
 //	if ( filename )
 //	{
  //       initTextureMap( filename );
@@ -54,6 +50,9 @@ int main( int argc, char** argv )
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	}
 */
+
+	initLightModel();
+
 	glClearColor( 1.0, 1.0, 1.0, 1.0 );	
 
     // Start the main loop.  glutMainLoop never returns.

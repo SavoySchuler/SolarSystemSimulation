@@ -249,7 +249,7 @@ void DrawPlanet(Planet *plant)
     glRotatef( DaysPerYear * HourOfDay / HoursPerDay, 0.0, 1.0, 0.0 );
     // Third, draw the earth as a wireframe sphere.
     glColor3f( 1.0, 0.0, 0.0 );
-    glutWireSphere( Radius*SizeScale, 100, 100 );
+    glutSolidSphere( Radius*SizeScale, 100, 100 );
     glPopMatrix();	
 					// Restore matrix state
 
@@ -269,8 +269,54 @@ void DrawSun()
 
     // Draw the sun	-- as a yellow, wireframe sphere
     glColor3f( 1.0, 1.0, 0.0 );
+   
+   //glutSolidSphere
     glutWireSphere( 1.0, 15, 15 );
+    
 }
+
+
+
+// set up light and material properties
+void initLightModel()
+{
+	glLoadIdentity();
+    glTranslatef ( 0.0, 0.0, -20.0 );
+    glRotatef( 15.0, 1.0, 0.0, 0.0 );
+
+    GLfloat mat_specular[] = { 0.5, 0.5, 0.5, 1.0 };
+    GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
+    GLfloat mat_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+    GLfloat mat_shininess = { 100.0 };
+
+    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+
+    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_position[] = { 10.0, 10.0, 10.0, 1.0 };
+
+    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
+    glLightfv( GL_LIGHT0, GL_AMBIENT, light_ambient );
+    glLightfv( GL_LIGHT0, GL_DIFFUSE, light_diffuse );
+    glLightfv( GL_LIGHT0, GL_SPECULAR, light_specular );
+
+    glShadeModel( GL_SMOOTH );
+    glEnable( GL_LIGHTING );
+    glEnable( GL_LIGHT0 );
+
+    glEnable( GL_DEPTH_TEST );
+    glColor3f ( 0.5, 0.5, 0.5 );
+    glEnable( GL_NORMALIZE );    // automatic normalization of normals
+    glEnable( GL_CULL_FACE );    // eliminate backfacing polygons
+    glCullFace( GL_BACK );
+}
+
+
+
 
 
 // Initialize OpenGL's rendering modes
@@ -311,8 +357,8 @@ int loadTextureFromFile( char *filename )
     {
         std::cerr << "Error: unable to load " << filename << std::endl;
         return -1;
-    }}
-
+    }
+}
 
 
 // set up texture map
@@ -323,6 +369,7 @@ void initTextureMap( char *filename )
     if ( loadTextureFromFile( filename ) == 0 )
         glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
 }
+
 
 // build a checkerboard texture pattern
 void makeTexture( GLubyte image[64][64][3] )

@@ -11,6 +11,7 @@ void ResizeWindow( int w, int h );
 void KeyPressFunc( unsigned char Key, int x, int y );
 void SpecialKeyFunc( int Key, int x, int y );
 void DrawSun();
+void initLightModel();
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
@@ -28,3 +29,4 @@ bool LoadBmpFile( const char* filename, int &nrows, int &ncols, byte* &image );
 void skipChars( FILE* infile, int numChars );
 short readShort( FILE* infile );
 static inline int GetNumBytesPerRow( int NumCols );
+
