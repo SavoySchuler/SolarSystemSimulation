@@ -161,3 +161,4 @@ void skipChars( FILE* infile, int numChars )
         fgetc( infile );
     }
 }
+

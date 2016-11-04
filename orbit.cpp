@@ -37,34 +37,23 @@
 #include <iostream>
 #include <string>
 #include "Planet.h"
+#include "globals.h"
 
 using namespace std;
 
-// function prototypes
-void OpenGLInit( void );
-void Animate( void );
-void Key_r( void );
-void Key_s( void );
-void Key_up( void );
-void Key_down( void );
-void ResizeWindow( int w, int h );
-void KeyPressFunc( unsigned char Key, int x, int y );
-void SpecialKeyFunc( int Key, int x, int y );
-void DrawPlanet(Planet *plant);
-void DrawSun();
+
+void DrawPlanet(Planet *planet);
 
 // global variables
 GLenum spinMode = GL_TRUE;
 GLenum singleStep = GL_TRUE;
 
-// these three variables control the animation's state and speed.
-const float DistScale = 1.0/37.5;
-const float SizeScale = 1.0/15945.0;
 float HourOfDay = 0.0;
 float DayOfYear = 0.0;
 float MercuryHour = 0.0;
 float MercuryDay = 0.0;
 float AnimateIncrement = 24.0;  // Time step for animation (hours)
+
 
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
@@ -75,6 +64,8 @@ void KeyPressFunc( unsigned char Key, int x, int y )
         case 'r':
             Key_r();
             break;
+        case 't': glDisable( GL_LIGHTING ); glEnable( GL_TEXTURE_2D );  break;
+        case 'T': glEnable( GL_LIGHTING );  glEnable( GL_TEXTURE_2D );  break;
         case 's':
         case 'S':
             Key_s();
@@ -271,7 +262,7 @@ void DrawSun()
 // Initialize OpenGL's rendering modes
 void OpenGLInit( void )
 {
-    glShadeModel( GL_FLAT );
+    glShadeModel( GL_SMOOTH );
     glClearColor( 0.0, 0.0, 0.0, 0.0 );
     glClearDepth( 1.0 );
     glEnable( GL_DEPTH_TEST );
@@ -297,36 +288,39 @@ void ResizeWindow( int w, int h )
     glMatrixMode( GL_MODELVIEW );
 }
 
-// Main routine
-// Set up OpenGL, hook up callbacks, and start the main loop
-int main( int argc, char** argv )
+
+int loadTextureFromFile( char *filename )
 {
+    int nrows, ncols;
+    byte* image;
+    if ( !LoadBmpFile( filename, nrows, ncols, image ) )
+    {
+        std::cerr << "Error: unable to load " << filename << std::endl;
+        return -1;
+    }}
 
-    // Need to double buffer for animation
-    glutInit( &argc, argv );
-    glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
 
-    // Create and position the graphics window
-    glutInitWindowPosition( 0, 0 );
-    glutInitWindowSize( 1000, 1000 );
-    glutCreateWindow( "Solar System Demo" );
 
-    // Initialize OpenGL.
-    OpenGLInit();
-
-    // Set up callback functions for key presses
-    glutKeyboardFunc( KeyPressFunc );
-    glutSpecialFunc( SpecialKeyFunc );
-
-    // Set up the callback function for resizing windows
-    glutReshapeFunc( ResizeWindow );
-
-    // Callback for graphics image redrawing
-    glutDisplayFunc( Animate );
-
-    // Start the main loop.  glutMainLoop never returns.
-    glutMainLoop( );
-
-    return 0;
+// set up texture map
+void initTextureMap( char *filename )
+{
+    glEnable( GL_DEPTH_TEST );
+    glEnable( GL_TEXTURE_2D );
+    if ( loadTextureFromFile( filename ) == 0 )
+        glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
 }
 
+// build a checkerboard texture pattern
+void makeTexture( GLubyte image[64][64][3] )
+{
+    for ( int i = 0; i < 64; i++ )
+    {
+        for ( int j = 0; j < 64; j++ )
+        {
+            int c = ( ( ( i & 0x8 ) == 0 ) ^ ( ( j & 0x8 ) ) == 0 ) * 255;
+            image[i][j][0] = ( GLubyte ) c;
+            image[i][j][1] = ( GLubyte ) c;
+            image[i][j][2] = ( GLubyte ) c;
+        }
+    }
+}

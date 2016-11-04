@@ -1,6 +1,8 @@
 #ifndef _TANK_H_
 #define _TANK_H_
 
+
+
 #include <GL/freeglut.h>
 #include <string>
 using namespace std;
@@ -39,4 +41,5 @@ class Planet
     
 	
 };
+
 #endif
