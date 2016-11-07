@@ -248,8 +248,9 @@ void DrawPlanet(Planet *plant)
     // Second, rotate the earth on its axis. Use MecuryHour to determine its rotation.
     glRotatef( DaysPerYear * HourOfDay / HoursPerDay, 0.0, 1.0, 0.0 );
     // Third, draw the earth as a wireframe sphere.
-    glColor3f( 1.0, 0.0, 0.0 );
-    glutSolidSphere( Radius*SizeScale, 100, 100 );
+    glColor3f( 0.2, 0.7, 0.2 );
+    glutWireSphere( Radius*SizeScale, 100, 100 );
+//	glutSolidSphere( Radius*SizeScale, 100, 100 );
     glPopMatrix();	
 					// Restore matrix state
 
@@ -297,7 +298,7 @@ void initLightModel()
     GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat light_position[] = { 10.0, 10.0, 10.0, 1.0 };
+    GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
 
     glLightfv( GL_LIGHT0, GL_POSITION, light_position );
     glLightfv( GL_LIGHT0, GL_AMBIENT, light_ambient );
