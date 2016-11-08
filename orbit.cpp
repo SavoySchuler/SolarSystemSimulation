@@ -58,7 +58,7 @@ float AnimateIncrement = 24.0;  // Time step for animation (hours)
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
-	static bool light = false, shade = false, wire = true;
+	static bool light = true, shade = false, wire = true;
 
     switch ( Key )
     {
