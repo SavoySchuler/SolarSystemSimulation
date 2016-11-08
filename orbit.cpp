@@ -214,6 +214,19 @@ void Animate( void )
 
 void DrawPlanet(Planet *plant)
 {
+	glEnable(GL_COLOR_MATERIAL);
+
+	GLfloat mat_specular[] = { 1.0, 1.0, 0.0, 1.0 };
+    GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
+    GLfloat mat_ambient[] = { 1.0, 1.0, 0.0, 1.0 };
+    GLfloat mat_shininess = { 100.0 };
+
+    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+	
+
     float HourOfDay = plant->getHourOfDay();
     float DayOfYear = plant->getDayOfYear();
     float HoursPerDay = plant->getHoursPerDay();
@@ -249,16 +262,34 @@ void DrawPlanet(Planet *plant)
     glRotatef( DaysPerYear * HourOfDay / HoursPerDay, 0.0, 1.0, 0.0 );
     // Third, draw the earth as a wireframe sphere.
     glColor3f( 0.2, 0.7, 0.2 );
-    glutWireSphere( Radius*SizeScale, 100, 100 );
-//	glutSolidSphere( Radius*SizeScale, 100, 100 );
+//    glutWireSphere( Radius*SizeScale, 100, 100 );
+	glutSolidSphere( Radius*SizeScale, 100, 100 );
     glPopMatrix();	
 					// Restore matrix state
-
+	
+	glDisable(GL_COLOR_MATERIAL);
 }
 
 void DrawSun()
 {
-    // Clear the current matrix (Modelview)
+	glEnable(GL_COLOR_MATERIAL);
+	
+	
+  
+    
+    GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 0.0 };
+    GLfloat mat_diffuse[] = { 0.0, 0.0, 0.0, 0.0 };
+    GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
+    GLfloat mat_shininess = { 0.0 };
+
+    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+    
+	glPushMatrix();
+	
+	// Clear the current matrix (Modelview)
     glLoadIdentity();
 
     // Back off eight units to be able to view from the origin.
@@ -267,13 +298,18 @@ void DrawSun()
     // Rotate the plane of the elliptic
     // (rotate the model's plane about the x axis by fifteen degrees)
     glRotatef( 15.0, 1.0, 0.0, 0.0 );
-
+	
+	
+	
+	
     // Draw the sun	-- as a yellow, wireframe sphere
     glColor3f( 1.0, 1.0, 0.0 );
    
    //glutSolidSphere
-    glutWireSphere( 1.0, 15, 15 );
-    
+//    glutWireSphere( 1.0, 15, 15 );
+	glutSolidSphere( 1.0, 15, 15 );
+	
+	glDisable(GL_COLOR_MATERIAL);
 }
 
 
@@ -285,15 +321,6 @@ void initLightModel()
     glTranslatef ( 0.0, 0.0, -20.0 );
     glRotatef( 15.0, 1.0, 0.0, 0.0 );
 
-    GLfloat mat_specular[] = { 0.5, 0.5, 0.5, 1.0 };
-    GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
-    GLfloat mat_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-    GLfloat mat_shininess = { 100.0 };
-
-    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
-    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
-    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
-    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 
     GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -344,6 +371,7 @@ void ResizeWindow( int w, int h )
     
     gluPerspective( 60.0, aspectRatio, 1.0, 300.0 );
     
+    gluLookAt (0,0,2,0,0,0,0,1,0);
 
     // Select the Modelview matrix
     glMatrixMode( GL_MODELVIEW );
