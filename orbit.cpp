@@ -216,9 +216,9 @@ void DrawPlanet(Planet *plant)
 {
 
 
-	GLfloat mat_specular[] = { 0.2, 0.2, 0.0, 1.0 };
-    GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
-    GLfloat mat_ambient[] = { 0.3, 0.3, 0.0, 1.0 };
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_diffuse[] = { 0.0, 0.8, 0.0, 1.0 };
+    GLfloat mat_ambient[] = { 0.3, 0.3, 0., 1.0 };
     GLfloat mat_shininess = { 100.0 };
    	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
@@ -273,10 +273,10 @@ void DrawPlanet(Planet *plant)
 void DrawSun()
 {
 
-    GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 0.0 };
-    GLfloat mat_diffuse[] = { 0.0, 0.0, 0.0, 0.0 };
-    GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 0.0 };
-    GLfloat mat_shininess = { 0.0 };
+    GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
+    GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
+    GLfloat mat_ambient[] = { 0.5, 1.0, 0.0, 1.0 };
+    GLfloat mat_shininess = { 100.0 };
     GLfloat mat_emission[] = {1.0, 1.0, 0.0, 1.0};
 
     glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );

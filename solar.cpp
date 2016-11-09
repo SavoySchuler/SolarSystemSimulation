@@ -47,13 +47,13 @@ int main( int argc, char** argv )
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_lNEAREST );
 	}
 */
 
 	initLightModel();
 
-	glClearColor( 1.0, 1.0, 1.0, 1.0 );	
+	glClearColor( 0.0, 0.0, 0.0, 1.0 );	
 
     // Start the main loop.  glutMainLoop never returns.
     glutMainLoop( );
