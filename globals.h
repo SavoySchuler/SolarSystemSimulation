@@ -12,6 +12,7 @@ void KeyPressFunc( unsigned char Key, int x, int y );
 void SpecialKeyFunc( int Key, int x, int y );
 void DrawSun();
 void SetLightModel();
+void HandleRotate();
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );

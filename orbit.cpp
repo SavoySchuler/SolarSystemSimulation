@@ -56,6 +56,9 @@ float AnimateIncrement = 24.0;  // Time step for animation (hours)
 float Xpan = 0.0;
 float Ypan = 0.0;
 float Zpan = -20.0;
+float Xrot = 1.0;
+float Yrot = 0.0;
+float Zrot = 0.0;
 
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
@@ -85,6 +88,18 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 		case 'w':
 		    ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 			break;
+        case '1':
+            Xrot = Xrot + 1;
+            break;
+        case '2':
+            Xrot = Xrot - 1;
+            break;
+        case 'a':
+            Key_up();
+            break;
+        case 'A':
+            Key_down();
+            break;
         case 'x':
             Xpan = Xpan - 0.1;
             break;
@@ -115,14 +130,26 @@ void SpecialKeyFunc( int Key, int x, int y )
     switch ( Key )
     {
         case GLUT_KEY_UP:
-            Key_up();
+            Zrot = Zrot + 1;
             break;
         case GLUT_KEY_DOWN:
-            Key_down();
+            Zrot = Zrot - 1;
+            break;
+        case GLUT_KEY_LEFT:
+            Yrot = Yrot - 1;
+            break;
+        case GLUT_KEY_RIGHT:
+            Yrot = Yrot + 1;
             break;
     }
 }
 
+void HandleRotate()
+{
+        glRotatef( Xrot, 1.0, 0.0, 0.0);
+        glRotatef( Yrot, 0.0, 1.0, 0.0);
+        glRotatef( Zrot, 0.0, 0.0, 1.0);
+}
 // restart animation
 void Key_r( void )
 {
@@ -217,7 +244,6 @@ void Animate( void )
 void DrawPlanet(Planet *plant)
 {
 
-
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat mat_diffuse[] = { 0.0, 0.8, 0.0, 1.0 };
     GLfloat mat_ambient[] = { 0.3, 0.3, 0., 1.0 };
@@ -252,7 +278,8 @@ void DrawPlanet(Planet *plant)
 
     glLoadIdentity();
     glTranslatef ( Xpan, Ypan, Zpan );
-    glRotatef( 15.0, 1.0, 0.0, 0.0 );
+    HandleRotate();
+    glRotatef( 15.0, 1.0, 0.0, 0.0);
 
     // Draw the Mecury
     // First position it around the sun. Use MecuryYear to determine its position.
@@ -299,13 +326,12 @@ void DrawSun()
 
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
-
     // Back off eight units to be able to view from the origin.
     glTranslatef ( Xpan, Ypan, Zpan );
-
+    HandleRotate();
     // Rotate the plane of the elliptic
     // (rotate the model's plane about the x axis by fifteen degrees)
-    glRotatef( 15.0, 1.0, 0.0, 0.0 );
+    glRotatef( 15.0, 1.0, 0.0, 0.0);
     
     //calculate rotation.
 	glRotatef( hours / 25.0, 0.0, 1.0, 0.0 );
@@ -329,7 +355,8 @@ void SetLightModel()
 {
 	glLoadIdentity();
     glTranslatef ( Xpan, Ypan, Zpan );
-    glRotatef( 15.0, 1.0, 0.0, 0.0 );
+    HandleRotate();
+    glRotatef( 15.0, 1.0, 0.0, 0.0);
 
 
     GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
