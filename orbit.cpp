@@ -159,7 +159,7 @@ void Animate( void )
         Jupiter = new Planet("Jupiter",9.8, 4332, 71398,779);
         Saturn = new Planet("Saturn",  10.2,10761,60270,1424);
         Uranus = new Planet("Uranus",  15.5,30682,25550,2867);
-        Neptune = new Planet("Neptune",15.8,60195,24750,44492);
+        Neptune = new Planet("Neptune",15.8,60195,24750,4492);
         firstTime = false;
     }
     // Clear the redering window
