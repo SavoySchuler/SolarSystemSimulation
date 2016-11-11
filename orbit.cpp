@@ -64,7 +64,6 @@ void KeyPressFunc( unsigned char Key, int x, int y )
     {
 		case 'l':
 		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
-            glDisable( GL_TEXTURE_2D );
 			break;
 		
         case 'R':
@@ -177,24 +176,7 @@ void Animate( void )
     DrawPlanet(Neptune);
 
 
-    /*glLoadIdentity();
-    glTranslatef ( 0.0, 0.0, -8.0 );
-    glRotatef( 15.0, 1.0, 0.0, 0.0 );
-
-
-    // Draw the Earth
-    // First position it around the sun. Use DayOfYear to determine its position.
-    glRotatef( 360.0 * DayOfYear / 365.0, 0.0, 1.0, 0.0 );
-    glTranslatef( 4.0, 0.0, 0.0 );
-    glPushMatrix();						// Save matrix state
-    // Second, rotate the earth on its axis. Use HourOfDay to determine its rotation.
-    glRotatef( 360.0 * HourOfDay / 24.0, 0.0, 1.0, 0.0 );
-    // Third, draw the earth as a wireframe sphere.
-    glColor3f( 0.2, 0.2, 1.0 );
-    glutWireSphere( 0.4, 10, 10 );
-    glPopMatrix();						// Restore matrix state
-
-    // Draw the moon. Use DayOfYear to control its rotation around the earth
+    /* Draw the moon. Use DayOfYear to control its rotation around the earth
     glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 1.0, 0.0 );
     glTranslatef( 0.7, 0.0, 0.0 );
     glColor3f( 0.3, 0.7, 0.3 );
@@ -272,7 +254,6 @@ void DrawPlanet(Planet *plant)
 
 void DrawSun()
 {
-
     GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
     GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
     GLfloat mat_ambient[] = { 0.5, 1.0, 0.0, 1.0 };
@@ -295,9 +276,6 @@ void DrawSun()
     // Rotate the plane of the elliptic
     // (rotate the model's plane about the x axis by fifteen degrees)
     glRotatef( 15.0, 1.0, 0.0, 0.0 );
-	
-	
-	
 	
     // Draw the sun	-- as a yellow, wireframe sphere
     glColor3f( 1.0, 1.0, 0.0 );
