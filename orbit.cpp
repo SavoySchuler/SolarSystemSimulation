@@ -218,7 +218,6 @@ void DrawPlanet(Planet *plant)
     int Distance = plant->getDistance();
     if ( spinMode )
     {
-        cout << DayOfYear << endl;
         // Update the animation state
         HourOfDay += AnimateIncrement;
         DayOfYear += AnimateIncrement / 24.0;
@@ -228,7 +227,6 @@ void DrawPlanet(Planet *plant)
 
         plant->setHourOfDay(HourOfDay);
         plant->setDayOfYear(DayOfYear);
-        cout << DayOfYear << endl;
     }
 
 
@@ -254,6 +252,8 @@ void DrawPlanet(Planet *plant)
 
 void DrawSun()
 {
+    static float hours = 0.0;
+    hours += AnimateIncrement;
     GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
     GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
     GLfloat mat_ambient[] = { 0.5, 1.0, 0.0, 1.0 };
@@ -267,6 +267,7 @@ void DrawSun()
     glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	glPushMatrix();
 	
+
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
 
@@ -276,7 +277,9 @@ void DrawSun()
     // Rotate the plane of the elliptic
     // (rotate the model's plane about the x axis by fifteen degrees)
     glRotatef( 15.0, 1.0, 0.0, 0.0 );
-	
+    
+    //calculate rotation.
+	glRotatef( hours / 25.0, 0.0, 1.0, 0.0 );
     // Draw the sun	-- as a yellow, wireframe sphere
     glColor3f( 1.0, 1.0, 0.0 );
    
