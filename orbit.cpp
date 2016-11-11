@@ -243,8 +243,16 @@ void DrawPlanet(Planet *plant)
     glRotatef( DaysPerYear * HourOfDay / HoursPerDay, 0.0, 1.0, 0.0 );
     // Third, draw the earth as a wireframe sphere.
     glColor3f( 0.2, 0.7, 0.2 );
-//    glutWireSphere( Radius*SizeScale, 100, 100 );
-	glutSolidSphere( Radius*SizeScale, 100, 100 );
+    
+    
+    
+    GLUquadric *quad;
+	quad = gluNewQuadric();
+	gluSphere(quad, Radius*SizeScale, 100, 100);
+    
+    
+
+
     glPopMatrix();	
 					// Restore matrix state
 	
@@ -284,8 +292,12 @@ void DrawSun()
     glColor3f( 1.0, 1.0, 0.0 );
    
    //glutSolidSphere
-//    glutWireSphere( 1.0, 15, 15 );
-	glutSolidSphere( 1.0, 15, 15 );
+
+
+
+	GLUquadric *quad;
+	quad = gluNewQuadric();
+	gluSphere(quad, 1.0, 15, 15 );
 	
 }
 
