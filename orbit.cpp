@@ -53,7 +53,9 @@ float DayOfYear = 0.0;
 float MercuryHour = 0.0;
 float MercuryDay = 0.0;
 float AnimateIncrement = 24.0;  // Time step for animation (hours)
-
+float Xpan = 0.0;
+float Ypan = 0.0;
+float Zpan = -20.0;
 
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
@@ -83,6 +85,24 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 		case 'w':
 		    ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 			break;
+        case 'x':
+            Xpan = Xpan - 0.1;
+            break;
+        case 'X':
+            Xpan = Xpan + 0.1;
+            break;
+        case 'y':
+            Ypan = Ypan - 0.1;
+            break;
+        case 'Y':
+            Ypan = Ypan + 0.1;
+            break;
+        case 'z':
+            Zpan = Zpan - 0.5;
+            break;
+        case 'Z':
+            Zpan = Zpan + 0.5;
+            break;
         case 27: 	// Escape key
             exit( 1 );
     }
@@ -231,7 +251,7 @@ void DrawPlanet(Planet *plant)
 
 
     glLoadIdentity();
-    glTranslatef ( 0.0, 0.0, -20.0 );
+    glTranslatef ( Xpan, Ypan, Zpan );
     glRotatef( 15.0, 1.0, 0.0, 0.0 );
 
     // Draw the Mecury
@@ -275,12 +295,13 @@ void DrawSun()
     glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	glPushMatrix();
 	
+	SetLightModel();
 
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
 
     // Back off eight units to be able to view from the origin.
-    glTranslatef ( 0.0, 0.0, -20.0 );
+    glTranslatef ( Xpan, Ypan, Zpan );
 
     // Rotate the plane of the elliptic
     // (rotate the model's plane about the x axis by fifteen degrees)
@@ -304,10 +325,10 @@ void DrawSun()
 
 
 // set up light and material properties
-void initLightModel()
+void SetLightModel()
 {
 	glLoadIdentity();
-    glTranslatef ( 0.0, 0.0, -20.0 );
+    glTranslatef ( Xpan, Ypan, Zpan );
     glRotatef( 15.0, 1.0, 0.0, 0.0 );
 
 

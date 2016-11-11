@@ -51,7 +51,7 @@ int main( int argc, char** argv )
 	}
 */
 
-	initLightModel();
+	SetLightModel();
 
 	glClearColor( 0.0, 0.0, 0.0, 1.0 );	
 

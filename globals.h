@@ -11,7 +11,7 @@ void ResizeWindow( int w, int h );
 void KeyPressFunc( unsigned char Key, int x, int y );
 void SpecialKeyFunc( int Key, int x, int y );
 void DrawSun();
-void initLightModel();
+void SetLightModel();
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
