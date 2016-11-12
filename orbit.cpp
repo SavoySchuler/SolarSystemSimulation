@@ -302,6 +302,7 @@ void DrawPlanet(Planet *plant)
     
     GLUquadric *quad;
 	quad = gluNewQuadric();
+	gluQuadricTexture(quad,1);
 	gluSphere(quad, Radius*SizeScale, 100, 100);
     
     
