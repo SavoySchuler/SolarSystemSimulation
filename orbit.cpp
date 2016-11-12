@@ -244,8 +244,8 @@ void Animate( void )
 void DrawPlanet(Planet *plant)
 {
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat mat_diffuse[] = { 0.0, 0.8, 0.0, 1.0 };
-    GLfloat mat_ambient[] = { 0.3, 0.3, 0., 1.0 };
+    GLfloat mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_shininess = { 100.0 };
    	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
@@ -296,16 +296,18 @@ void DrawPlanet(Planet *plant)
     // Second, rotate the earth on its axis. Use MecuryHour to determine its rotation.
     glRotatef( DaysPerYear * HourOfDay / HoursPerDay, 0.0, 1.0, 0.0 );
     // Third, draw the earth as a wireframe sphere.
-    glColor3f( 0.2, 0.7, 0.2 );
+    glColor3f( 1.0, 1.0, 1.0 );
     
     
     
     GLUquadric *quad;
 	quad = gluNewQuadric();
+//	gluQuadricDrawStyle( quad, GLU_FILL );
+//	gluQuadricOrientation( quad, GLU_OUTSIDE );
 	gluQuadricTexture(quad, GL_TRUE);
 	gluQuadricNormals (quad, GLU_SMOOTH);
 	gluSphere(quad, Radius*SizeScale, 100, 100);
-    
+    gluDeleteQuadric( quad );
     
 
 
@@ -352,7 +354,7 @@ void DrawSun()
     //calculate rotation.
 	glRotatef( hours / 25.0, 0.0, 1.0, 0.0 );
     // Draw the sun	-- as a yellow, wireframe sphere
-    glColor3f( 1.0, 1.0, 0.0 );
+    glColor3f( 1.0, 1.0, 1.0 );
    
    //glutSolidSphere
 
@@ -362,6 +364,7 @@ void DrawSun()
 	quad = gluNewQuadric();
 	gluQuadricTexture(quad, GL_TRUE);
 	gluSphere(quad, 1.0, 15, 15 );
+	gluDeleteQuadric( quad );
 	
 }
 
@@ -471,5 +474,5 @@ void initTextureMap( char *filename )
     //glEnable( GL_DEPTH_TEST );
     //glEnable( GL_TEXTURE_2D );
     if ( loadTextureFromFile( filename ) == 0 )
-        glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
+        glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 }
