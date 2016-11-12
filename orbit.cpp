@@ -302,7 +302,8 @@ void DrawPlanet(Planet *plant)
     
     GLUquadric *quad;
 	quad = gluNewQuadric();
-	gluQuadricTexture(quad,1);
+	gluQuadricTexture(quad, GL_TRUE);
+	gluQuadricNormals (quad, GLU_SMOOTH);
 	gluSphere(quad, Radius*SizeScale, 100, 100);
     
     
@@ -359,6 +360,7 @@ void DrawSun()
 
 	GLUquadric *quad;
 	quad = gluNewQuadric();
+	gluQuadricTexture(quad, GL_TRUE);
 	gluSphere(quad, 1.0, 15, 15 );
 	
 }
@@ -388,7 +390,7 @@ void SetLightModel()
     glEnable( GL_LIGHTING );
     glEnable( GL_LIGHT0 );
 
-    glEnable( GL_DEPTH_TEST );
+   // glEnable( GL_DEPTH_TEST );
     glColor3f ( 0.5, 0.5, 0.5 );
     glEnable( GL_NORMALIZE );    // automatic normalization of normals
     glEnable( GL_CULL_FACE );    // eliminate backfacing polygons
@@ -451,10 +453,13 @@ int loadTextureFromFile( char *filename )
 
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
     gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, ncols, nrows, GL_RGB, GL_UNSIGNED_BYTE, image );
     
+	
+
+
     delete [] image;
 
     return 0;
@@ -463,8 +468,8 @@ int loadTextureFromFile( char *filename )
 // set up texture map
 void initTextureMap( char *filename )
 {
-    glEnable( GL_DEPTH_TEST );
-    glEnable( GL_TEXTURE_2D );
+    //glEnable( GL_DEPTH_TEST );
+    //glEnable( GL_TEXTURE_2D );
     if ( loadTextureFromFile( filename ) == 0 )
         glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
 }
