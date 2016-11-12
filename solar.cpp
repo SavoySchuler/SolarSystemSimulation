@@ -33,25 +33,8 @@ int main( int argc, char** argv )
 
     // Callback for graphics image redrawing   
 	glutDisplayFunc( Animate );
-	
 
-//	if ( filename )
-//	{
- //       initTextureMap( filename );
-//	}
-/*	else
-	{
-		GLubyte image[64][64][3];
-		makeTexture( image );
-		glTexImage2D( GL_TEXTURE_2D, 0, 3, 64, 64, 0, GL_RGB, GL_UNSIGNED_BYTE, image );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_lNEAREST );
-	}
-*/
-
-	SetLightModel();
+	//SetLightModel();
 
 	glClearColor( 0.0, 0.0, 0.0, 1.0 );	
 

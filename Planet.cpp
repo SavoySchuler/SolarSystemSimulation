@@ -8,7 +8,7 @@ Planet::Planet()
 
 }
 
-Planet::Planet(string name, int hours, int days, int radius, int distance)
+Planet::Planet(string name, int hours, int days, int radius, int distance, string texture)
 {
     Name = name;
     HoursPerDay = hours;
@@ -17,6 +17,7 @@ Planet::Planet(string name, int hours, int days, int radius, int distance)
     Distance = distance;
     HourOfDay = 0.0;
     DayOfYear = 0.0;
+	Texture = texture;
 
 }
 
@@ -65,4 +66,7 @@ void Planet::setDayOfYear(float day)
     DayOfYear = day;
 }
 
-	
+string Planet::getTexture()
+{
+    return Texture;
+}	

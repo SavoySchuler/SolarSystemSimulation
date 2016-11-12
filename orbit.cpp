@@ -198,14 +198,14 @@ void Animate( void )
 
     if(firstTime == true)
     {
-        Mercury = new Planet("Mercury",1416,88,   2439, 58);
-        Venus = new Planet("Venus",    5832,225,  6052, 108);
-        Earth = new Planet("Earth",    24,  365,  6378, 150);
-        Mars = new Planet("Mars",      24.6,687,  3394, 228);
-        Jupiter = new Planet("Jupiter",9.8, 4332, 71398,779);
-        Saturn = new Planet("Saturn",  10.2,10761,60270,1424);
-        Uranus = new Planet("Uranus",  15.5,30682,25550,2867);
-        Neptune = new Planet("Neptune",15.8,60195,24750,4492);
+        Mercury = new Planet("Mercury",1416,88,   2439, 58, "mercury.bmp");
+        Venus = new Planet("Venus",    5832,225,  6052, 108, "venus.bmp");
+        Earth = new Planet("Earth",    24,  365,  6378, 150, "earth.bmp");
+        Mars = new Planet("Mars",      24.6,687,  3394, 228, "mars.bmp");
+        Jupiter = new Planet("Jupiter",9.8, 4332, 71398,779, "jupiter.bmp");
+        Saturn = new Planet("Saturn",  10.2,10761,60270,1424, "saturn.bmp");
+        Uranus = new Planet("Uranus",  15.5,30682,25550,2867, "uranus.bmp");
+        Neptune = new Planet("Neptune",15.8,60195,24750,4492, "neptune.bmp");
         firstTime = false;
     }
     // Clear the redering window
@@ -243,7 +243,6 @@ void Animate( void )
 
 void DrawPlanet(Planet *plant)
 {
-
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat mat_diffuse[] = { 0.0, 0.8, 0.0, 1.0 };
     GLfloat mat_ambient[] = { 0.3, 0.3, 0., 1.0 };
@@ -262,6 +261,14 @@ void DrawPlanet(Planet *plant)
     float DaysPerYear = plant->getDaysPerYear();
     int Radius = plant->getRadius();
     int Distance = plant->getDistance();
+	string Texture = plant->getTexture();
+
+	char * filename = new char[Texture.size() + 1];
+	std::copy(Texture.begin(), Texture.end(), filename);
+	filename[Texture.size()] = '\0'; // don't forget the terminating 0
+	initTextureMap( filename );
+	delete[] filename;
+
     if ( spinMode )
     {
         // Update the animation state
@@ -307,6 +314,15 @@ void DrawPlanet(Planet *plant)
 
 void DrawSun()
 {
+	string Texture = "sun.bmp";
+
+	char * filename = new char[Texture.size() + 1];
+	std::copy(Texture.begin(), Texture.end(), filename);
+	filename[Texture.size()] = '\0'; // don't forget the terminating 0
+	initTextureMap( filename );
+	delete[] filename;
+
+
     static float hours = 0.0;
     hours += AnimateIncrement;
     GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
@@ -322,8 +338,6 @@ void DrawSun()
     glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	glPushMatrix();
 	
-	SetLightModel();
-
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
     // Back off eight units to be able to view from the origin.
@@ -415,6 +429,12 @@ void ResizeWindow( int w, int h )
 }
 
 
+
+
+
+
+// read texture map from BMP file
+// Ref: Buss, 3D Computer Graphics, 2003.
 int loadTextureFromFile( char *filename )
 {
     int nrows, ncols;
@@ -424,8 +444,20 @@ int loadTextureFromFile( char *filename )
         std::cerr << "Error: unable to load " << filename << std::endl;
         return -1;
     }
-}
 
+    // Pixel alignment: each row is word aligned (aligned to a 4 byte boundary)
+    // Therefore, no need to call glPixelStore( GL_UNPACK_ALIGNMENT, ... );
+
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, ncols, nrows, GL_RGB, GL_UNSIGNED_BYTE, image );
+    
+    delete [] image;
+
+    return 0;
+}
 
 // set up texture map
 void initTextureMap( char *filename )
@@ -434,20 +466,4 @@ void initTextureMap( char *filename )
     glEnable( GL_TEXTURE_2D );
     if ( loadTextureFromFile( filename ) == 0 )
         glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-}
-
-
-// build a checkerboard texture pattern
-void makeTexture( GLubyte image[64][64][3] )
-{
-    for ( int i = 0; i < 64; i++ )
-    {
-        for ( int j = 0; j < 64; j++ )
-        {
-            int c = ( ( ( i & 0x8 ) == 0 ) ^ ( ( j & 0x8 ) ) == 0 ) * 255;
-            image[i][j][0] = ( GLubyte ) c;
-            image[i][j][1] = ( GLubyte ) c;
-            image[i][j][2] = ( GLubyte ) c;
-        }
-    }
 }

@@ -12,7 +12,7 @@ class Planet
     
 	/// Constructors and Destructor
 	Planet();
-	Planet(string name, int hours, int days, int radius, int distance);
+	Planet(string name, int hours, int days, int radius, int distance, string texture);
 	~Planet();
 	
 	/// Get/Set functions
@@ -25,6 +25,7 @@ class Planet
     void setHourOfDay(float hour);
     float getDayOfYear();
     void setDayOfYear(float day);
+	string getTexture();
 	
 	/// Hit box functions
 
@@ -37,9 +38,9 @@ class Planet
     int Distance;
     float HourOfDay;
     float DayOfYear;
+	string Texture;
     
-    
-	
+   
 };
 
 #endif
