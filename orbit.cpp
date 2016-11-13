@@ -65,7 +65,7 @@ float Zrot = 0.0;
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
-	static bool light = true, shade = false, wire = true, texture = true;
+	static bool light = true, shade = false, wire = false, texture = true;
 
     switch ( Key )
     {
