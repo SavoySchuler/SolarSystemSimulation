@@ -56,7 +56,7 @@ float AnimateIncrement = 24.0;  // Time step for animation (hours)
 float Xpan = 0.0;
 float Ypan = 0.0;
 float Zpan = -20.0;
-float Xrot = 1.0;
+float Xrot = -15.0;
 float Yrot = 0.0;
 float Zrot = 0.0;
 
@@ -245,11 +245,20 @@ void Animate( void )
     glutPostRedisplay();		// Request a re-draw for animation purposes
 }
 
+void DrawMoon(int DayOfYear)
+{
+    //Draw the moon. Use DayOfYear to control its rotation around the earth
+    glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 1.0, 0.0 );
+    glTranslatef( 0.7, 0.0, 0.0 );
+    glColor3f( 0.3, 0.7, 0.3 );
+    glutWireSphere( 0.1, 5, 5 );
+}
+
 void DrawPlanet(Planet *plant)
 {
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_ambient[] = { 0.8, 0.8, 0.8, 1.0 };
     GLfloat mat_shininess = { 100.0 };
    	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
@@ -288,9 +297,8 @@ void DrawPlanet(Planet *plant)
 
 
     glLoadIdentity();
+	HandleRotate();
     glTranslatef ( Xpan, Ypan, Zpan );
-    HandleRotate();
-    glRotatef( 15.0, 1.0, 0.0, 0.0);
 
     // Draw the Mecury
     // First position it around the sun. Use MecuryYear to determine its position.
@@ -313,6 +321,10 @@ void DrawPlanet(Planet *plant)
 	gluSphere(quad, Radius*SizeScale, 100, 100);
     gluDeleteQuadric( quad );
     
+    if(plant->getName() == "Earth")
+    {
+        DrawMoon(DayOfYear);
+    }
 
 
     glPopMatrix();	
@@ -322,6 +334,7 @@ void DrawPlanet(Planet *plant)
 
 void DrawSun()
 {
+	SetLightModel();
 	string Texture = "sun.bmp";
 
 	char * filename = new char[Texture.size() + 1];
@@ -348,13 +361,13 @@ void DrawSun()
 	
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
+	HandleRotate();
     // Back off eight units to be able to view from the origin.
     glTranslatef ( Xpan, Ypan, Zpan );
-    HandleRotate();
+    
     // Rotate the plane of the elliptic
     // (rotate the model's plane about the x axis by fifteen degrees)
-    glRotatef( 15.0, 1.0, 0.0, 0.0);
-    
+
     //calculate rotation.
 	glRotatef( hours / 25.0, 0.0, 1.0, 0.0 );
     // Draw the sun	-- as a yellow, wireframe sphere
@@ -377,10 +390,9 @@ void DrawSun()
 // set up light and material properties
 void SetLightModel()
 {
-	glLoadIdentity();
+	glLoadIdentity();    
+	HandleRotate();
     glTranslatef ( Xpan, Ypan, Zpan );
-    HandleRotate();
-    glRotatef( 15.0, 1.0, 0.0, 0.0);
 
 
     GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
@@ -416,7 +428,6 @@ void OpenGLInit( void )
     glClearDepth( 1.0 );
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_TEXTURE_2D );
-	SetLightModel();
 
 }
 

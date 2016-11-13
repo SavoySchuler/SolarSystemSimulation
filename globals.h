@@ -13,6 +13,7 @@ void SpecialKeyFunc( int Key, int x, int y );
 void DrawSun();
 void SetLightModel();
 void HandleRotate();
+void DrawMoon(int DayOfYear);
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
