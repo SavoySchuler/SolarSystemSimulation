@@ -34,9 +34,6 @@ int main( int argc, char** argv )
     // Callback for graphics image redrawing   
 	glutDisplayFunc( Animate );
 
-    glEnable( GL_TEXTURE_2D );
-	SetLightModel();
-
 	glClearColor( 0.0, 0.0, 0.0, 1.0 );	
 
     // Start the main loop.  glutMainLoop never returns.

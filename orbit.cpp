@@ -60,10 +60,12 @@ float Xrot = 1.0;
 float Yrot = 0.0;
 float Zrot = 0.0;
 
+
+
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
-	static bool light = true, shade = false, wire = true;
+	static bool light = true, shade = false, wire = true, texture = true;
 
     switch ( Key )
     {
@@ -75,8 +77,10 @@ void KeyPressFunc( unsigned char Key, int x, int y )
         case 'r':
             Key_r();
             break;
-        case 't': glDisable( GL_LIGHTING ); glEnable( GL_TEXTURE_2D );  break;
-        case 'T': glEnable( GL_LIGHTING );  glEnable( GL_TEXTURE_2D );  break;
+        case 't': 
+        	 ( texture = !texture ) ? glEnable( GL_TEXTURE_2D ) : glDisable( GL_TEXTURE_2D );
+        	break;
+        case 'T': 
         case 's':
         case 'S':
             Key_s();
@@ -411,6 +415,9 @@ void OpenGLInit( void )
     glClearColor( 0.0, 0.0, 0.0, 0.0 );
     glClearDepth( 1.0 );
     glEnable( GL_DEPTH_TEST );
+    glEnable( GL_TEXTURE_2D );
+	SetLightModel();
+
 }
 
 // ResizeWindow is called when the window is resized
@@ -471,8 +478,6 @@ int loadTextureFromFile( char *filename )
 // set up texture map
 void initTextureMap( char *filename )
 {
-    //glEnable( GL_DEPTH_TEST );
-    //glEnable( GL_TEXTURE_2D );
     if ( loadTextureFromFile( filename ) == 0 )
         glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 }
