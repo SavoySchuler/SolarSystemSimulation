@@ -18,6 +18,7 @@ void DrawMoon(int DayOfYear);
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
 void makeTexture( GLubyte image[64][64][3] );
+void DrawTextString( string str, double radius);
 
 
 // these three variables control the animation's state and speed.
