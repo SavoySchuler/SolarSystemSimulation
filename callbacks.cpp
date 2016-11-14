@@ -92,21 +92,27 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             Key_down();
             break;
         case 'd':
-            Xpan = Xpan - 0.1;
+        	if (Xpan > -290.0)
+            	Xpan = Xpan - 0.1;
             break;
         case 'a':
-            Xpan = Xpan + 0.1;
+            if (Xpan < 290.0)
+            	Xpan = Xpan + 0.1;
             break;
         case 'w':
-            Ypan = Ypan - 0.1;
+        	if (Ypan > -290.0)
+            	Ypan = Ypan - 0.1;
             break;
         case 's':
-            Ypan = Ypan + 0.1;
+        	if (Ypan < 290.0)
+            	Ypan = Ypan + 0.1;
             break;
         case 'q':
-            Zpan = Zpan - 0.5;
+        	if (Zpan > -290.0)
+            	Zpan = Zpan - 0.5;
             break;
         case 'e':
+        	if (Zpan < 290.0)
             Zpan = Zpan + 0.5;
 	    break;
         case 'f':
@@ -186,6 +192,8 @@ void Animate( void )
     static Planet *Uranus;
     static Planet *Neptune;
     static Planet *Sun;
+    static Planet *Space;
+
 
     if(firstTime == true)
     {
@@ -234,12 +242,17 @@ void Animate( void )
     	LoadBmpFile( filename, nrows, ncols, image );
         Sun = new Planet("Sun", 25, 0, 0, 0, nrows, ncols, image);
         
+        
+        filename = stringToChar("space.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Space = new Planet("Space", 0, 0, 100, 0, nrows, ncols, image);
+        
         firstTime = false;
     }
     // Clear the redering window
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-
+	DrawSpace(Space);
     DrawSun(Sun);
     DrawPlanet(Mercury);
     DrawPlanet(Venus);
