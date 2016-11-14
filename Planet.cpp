@@ -8,7 +8,7 @@ Planet::Planet()
 
 }
 
-Planet::Planet(string name, int hours, int days, int radius, int distance, string texture)
+Planet::Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image)
 {
     Name = name;
     HoursPerDay = hours;
@@ -17,7 +17,9 @@ Planet::Planet(string name, int hours, int days, int radius, int distance, strin
     Distance = distance;
     HourOfDay = 0.0;
     DayOfYear = 0.0;
-	Texture = texture;
+	Rows = nrow;
+	Col = cols;
+	Image = image;
 
 }
 
@@ -66,7 +68,17 @@ void Planet::setDayOfYear(float day)
     DayOfYear = day;
 }
 
-string Planet::getTexture()
+int Planet::getRows()
 {
-    return Texture;
-}	
+    return Rows;
+}
+
+int Planet::getCols()
+{
+    return Col;
+}
+
+byte* Planet::getImage()
+{
+    return Image;
+}

@@ -14,6 +14,8 @@ void DrawSun();
 void SetLightModel();
 void HandleRotate();
 void DrawMoon(int DayOfYear);
+void DrawPlanet(Planet *plant);
+void DrawSun(Planet *sun);
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
@@ -31,5 +33,4 @@ bool LoadBmpFile( const char* filename, int &nrows, int &ncols, byte* &image );
 void skipChars( FILE* infile, int numChars );
 short readShort( FILE* infile );
 static inline int GetNumBytesPerRow( int NumCols );
-void initTextureMap( char *filename );
-int loadTextureFromFile( char *filename );
+int setTexture( byte* image, int rows, int ncols );

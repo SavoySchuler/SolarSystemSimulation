@@ -187,6 +187,16 @@ void Key_down( void )
     AnimateIncrement /= 2.0;			// Halve the animation time step
 }
 
+
+char * stringToChar (string str)
+{
+    	char * filename = new char[str.size() + 1];
+		std::copy(str.begin(), str.end(), filename);
+		filename[str.size()] = '\0'; // don't forget the terminating 0
+		return filename;
+}
+
+
 // Animate() handles the animation and the redrawing of the graphics window contents.
 void Animate( void )
 {
@@ -199,24 +209,62 @@ void Animate( void )
     static Planet *Saturn;
     static Planet *Uranus;
     static Planet *Neptune;
+    static Planet *Sun;
 
     if(firstTime == true)
     {
-        Mercury = new Planet("Mercury",1416,88,   2439, 58, "mercury.bmp");
-        Venus = new Planet("Venus",    5832,225,  6052, 108, "venus.bmp");
-        Earth = new Planet("Earth",    24,  365,  6378, 150, "earth.bmp");
-        Mars = new Planet("Mars",      24.6,687,  3394, 228, "mars.bmp");
-        Jupiter = new Planet("Jupiter",9.8, 4332, 71398,779, "jupiter.bmp");
-        Saturn = new Planet("Saturn",  10.2,10761,60270,1424, "saturn.bmp");
-        Uranus = new Planet("Uranus",  15.5,30682,25550,2867, "uranus.bmp");
-        Neptune = new Planet("Neptune",15.8,60195,24750,4492, "neptune.bmp");
+    	int nrows, ncols;
+    	byte* image;
+		char * filename;
+		
+		filename = stringToChar("mercury.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Mercury = new Planet("Mercury",1416,88,   2439, 58, nrows, ncols, image);
+        
+        
+		filename = stringToChar("venus.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Venus = new Planet("Venus",    5832,225,  6052, 108, nrows, ncols, image);
+
+		filename = stringToChar("earth.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Earth = new Planet("Earth",    24,  365,  6378, 150, nrows, ncols, image);
+
+		filename = stringToChar("mars.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Mars = new Planet("Mars",      24.6,687,  3394, 228, nrows, ncols, image);
+
+
+		filename = stringToChar("jupiter.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Jupiter = new Planet("Jupiter",9.8, 4332, 71398,779, nrows, ncols, image);
+
+
+		filename = stringToChar("saturn.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Saturn = new Planet("Saturn",  10.2,10761,60270,1424, nrows, ncols, image);
+
+
+		filename = stringToChar("uranus.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Uranus = new Planet("Uranus",  15.5,30682,25550,2867, nrows, ncols, image);
+
+		filename = stringToChar("neptune.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Neptune = new Planet("Neptune",15.8,60195,24750,4492, nrows, ncols, image);
+        
+        
+        filename = stringToChar("sun.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Sun = new Planet("Sun", 25, 0, 0, 0, nrows, ncols, image);
+        
         firstTime = false;
     }
     // Clear the redering window
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 
-    DrawSun();
+    DrawSun(Sun);
     DrawPlanet(Mercury);
     DrawPlanet(Venus);
     DrawPlanet(Earth);
@@ -247,18 +295,45 @@ void Animate( void )
 
 void DrawMoon(int DayOfYear)
 {
+	static bool firstTimeMoon = true;
+	static Planet *Moon;
+	int nrows, ncols;
+	byte* image;
+	
+	
+	if ( firstTimeMoon = true);
+	{
+		char * filename;
+	    filename = stringToChar("moon.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Moon = new Planet("Moon", 0, 0, 0, 0, nrows, ncols, image);
+		firstTimeMoon = false;
+	}
+	
+
+	nrows = Moon->getRows();
+	ncols = Moon->getCols();
+	image = Moon->getImage();
+
+
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );	
+
+
+
     string Texture = "moon.bmp";
 
 	char * filename = new char[Texture.size() + 1];
 	std::copy(Texture.begin(), Texture.end(), filename);
 	filename[Texture.size()] = '\0'; // don't forget the terminating 0
-	initTextureMap( filename );
+	loadTextureFromFile(filename );
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 	delete[] filename;
 
     //Draw the moon. Use DayOfYear to control its rotation around the earth
     glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 1.0, 0.0 );
     glTranslatef( 0.7, 0.0, 0.0 );
-    glColor3f( 0.3, 0.7, 0.3 );
+    glColor3f( 1.0, 1.0, 1.0 );
     
     GLUquadric *quad;
 	quad = gluNewQuadric();
@@ -288,13 +363,15 @@ void DrawPlanet(Planet *plant)
     float DaysPerYear = plant->getDaysPerYear();
     int Radius = plant->getRadius();
     int Distance = plant->getDistance();
-	string Texture = plant->getTexture();
+	int nrows = plant->getRows();
+	int ncols = plant->getCols();
+	byte* image = plant->getImage();
 
-	char * filename = new char[Texture.size() + 1];
-	std::copy(Texture.begin(), Texture.end(), filename);
-	filename[Texture.size()] = '\0'; // don't forget the terminating 0
-	initTextureMap( filename );
-	delete[] filename;
+
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+
+
 
     if ( spinMode )
     {
@@ -346,18 +423,8 @@ void DrawPlanet(Planet *plant)
 	
 }
 
-void DrawSun()
+void DrawSun(Planet *sun)
 {
-	SetLightModel();
-	string Texture = "sun.bmp";
-
-	char * filename = new char[Texture.size() + 1];
-	std::copy(Texture.begin(), Texture.end(), filename);
-	filename[Texture.size()] = '\0'; // don't forget the terminating 0
-	initTextureMap( filename );
-	delete[] filename;
-
-
     static float hours = 0.0;
     hours += AnimateIncrement;
     GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
@@ -372,6 +439,16 @@ void DrawSun()
     glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
     glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	glPushMatrix();
+	
+	
+	int nrows = sun->getRows();
+	int ncols = sun->getCols();
+	byte* image = sun->getImage();
+
+
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+	
 	
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
@@ -470,11 +547,25 @@ void ResizeWindow( int w, int h )
 
 
 
+// read texture map from BMP file
+// Ref: Buss, 3D Computer Graphics, 2003.
+int setTexture( byte* image, int nrows, int ncols )
+{
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, ncols, nrows, GL_RGB, GL_UNSIGNED_BYTE, image );
+   
+    return 0;
+}
+
 
 // read texture map from BMP file
 // Ref: Buss, 3D Computer Graphics, 2003.
 int loadTextureFromFile( char *filename )
 {
+
     int nrows, ncols;
     byte* image;
     if ( !LoadBmpFile( filename, nrows, ncols, image ) )
@@ -493,16 +584,7 @@ int loadTextureFromFile( char *filename )
     gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, ncols, nrows, GL_RGB, GL_UNSIGNED_BYTE, image );
     
 	
-
-
     delete [] image;
 
     return 0;
-}
-
-// set up texture map
-void initTextureMap( char *filename )
-{
-    if ( loadTextureFromFile( filename ) == 0 )
-        glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 }
