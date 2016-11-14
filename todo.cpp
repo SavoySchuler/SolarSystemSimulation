@@ -7,6 +7,7 @@
  - Jupiter and Saturn are displayed at half their actual size.
  - Play with Starting position
  - Reset to default
+ - fix look around
 
 
 //Extra:

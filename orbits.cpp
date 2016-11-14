@@ -55,7 +55,7 @@ void DrawRings(double planetRadius)
 	quad = gluNewQuadric();
     
 	gluQuadricTexture(quad, GL_TRUE);
-	gluCylinder(quad, planetRadius * SizeScale, planetRadius * SizeScale + 0.5 ,0, 100, 100);
+	gluCylinder(quad, planetRadius * SizeScale + 0.5, planetRadius * SizeScale + 2 ,0.1, 100, 100);
 	gluDeleteQuadric( quad );
 	glEnable( GL_CULL_FACE ); 
 }
@@ -67,7 +67,11 @@ void DrawMoon(int DayOfYear)
 	int nrows, ncols;
 	byte* image;
 	
-	
+	    //Draw the moon. Use DayOfYear to control its rotation around the earth
+    glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 0.0, 1.0 );
+    glTranslatef( 0.7, 0.0, 0.0 );
+    glColor3f( 1.0, 1.0, 1.0 );
+
 	if ( firstTimeMoon = true);
 	{
 		char * filename;
@@ -77,7 +81,7 @@ void DrawMoon(int DayOfYear)
 		firstTimeMoon = false;
 	}
 	
-
+    DrawTextString(Moon->getName(), Moon->getRadius());
 	nrows = Moon->getRows();
 	ncols = Moon->getCols();
 	image = Moon->getImage();
@@ -87,10 +91,7 @@ void DrawMoon(int DayOfYear)
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );	
 
 
-    //Draw the moon. Use DayOfYear to control its rotation around the earth
-    glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 0.0, 1.0 );
-    glTranslatef( 0.7, 0.0, 0.0 );
-    glColor3f( 1.0, 1.0, 1.0 );
+
     
     GLUquadric *quad;
 	quad = gluNewQuadric();
@@ -120,8 +121,9 @@ void DrawOrbit(double planetDistance)
 void DrawPlanet(Planet *plant)
 {    
 	glLoadIdentity();
+    HandleRotate();
     glTranslatef ( Xpan, Ypan, Zpan );
-	HandleRotate();
+	
     DrawOrbit(plant->getDistance());
 
 
@@ -238,9 +240,10 @@ void DrawSun(Planet *sun)
 	
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
+    HandleRotate();
     // Back off eight units to be able to view from the origin.
     glTranslatef ( Xpan, Ypan, Zpan );
-    HandleRotate();
+    
     // Rotate the plane of the elliptic
     // (rotate the model's plane about the x axis by fifteen degrees)
 
@@ -267,9 +270,9 @@ void DrawSun(Planet *sun)
 void SetLightModel()
 {
 	glLoadIdentity();    
-	
+	HandleRotate();
     glTranslatef ( Xpan, Ypan, Zpan );
-    HandleRotate();
+    
 
     GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -319,9 +322,10 @@ void DrawSpace(Planet *space)
 	
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
+    HandleRotate();
     // Back off eight units to be able to view from the origin.
     glTranslatef ( Xpan, Ypan, Zpan );
-    HandleRotate();
+    
 
 
     // Draw the sun	-- as a yellow, wireframe sphere
@@ -361,7 +365,10 @@ void DrawTextString( string str, double radius)
 	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     GLfloat textColor[] = { 1.0, 1.0, 1.0 };
     glColor3fv( textColor );
-    glRasterPos3i( 0,0, radius * SizeScale + 1 );
+    if(str == "Moon")
+        glRasterPos3i( 0,0, radius * SizeScale - 1 );
+    else
+        glRasterPos3i( 0,0, radius * SizeScale + 1 );
 
     for (int i = 0; i < str.length(); i++)
     {
