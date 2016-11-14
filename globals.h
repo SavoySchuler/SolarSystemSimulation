@@ -55,3 +55,4 @@ extern float Zpan;
 extern float Xrot;
 extern float Yrot;
 extern float Zrot;
+extern bool textureToggle;

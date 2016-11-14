@@ -25,6 +25,8 @@ void DrawRings(double planetRadius)
 {
 	glDisable( GL_CULL_FACE );
 
+    GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
 	
 	static bool firstTimeSaturn = true;
 	static Planet *Rings;
