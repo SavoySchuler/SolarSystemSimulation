@@ -24,6 +24,8 @@ char * stringToChar (string str)
 void DrawRings(double planetRadius)
 {
 	glDisable( GL_CULL_FACE );
+
+	
 	static bool firstTimeSaturn = true;
 	static Planet *Rings;
 	int nrows, ncols;
@@ -57,7 +59,10 @@ void DrawRings(double planetRadius)
 	gluQuadricTexture(quad, GL_TRUE);
 	gluCylinder(quad, planetRadius * SizeScale, planetRadius * SizeScale + 0.5 ,0, 100, 100);
 	gluDeleteQuadric( quad );
+	
+
 	glEnable( GL_CULL_FACE ); 
+
 }
 
 void DrawMoon(int DayOfYear)
@@ -103,18 +108,45 @@ void DrawMoon(int DayOfYear)
 void DrawOrbit(double planetDistance)
 {
 	glDisable( GL_CULL_FACE ); 
-   	GLfloat mat_emission[] = {1.0, 1.0, 1.0, 1.0};
+	
+	if ( textureToggle == true ) 
+		glDisable( GL_TEXTURE_2D );
+	
 
+
+
+
+
+    GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_shininess = { 0.0 };
+   	GLfloat mat_emission[] = {0.0, 0.0, 1.0, 1.0};
+
+
+    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
+    
 
-    glColor3f( 1.0, 1.0, 1.0 );
+
+    glColor3f( 0.0, 0.0, 1.0 );
 	GLUquadric *quad;
 	quad = gluNewQuadric();
     
 	gluQuadricTexture(quad, GL_TRUE);
     gluPartialDisk(quad,planetDistance*DistScale, planetDistance*DistScale+0.05,100,100,0,360);
 	gluDeleteQuadric( quad );
+	
+	if ( textureToggle == true ) 
+		glEnable( GL_TEXTURE_2D );
+	
+	
 	glEnable( GL_CULL_FACE ); 
+	
+	
 }
 
 void DrawPlanet(Planet *plant)
