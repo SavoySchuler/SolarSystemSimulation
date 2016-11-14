@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "Planet.h"
 
 using namespace std;
@@ -15,7 +16,8 @@ Planet::Planet(string name, int hours, int days, int radius, int distance, int n
     DaysPerYear = days;
     Radius = radius;
     Distance = distance;
-    HoursOfYear = 0.0;
+    HourOfDay = 0.0;
+    DayOfYear = 0.0;
 	Rows = nrow;
 	Col = cols;
 	Image = image;
@@ -64,7 +66,7 @@ void Planet::setDayOfYear(float day)
 
 float Planet::getDayOfYear()
 {
-	return DayOfYear;
+	return fmod(DayOfYear,DaysPerYear);
 }
 
 void Planet::setHourOfDay(float hour)
@@ -74,7 +76,7 @@ void Planet::setHourOfDay(float hour)
 
 float Planet::getHourOfDay()
 {
-	return HourOfDay;
+	return fmod(HourOfDay,HoursPerDay);
 }
 
 int Planet::getRows()

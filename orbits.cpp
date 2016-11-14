@@ -115,8 +115,6 @@ void DrawPlanet(Planet *plant)
 	setTexture(image, nrows, ncols);
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
-
-
     if ( spinMode )
     {
         // Update the animation state
@@ -133,8 +131,7 @@ void DrawPlanet(Planet *plant)
 	DayOfYear = plant->getDayOfYear();
 	HourOfDay = plant->getHourOfDay();
     
-    if(plant->getName() == "Earth" )
-        cout << DayOfYear << "  " << HourOfDay << endl;
+
 
     // Draw the Mecury
     // First position it around the sun. Use MecuryYear to determine its position.
@@ -189,7 +186,8 @@ void DrawSun(Planet *sun)
 {
 	SetLightModel();
     static float hours = 0.0;
-    hours += AnimateIncrement;
+    if ( spinMode )
+        hours += AnimateIncrement;
     GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
     GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
     GLfloat mat_ambient[] = { 0.5, 1.0, 0.0, 1.0 };
@@ -222,7 +220,7 @@ void DrawSun(Planet *sun)
     // (rotate the model's plane about the x axis by fifteen degrees)
 
     //calculate rotation.
-	glRotatef( hours / 25.0, 0.0, 1.0, 0.0 );
+	glRotatef(360.0 * hours/25.0, 0.0, 0.0, 1.0 );
     // Draw the sun	-- as a yellow, wireframe sphere
     glColor3f( 1.0, 1.0, 1.0 );
    
