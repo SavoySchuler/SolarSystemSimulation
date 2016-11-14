@@ -88,7 +88,7 @@ void DrawMoon(int DayOfYear)
 
 
     //Draw the moon. Use DayOfYear to control its rotation around the earth
-    glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 1.0, 0.0 );
+    glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 0.0, 1.0 );
     glTranslatef( 0.7, 0.0, 0.0 );
     glColor3f( 1.0, 1.0, 1.0 );
     
