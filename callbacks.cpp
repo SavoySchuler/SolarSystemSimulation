@@ -63,62 +63,53 @@ float Zrot = 0.0;
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
-	static bool light = true, shade = false, wire = false, texture = true;
+	static bool light = true, shade = true, wire = false, texture = true;
 
     switch ( Key )
     {
-		case 'l':
+		case '6':
 		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
 			break;
-		
-        case 'R':
         case 'r':
             Key_r();
             break;
-        case 't': 
+        case '5': 
         	 ( texture = !texture ) ? glEnable( GL_TEXTURE_2D ) : glDisable( GL_TEXTURE_2D );
         	break;
-        case 'T': 
-        case 's':
-        case 'S':
+        case 'n':
             Key_s();
             break;
-	    case 'q':
+	    case '3':
 		    ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
 			break;
-
-		case 'w':
+		case '4':
 		    ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 			break;
         case '1':
-            Xrot = Xrot + 1;
-            break;
-        case '2':
-            Xrot = Xrot - 1;
-            break;
-        case 'a':
             Key_up();
             break;
-        case 'A':
+        case '2':
             Key_down();
             break;
-        case 'x':
+        case 'd':
             Xpan = Xpan - 0.1;
             break;
-        case 'X':
+        case 'a':
             Xpan = Xpan + 0.1;
             break;
-        case 'y':
+        case 'w':
             Ypan = Ypan - 0.1;
             break;
-        case 'Y':
+        case 's':
             Ypan = Ypan + 0.1;
             break;
-        case 'z':
+        case 'q':
             Zpan = Zpan - 0.5;
             break;
-        case 'Z':
+        case 'e':
             Zpan = Zpan + 0.5;
+        case 'f':
+            Key_s();  
             break;
         case 27: 	// Escape key
             exit( 1 );
@@ -132,16 +123,16 @@ void SpecialKeyFunc( int Key, int x, int y )
     switch ( Key )
     {
         case GLUT_KEY_UP:
-            Zrot = Zrot + 1;
+            Xrot = Xrot - 1;
             break;
         case GLUT_KEY_DOWN:
-            Zrot = Zrot - 1;
+            Xrot = Xrot + 1;
             break;
         case GLUT_KEY_LEFT:
-            Yrot = Yrot - 1;
+        	Zrot = Zrot - 1;
             break;
         case GLUT_KEY_RIGHT:
-            Yrot = Yrot + 1;
+        	Zrot = Zrot + 1;
             break;
     }
 }
@@ -289,6 +280,7 @@ void OpenGLInit( void )
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_TEXTURE_2D );
     glEnable( GL_LIGHTING );
+ 
 
 }
 
@@ -314,9 +306,33 @@ void ResizeWindow( int w, int h )
 }
 
 
+void CreateMenus()
+{
+    //create main menu
+    int value = 1;
+    int mainmenu = glutCreateMenu( 0 );
+    
+	glutAddMenuEntry(	"Controls:", value++ );
+	glutAddMenuEntry(	"r              - Start/Suspend Animation", value++ );
+	glutAddMenuEntry(	"Up Arrow       -  Rotate Up", value++ );
+	glutAddMenuEntry(	"Down Arrow  - Rotate Down", value++ );
+	glutAddMenuEntry(	"Left Arrow     - Rotate Left", value++ );
+	glutAddMenuEntry(	"Right Arrow   - Rotate Right", value++ );
+	glutAddMenuEntry(	"a/d           - Pan in X direction", value++ );
+	glutAddMenuEntry(	"w/s          - Pan in Y direction", value++ );
+	glutAddMenuEntry(	"q/r           - Zoom (Pan in Z direction)", value++ );
+	glutAddMenuEntry(	"1/2          - Speed of Animation", value++ );
+	glutAddMenuEntry(	"3             - Smooth/Flat Shading", value++ );
+	glutAddMenuEntry(	"4             - Wireframe/Polygon Rendering", value++ );
+	glutAddMenuEntry(	"5             - Texture Mapping", value++ );
+	glutAddMenuEntry(	"6             - Lighting", value++ );
+	glutAddMenuEntry(	"f              - Single Step Animation", value++ );
+	glutAddMenuEntry(	"+/-          - Inc/Dec Resolution", value++ );
+	glutAddMenuEntry(	"Esc         - Quit", value++ );
 
-
-
-
-
-
+	//trivial fix to supress unused variable warnings	
+	mainmenu = mainmenu;
+	
+    //open menu with right click
+    glutAttachMenu( GLUT_RIGHT_BUTTON );
+}

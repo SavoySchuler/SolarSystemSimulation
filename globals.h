@@ -35,6 +35,7 @@ void skipChars( FILE* infile, int numChars );
 short readShort( FILE* infile );
 static inline int GetNumBytesPerRow( int NumCols );
 int setTexture( byte* image, int rows, int ncols );
+void CreateMenus();
 
 
 
