@@ -97,18 +97,7 @@ void DrawPlanet(Planet *plant)
     glTranslatef ( Xpan, Ypan, Zpan );
 	HandleRotate();
     DrawOrbit(plant->getDistance());
-    
-	GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
-    GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
-    GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
-    GLfloat mat_shininess = { 100.0 };
-   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
-    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
-    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
-    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
-    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
-	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 
     float HoursPerDay = plant->getHoursPerDay();
     float DaysPerYear = plant->getDaysPerYear();
@@ -133,7 +122,7 @@ void DrawPlanet(Planet *plant)
         // Update the animation state
         DayIncrement = AnimateIncrement / 24.0;
 		hourIncrement = AnimateIncrement -(int)DayIncrement * 24;
-		cout << "DayIncrement: " << DayIncrement << " HourIncrement: " << hourIncrement << endl;
+		
 		DayOfYear += DayIncrement;
 		HourOfDay += hourIncrement;
 
@@ -143,7 +132,9 @@ void DrawPlanet(Planet *plant)
 	
 	DayOfYear = plant->getDayOfYear();
 	HourOfDay = plant->getHourOfDay();
-
+    
+    if(plant->getName() == "Earth" )
+        cout << DayOfYear << "  " << HourOfDay << endl;
 
     // Draw the Mecury
     // First position it around the sun. Use MecuryYear to determine its position.
@@ -151,11 +142,23 @@ void DrawPlanet(Planet *plant)
     glTranslatef( Distance*DistScale, 0.0, 0.0 );
     glPushMatrix();						// Save matrix state
     // Second, rotate the earth on its axis. Use MecuryHour to determine its rotation.
-    glRotatef( 360.0 * HourOfDay/HoursPerDay, 0.0, 1.0, 0.0 );
+    glRotatef( 360.0 * HourOfDay/HoursPerDay, 0.0, 0.0, 1.0 );
     // Third, draw the earth as a wireframe sphere.
     glColor3f( 0.8, 0.8, 0.0 );
     
-    DrawTextString(plant->getName(), Radius);
+    DrawTextString(plant->getName(), plant->getRadius());
+
+	GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
+    GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
+    GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
+    GLfloat mat_shininess = { 100.0 };
+   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+
+    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     
     
     GLUquadric *quad;

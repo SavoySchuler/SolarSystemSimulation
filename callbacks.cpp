@@ -108,6 +108,7 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             break;
         case 'e':
             Zpan = Zpan + 0.5;
+	    break;
         case 'f':
             Key_s();  
             break;
@@ -297,7 +298,7 @@ void ResizeWindow( int w, int h )
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
     
-    gluPerspective( 60.0, aspectRatio, 1.0, 300.0 );
+    gluPerspective( 60.0, aspectRatio, 1.0, 600.0 );
     
     gluLookAt (0,0,2,0,0,0,0,1,0);
 
