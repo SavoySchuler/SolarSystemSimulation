@@ -21,7 +21,7 @@ int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
 void makeTexture( GLubyte image[64][64][3] );
 void DrawTextString( string str, double radius);
-
+char * stringToChar (string str);
 
 // these three variables control the animation's state and speed.
 const float DistScale = 1.0/37.5;
@@ -35,3 +35,21 @@ void skipChars( FILE* infile, int numChars );
 short readShort( FILE* infile );
 static inline int GetNumBytesPerRow( int NumCols );
 int setTexture( byte* image, int rows, int ncols );
+
+
+
+// global variables
+extern GLenum spinMode;
+extern GLenum singleStep;
+
+extern float HourOfDay;
+extern float DayOfYear;
+extern float MercuryHour;
+extern float MercuryDay;
+extern float AnimateIncrement;  // Time step for animation (hours)
+extern float Xpan;
+extern float Ypan;
+extern float Zpan;
+extern float Xrot;
+extern float Yrot;
+extern float Zrot;

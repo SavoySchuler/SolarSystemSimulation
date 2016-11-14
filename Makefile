@@ -36,9 +36,9 @@ GL_LIBS = -lglut -lGLU -lGL -lm -s
 
 all:    solar
 
-solar: solar.cpp orbit.cpp Planet.o bmpRead.o
+solar: solar.cpp orbits.cpp callbacks.cpp bmpRead.cpp Planet.o
 	$(LINK) -o $@ $^ $(GL_LIBS)
-
+	
 
 # typical target entry, builds "myprog" from file1.cpp, file2.cpp, file3.cpp
 myprog:	file1.o file2.o file3.o
