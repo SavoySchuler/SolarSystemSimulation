@@ -98,8 +98,8 @@ void DrawPlanet(Planet *plant)
 	HandleRotate();
     DrawOrbit(plant->getDistance());
     
-	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
+    GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
     GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
     GLfloat mat_shininess = { 100.0 };
    	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
@@ -149,7 +149,7 @@ void DrawPlanet(Planet *plant)
     // Second, rotate the earth on its axis. Use MecuryHour to determine its rotation.
     glRotatef( DaysPerYear * HourOfDay / HoursPerDay, 0.0, 1.0, 0.0 );
     // Third, draw the earth as a wireframe sphere.
-    glColor3f( 1.0, 1.0, 1.0 );
+    glColor3f( 0.8, 0.8, 0.0 );
     
     DrawTextString(plant->getName(), Radius);
     
