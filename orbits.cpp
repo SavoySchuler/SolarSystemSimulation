@@ -361,7 +361,7 @@ void DrawTextString( string str, double radius)
 	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     GLfloat textColor[] = { 1.0, 1.0, 1.0 };
     glColor3fv( textColor );
-    glRasterPos2i( 0, radius * SizeScale + 1 );
+    glRasterPos3i( 0,0, radius * SizeScale + 1 );
 
     for (int i = 0; i < str.length(); i++)
     {
