@@ -296,7 +296,7 @@ void Animate( void )
 
 void DrawRings(double planetRadius)
 {
-	glDisable (GL_DEPTH_TEST); 
+	glDisable( GL_CULL_FACE ); 
     glColor3f( 0.3, 0.7, 0.3 );
 	GLUquadric *quad;
 	quad = gluNewQuadric();
@@ -304,7 +304,8 @@ void DrawRings(double planetRadius)
 	gluQuadricTexture(quad, GL_TRUE);
 	gluCylinder(quad, planetRadius * SizeScale, planetRadius * SizeScale + 0.5 ,0, 100, 100);
 	gluDeleteQuadric( quad );
-	glEnable (GL_DEPTH_TEST); 
+	glEnable (GL_DEPTH_TEST);
+	glEnable( GL_CULL_FACE ); 
 }
 
 void DrawMoon(int DayOfYear)
@@ -334,16 +335,6 @@ void DrawMoon(int DayOfYear)
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );	
 
 
-
-    string Texture = "moon.bmp";
-
-	char * filename = new char[Texture.size() + 1];
-	std::copy(Texture.begin(), Texture.end(), filename);
-	filename[Texture.size()] = '\0'; // don't forget the terminating 0
-	loadTextureFromFile(filename );
-	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-	delete[] filename;
-
     //Draw the moon. Use DayOfYear to control its rotation around the earth
     glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 1.0, 0.0 );
     glTranslatef( 0.7, 0.0, 0.0 );
@@ -359,6 +350,11 @@ void DrawMoon(int DayOfYear)
 
 void DrawOrbit(double planetDistance)
 {
+	glDisable( GL_CULL_FACE ); 
+   	GLfloat mat_emission[] = {1.0, 1.0, 1.0, 1.0};
+
+	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
+
     glDisable (GL_DEPTH_TEST);
     glColor3f( 1.0, 1.0, 1.0 );
 	GLUquadric *quad;
@@ -367,14 +363,19 @@ void DrawOrbit(double planetDistance)
 	gluQuadricTexture(quad, GL_TRUE);
     gluPartialDisk(quad,planetDistance*DistScale, planetDistance*DistScale+0.05,100,100,0,360);
 	gluDeleteQuadric( quad );
-	glEnable (GL_DEPTH_TEST); 
+	glEnable( GL_CULL_FACE ); 
 }
 
 void DrawPlanet(Planet *plant)
-{
+{    
+	glLoadIdentity();
+    glTranslatef ( Xpan, Ypan, Zpan );
+	HandleRotate();
+    DrawOrbit(plant->getDistance());
+    
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat mat_ambient[] = { 0.8, 0.8, 0.8, 1.0 };
+    GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
     GLfloat mat_shininess = { 100.0 };
    	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
@@ -414,10 +415,7 @@ void DrawPlanet(Planet *plant)
     }
 
 
-    glLoadIdentity();
-    glTranslatef ( Xpan, Ypan, Zpan );
-	HandleRotate();
-    DrawOrbit(Distance);
+
     // Draw the Mecury
     // First position it around the sun. Use MecuryYear to determine its position.
     glRotatef( 360.0 * DayOfYear / DaysPerYear, 0.0, 1.0, 0.0 );
@@ -457,6 +455,7 @@ void DrawPlanet(Planet *plant)
 
 void DrawSun(Planet *sun)
 {
+	SetLightModel();
     static float hours = 0.0;
     hours += AnimateIncrement;
     GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
@@ -526,9 +525,7 @@ void SetLightModel()
     glLightfv( GL_LIGHT0, GL_AMBIENT, light_ambient );
     glLightfv( GL_LIGHT0, GL_DIFFUSE, light_diffuse );
     glLightfv( GL_LIGHT0, GL_SPECULAR, light_specular );
-
-    glShadeModel( GL_SMOOTH );
-    glEnable( GL_LIGHTING );
+    
     glEnable( GL_LIGHT0 );
 
    // glEnable( GL_DEPTH_TEST );
@@ -550,6 +547,7 @@ void OpenGLInit( void )
     glClearDepth( 1.0 );
     glEnable( GL_DEPTH_TEST );
     glEnable( GL_TEXTURE_2D );
+    glEnable( GL_LIGHTING );
 
 }
 
@@ -592,33 +590,7 @@ int setTexture( byte* image, int nrows, int ncols )
 }
 
 
-// read texture map from BMP file
-// Ref: Buss, 3D Computer Graphics, 2003.
-int loadTextureFromFile( char *filename )
-{
 
-    int nrows, ncols;
-    byte* image;
-    if ( !LoadBmpFile( filename, nrows, ncols, image ) )
-    {
-        std::cerr << "Error: unable to load " << filename << std::endl;
-        return -1;
-    }
-
-    // Pixel alignment: each row is word aligned (aligned to a 4 byte boundary)
-    // Therefore, no need to call glPixelStore( GL_UNPACK_ALIGNMENT, ... );
-
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, ncols, nrows, GL_RGB, GL_UNSIGNED_BYTE, image );
-    
-	
-    delete [] image;
-
-    return 0;
-}
 
 void DrawTextString( string str, double radius)
 {
