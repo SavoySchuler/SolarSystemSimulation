@@ -247,11 +247,25 @@ void Animate( void )
 
 void DrawMoon(int DayOfYear)
 {
+    string Texture = "moon.bmp";
+
+	char * filename = new char[Texture.size() + 1];
+	std::copy(Texture.begin(), Texture.end(), filename);
+	filename[Texture.size()] = '\0'; // don't forget the terminating 0
+	initTextureMap( filename );
+	delete[] filename;
+
     //Draw the moon. Use DayOfYear to control its rotation around the earth
     glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 1.0, 0.0 );
     glTranslatef( 0.7, 0.0, 0.0 );
     glColor3f( 0.3, 0.7, 0.3 );
-    glutWireSphere( 0.1, 5, 5 );
+    
+    GLUquadric *quad;
+	quad = gluNewQuadric();
+	gluQuadricTexture(quad, GL_TRUE);
+	gluSphere(quad, 0.1, 5, 5 );
+	gluDeleteQuadric( quad );
+    
 }
 
 void DrawPlanet(Planet *plant)
