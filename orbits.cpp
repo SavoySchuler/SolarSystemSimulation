@@ -23,8 +23,34 @@ char * stringToChar (string str)
 
 void DrawRings(double planetRadius)
 {
-	glDisable( GL_CULL_FACE ); 
-    glColor3f( 0.3, 0.7, 0.3 );
+	glDisable( GL_CULL_FACE );
+	static bool firstTimeSaturn = true;
+	static Planet *Rings;
+	int nrows, ncols;
+	byte* image;
+	
+	
+	if ( firstTimeSaturn = true);
+	{
+		char * filename;
+	    filename = stringToChar("saturnrings.bmp");
+    	LoadBmpFile( filename, nrows, ncols, image );
+        Rings = new Planet("Saturn Rings", 0, 0, 0, 0, nrows, ncols, image);
+		firstTimeSaturn = false;
+	}
+	
+
+	nrows = Rings->getRows();
+	ncols = Rings->getCols();
+	image = Rings->getImage();
+
+
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );	
+
+
+	 
+    glColor3f( 1.0, 1.0, 1.0 );
 	GLUquadric *quad;
 	quad = gluNewQuadric();
     
@@ -130,7 +156,6 @@ void DrawPlanet(Planet *plant)
 	
 	DayOfYear = plant->getDayOfYear();
 	HourOfDay = plant->getHourOfDay();
-    
 
 
     // Draw the Mecury
@@ -265,6 +290,53 @@ void SetLightModel()
     glCullFace( GL_BACK );
 }
 
+
+
+void DrawSpace(Planet *space)
+{
+	glDisable( GL_CULL_FACE );  
+
+
+    GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+    glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
+	glPushMatrix();
+	glColor3f( 0.0, 0.0, 0.0 );
+	
+	int nrows = space->getRows();
+	int ncols = space->getCols();
+	byte* image = space->getImage();
+
+
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, ncols, nrows, GL_RGB, GL_UNSIGNED_BYTE, image );
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
+	
+	
+	// Clear the current matrix (Modelview)
+    glLoadIdentity();
+    // Back off eight units to be able to view from the origin.
+    glTranslatef ( Xpan, Ypan, Zpan );
+    HandleRotate();
+
+
+    // Draw the sun	-- as a yellow, wireframe sphere
+    glColor3f( 0.0, 0.0, 0.0 );
+   
+   //glutSolidSphere
+
+
+	GLUquadric *quad;
+	quad = gluNewQuadric();
+	gluQuadricTexture(quad, GL_TRUE);
+	gluSphere(quad, 300.0, 50, 50 );
+	gluDeleteQuadric( quad );
+	glEnable( GL_CULL_FACE );  
+}
 
 
 // read texture map from BMP file
