@@ -23,10 +23,12 @@ class Planet
     float getDaysPerYear();
     int getRadius();
     int getDistance();
-    float getHourOfDay();
-    void setHourOfDay(float hour);
-    float getDayOfYear();
+	void setHoursOfYear(float hours);
+	float getHoursOfYear();
     void setDayOfYear(float day);
+    float getDayOfYear();
+    void setHourOfDay(float hour);
+    float getHourOfDay();
 	int getRows();
 	int getCols();
 	byte* getImage();
@@ -37,12 +39,13 @@ class Planet
 
     private:
     string Name;
+    float DayOfYear;
+    float HourOfDay;
     float HoursPerDay;
     float DaysPerYear;
     int Radius;
     int Distance;
-    float HourOfDay;
-    float DayOfYear;
+    float HoursOfYear;
 	string Texture;
     int Rows; 
     int Col;

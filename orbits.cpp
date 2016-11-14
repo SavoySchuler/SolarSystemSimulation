@@ -110,10 +110,12 @@ void DrawPlanet(Planet *plant)
     glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 
-    float HourOfDay = plant->getHourOfDay();
-    float DayOfYear = plant->getDayOfYear();
     float HoursPerDay = plant->getHoursPerDay();
     float DaysPerYear = plant->getDaysPerYear();
+	float DayOfYear = plant->getDayOfYear();
+	float HourOfDay = plant->getHourOfDay();
+	float DayIncrement;
+	float hourIncrement;
     int Radius = plant->getRadius();
     int Distance = plant->getDistance();
 	int nrows = plant->getRows();
@@ -129,25 +131,27 @@ void DrawPlanet(Planet *plant)
     if ( spinMode )
     {
         // Update the animation state
-        HourOfDay += AnimateIncrement;
-        DayOfYear += AnimateIncrement / 24.0;
+        DayIncrement = AnimateIncrement / 24.0;
+		hourIncrement = AnimateIncrement -(int)DayIncrement * 24;
+		cout << "DayIncrement: " << DayIncrement << " HourIncrement: " << hourIncrement << endl;
+		DayOfYear += DayIncrement;
+		HourOfDay += hourIncrement;
 
-        HourOfDay = HourOfDay - ( ( int ) ( HourOfDay / HoursPerDay ) ) * HoursPerDay;
-        DayOfYear = DayOfYear - ( ( int ) ( DayOfYear / DaysPerYear ) ) * DaysPerYear;  
-
-        plant->setHourOfDay(HourOfDay);
-        plant->setDayOfYear(DayOfYear);
+		plant->setDayOfYear(DayOfYear);
+		plant->setHourOfDay(HourOfDay);
     }
-
+	
+	DayOfYear = plant->getDayOfYear();
+	HourOfDay = plant->getHourOfDay();
 
 
     // Draw the Mecury
     // First position it around the sun. Use MecuryYear to determine its position.
-    glRotatef( 360.0 * DayOfYear / DaysPerYear, 0.0, 1.0, 0.0 );
+    glRotatef( 360.0 * DayOfYear / DaysPerYear, 0.0, 0.0, 1.0 );
     glTranslatef( Distance*DistScale, 0.0, 0.0 );
     glPushMatrix();						// Save matrix state
     // Second, rotate the earth on its axis. Use MecuryHour to determine its rotation.
-    glRotatef( DaysPerYear * HourOfDay / HoursPerDay, 0.0, 1.0, 0.0 );
+    glRotatef( 360.0 * HourOfDay/HoursPerDay, 0.0, 1.0, 0.0 );
     // Third, draw the earth as a wireframe sphere.
     glColor3f( 1.0, 1.0, 1.0 );
     

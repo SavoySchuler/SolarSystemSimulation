@@ -15,8 +15,7 @@ Planet::Planet(string name, int hours, int days, int radius, int distance, int n
     DaysPerYear = days;
     Radius = radius;
     Distance = distance;
-    HourOfDay = 0.0;
-    DayOfYear = 0.0;
+    HoursOfYear = 0.0;
 	Rows = nrow;
 	Col = cols;
 	Image = image;
@@ -48,24 +47,34 @@ int Planet::getDistance()
     return Distance;
 }
 
-float Planet::getHourOfDay()
+void Planet::setHoursOfYear(float hours)
 {
-    return HourOfDay;
+	HoursOfYear = hours;
 }
 
-void Planet::setHourOfDay(float hour)
+float Planet::getHoursOfYear()
 {
-    HourOfDay = hour;
-}
-
-float Planet::getDayOfYear()
-{
-    return DayOfYear;
+	return HoursOfYear;
 }
 
 void Planet::setDayOfYear(float day)
 {
-    DayOfYear = day;
+	DayOfYear = day;
+}
+
+float Planet::getDayOfYear()
+{
+	return DayOfYear;
+}
+
+void Planet::setHourOfDay(float hour)
+{
+	HourOfDay = hour;
+}
+
+float Planet::getHourOfDay()
+{
+	return HourOfDay;
 }
 
 int Planet::getRows()

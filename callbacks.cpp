@@ -27,7 +27,7 @@
 *    Press "s" key to single-step animation
 *    The up and down array keys control the time step used in the animation rate.
 *    Each key press multiplies or divides the times by a factor of two.
-*    Press ESCAPE to exit.
+*    Press ESCAPE to exit.r
 */
 
 // JMW: Minor modifications for CSC433/533 Computer Graphics, Fall 2016.
@@ -50,7 +50,7 @@ float HourOfDay = 0.0;
 float DayOfYear = 0.0;
 float MercuryHour = 0.0;
 float MercuryDay = 0.0;
-float AnimateIncrement = 24.0;  // Time step for animation (hours)
+float AnimateIncrement = 0.5;  // Time step for animation (hours)
 float Xpan = 0.0;
 float Ypan = 0.0;
 float Zpan = -20.0;
