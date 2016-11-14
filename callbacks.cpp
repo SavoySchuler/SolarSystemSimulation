@@ -57,13 +57,12 @@ float Zpan = -20.0;
 float Xrot = -15.0;
 float Yrot = 0.0;
 float Zrot = 0.0;
-
-
+bool textureToggle = true;
 
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
-	static bool light = true, shade = true, wire = false, texture = true;
+	static bool light = true, shade = true, wire = false;
 
     switch ( Key )
     {
@@ -74,7 +73,16 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             Key_r();
             break;
         case '5': 
-        	 ( texture = !texture ) ? glEnable( GL_TEXTURE_2D ) : glDisable( GL_TEXTURE_2D );
+        	if (textureToggle == false)
+			{
+				glEnable( GL_TEXTURE_2D );
+        		textureToggle = true;
+        	}
+        	else 
+        	{
+				glDisable( GL_TEXTURE_2D );
+        		textureToggle = false;
+        	}
         	break;
         case 'n':
             Key_s();
