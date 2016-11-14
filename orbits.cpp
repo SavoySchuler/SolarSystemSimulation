@@ -159,7 +159,7 @@ void DrawPlanet(Planet *plant)
 //	gluQuadricDrawStyle( quad, GLU_FILL );
 //	gluQuadricOrientation( quad, GLU_OUTSIDE );
 	gluQuadricTexture(quad, GL_TRUE);
-	gluQuadricNormals (quad, GLU_SMOOTH);
+	
 	gluSphere(quad, Radius*SizeScale, 100, 100);
     gluDeleteQuadric( quad );
     

@@ -19,7 +19,7 @@ int main( int argc, char** argv )
     // Create and position the graphics window
     glutInitWindowPosition( 0, 0 );
     glutInitWindowSize( 1000, 1000 );
-    glutCreateWindow( "Solar System Demo" );
+    glutCreateWindow( "Solar System Simulation <Right Click for Controls>" );
 
     // Initialize OpenGL.
     OpenGLInit();
@@ -33,6 +33,8 @@ int main( int argc, char** argv )
 
     // Callback for graphics image redrawing   
 	glutDisplayFunc( Animate );
+
+	CreateMenus();
 
 	glClearColor( 0.0, 0.0, 0.0, 1.0 );	
 
