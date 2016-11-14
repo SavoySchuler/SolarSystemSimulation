@@ -4,7 +4,9 @@
  - Modularity
  - Sun 1/10th its size
  - Planetary orbits use the square root of the distance from the Sun.
- - The Sun is displayed at 1/10 its actual size, and Jupiter and Saturn are displayed at half their actual size.
+ - Jupiter and Saturn are displayed at half their actual size.
+ - Play with Starting position
+ - Reset to default
 
 
 //Extra:
