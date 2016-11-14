@@ -31,7 +31,6 @@ void DrawRings(double planetRadius)
 	gluQuadricTexture(quad, GL_TRUE);
 	gluCylinder(quad, planetRadius * SizeScale, planetRadius * SizeScale + 0.5 ,0, 100, 100);
 	gluDeleteQuadric( quad );
-	glEnable (GL_DEPTH_TEST);
 	glEnable( GL_CULL_FACE ); 
 }
 
@@ -82,7 +81,6 @@ void DrawOrbit(double planetDistance)
 
 	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 
-    glDisable (GL_DEPTH_TEST);
     glColor3f( 1.0, 1.0, 1.0 );
 	GLUquadric *quad;
 	quad = gluNewQuadric();
@@ -282,6 +280,8 @@ int setTexture( byte* image, int nrows, int ncols )
 
 void DrawTextString( string str, double radius)
 {
+   	GLfloat mat_emission[] = {1.0, 1.0, 1.0, 1.0};
+	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     GLfloat textColor[] = { 1.0, 1.0, 1.0 };
     glColor3fv( textColor );
     glRasterPos2i( 0, radius * SizeScale + 1 );
