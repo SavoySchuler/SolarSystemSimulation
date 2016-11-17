@@ -16,6 +16,10 @@ void HandleRotate();
 void DrawMoon(int DayOfYear);
 void DrawPlanet(Planet *plant);
 void DrawSun(Planet *sun);
+void Forward();
+void Backward();
+void Left();
+void Right();
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
@@ -26,6 +30,7 @@ char * stringToChar (string str);
 // these three variables control the animation's state and speed.
 const float DistScale = 1.0/37.5;
 const float SizeScale = 1.0/15945.0;
+const float PI = 3.14159265358979323846264;
 
 
 typedef unsigned char byte;
