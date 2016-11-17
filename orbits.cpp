@@ -228,8 +228,10 @@ void DrawPlanet(Planet *plant)
 	
     glPopMatrix();	
 					// Restore matrix state
-	
 }
+
+
+
 
 void DrawSun(Planet *sun)
 {
@@ -333,11 +335,7 @@ void DrawSpace(Planet *space)
 	byte* image = space->getImage();
 
 
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, ncols, nrows, GL_RGB, GL_UNSIGNED_BYTE, image );
+	setTexture(image, nrows, ncols);
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
 	
 	

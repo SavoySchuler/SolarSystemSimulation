@@ -3,7 +3,8 @@
  - Play with Starting position
  - Reset to default
  - Inc/Dec Resolution
-
+ - Modularize/Refactor orbits.cpp
+ - Clean shit out of orbits.cpp and globals.
 
 //Extra:
 
@@ -12,7 +13,5 @@
 
 //End Steps:
 
- - Modularity
  - Document
- - Refactor
  - Confirm or change readme display notes.
