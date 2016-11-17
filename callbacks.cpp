@@ -242,13 +242,19 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 		case '6':
 		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
 			break;
-        case '+':
-        	if (Resolution <= 195)
+        case '=':
+        	if (Resolution <= 9)
+        		Resolution += 1;
+        	else if (Resolution <= 145)
         		Resolution += 5;
             break;
         case '-':
-        	if (Resolution >= 10)
+        	if (Resolution >= 15)
             	Resolution -= 5;
+            else if (Resolution >= 4)
+            	Resolution -= 1;	
+            	
+            break;
         case 'r':
             startStopAnimation();
             break;
@@ -268,12 +274,12 @@ void KeyPressFunc( unsigned char Key, int x, int y )
         	moveRight();
             break;
         case 'q':
-        	if (Zpan > -290.0)
-            	Zpan = Zpan - 0.5;
-            break;
-        case 'e':
         	if (Zpan < 290.0)
            		Zpan = Zpan + 0.5;
+            break;          
+        case 'e':
+            if (Zpan > -290.0)
+            	Zpan = Zpan - 0.5;
 	    	break;
         case 27: 	// Escape key
             exit( 1 );
@@ -372,23 +378,31 @@ void CreateMenus()
 {
     //create main menu
     int value = 1;
-    int mainmenu = glutCreateMenu( 0 );
+    int mainmenu = glutCreateMenu( MainMenuHandler );
     
 	glutAddMenuEntry(	"Controls:", value++ );
-	glutAddMenuEntry(	"r              - Start/Suspend Animation", value++ );
-	glutAddMenuEntry(	"Up Arrow       -  Rotate Up", value++ );
-	glutAddMenuEntry(	"Down Arrow  - Rotate Down", value++ );
-	glutAddMenuEntry(	"Left Arrow     - Rotate Left", value++ );
-	glutAddMenuEntry(	"Right Arrow   - Rotate Right", value++ );
-	glutAddMenuEntry(	"a/d           - Pan in X direction", value++ );
-	glutAddMenuEntry(	"w/s          - Pan in Y direction", value++ );
-	glutAddMenuEntry(	"q/e           - Zoom (Pan in Z direction)", value++ );
-	glutAddMenuEntry(	"1/2          - Speed of Animation", value++ );
+	glutAddMenuEntry(	"r              - Start/suspend animation", value++ );
+	glutAddMenuEntry(	"f              - Single step animation", value++ );
+	glutAddMenuEntry(	"Up Arrow       -  Rotate up", value++ );
+	glutAddMenuEntry(	"Down Arrow  - Rotate down", value++ );
+	glutAddMenuEntry(	"Left Arrow     - Rotate left", value++ );
+	glutAddMenuEntry(	"Right Arrow   - Rotate right", value++ );
+	glutAddMenuEntry(	"a             - Pan left in X direction", value++ );
+	glutAddMenuEntry(	"d             - Pan right in Y direction", value++ );
+	glutAddMenuEntry(	"w            - Pan forward in Y direction", value++ );
+	glutAddMenuEntry(	"s             - Pan backward in Y direction", value++ );
+	
+	
+	glutAddMenuEntry(	"q             - Pan up in Z direction", value++ );
+	glutAddMenuEntry(	"e             - Pan down in Z direction", value++ );
+	glutAddMenuEntry(	"1             - Speed Up Animation", value++ );
+	glutAddMenuEntry(	"2             - Speed Down Animation", value++ );
+	
+	
 	glutAddMenuEntry(	"3             - Smooth/Flat Shading", value++ );
 	glutAddMenuEntry(	"4             - Wireframe/Polygon Rendering", value++ );
 	glutAddMenuEntry(	"5             - Texture Mapping", value++ );
 	glutAddMenuEntry(	"6             - Lighting", value++ );
-	glutAddMenuEntry(	"f              - Single Step Animation", value++ );
 	glutAddMenuEntry(	"+/-          - Inc/Dec Resolution", value++ );
 	glutAddMenuEntry(	"Esc         - Quit", value++ );
 
@@ -398,3 +412,84 @@ void CreateMenus()
     //open menu with right click
     glutAttachMenu( GLUT_RIGHT_BUTTON );
 }
+
+
+void MainMenuHandler( int item )
+{
+	//for casing user input
+    switch ( item )
+    {
+        case 1:
+        	break;
+        case 2:
+			startStopAnimation();
+        	break;        
+        case 3:
+			stepAnimation();  
+            break;
+        case 4:
+            Xrot = Xrot - 1;
+	        if(Xrot < -180)
+		        Xrot = -180;
+
+        	break;
+        case 5:
+            Xrot = Xrot + 1;
+	        if(Xrot > 0)
+		        Xrot = 0;
+        	break;        
+        case 6:
+			Zrot = Zrot - 1;
+            break;
+        case 7:
+			Zrot = Zrot + 1;
+        	break;
+        case 8:
+
+
+        	break;        
+        case 9:
+
+
+            break;
+        case 10:
+
+
+        	break;
+        case 11:
+
+
+        	break;        
+        case 12:
+
+
+            break;    
+        case 13:
+
+
+        	break;        
+        case 14:
+
+
+            break;
+        case 15:
+
+
+        	break;
+        case 16:
+
+
+        	break;        
+        case 17:
+
+
+            break;              
+            
+            
+        default:
+            //Should not be reached, error catching.
+            cout << "invalid main menu item " << item << endl;
+            break;
+    }
+}
+

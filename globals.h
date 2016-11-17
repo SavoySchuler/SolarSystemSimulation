@@ -43,7 +43,7 @@ int setTexture( byte* image, int rows, int ncols );
 void CreateMenus();
 void DrawSpace(Planet *space);
 void setCelestialBodies();
-
+void MainMenuHandler( int item );
 
 // global variables
 extern GLenum spinMode;
