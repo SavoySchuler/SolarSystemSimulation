@@ -9,7 +9,7 @@ Planet::Planet()
 
 }
 
-Planet::Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image)
+Planet::Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image, GLfloat r, GLfloat g, GLfloat b)
 {
     Name = name;
     HoursPerDay = hours;
@@ -21,6 +21,9 @@ Planet::Planet(string name, int hours, int days, int radius, int distance, int n
 	Rows = nrow;
 	Col = cols;
 	Image = image;
+	R = r;
+	G = g; 
+	B = b;
 
 }
 
@@ -82,4 +85,19 @@ int Planet::getCols()
 byte* Planet::getImage()
 {
     return Image;
+}
+
+GLfloat Planet::getR()
+{
+    return R;
+}
+
+GLfloat Planet::getG()
+{
+    return G;
+}
+
+GLfloat Planet::getB()
+{
+    return B;
 }

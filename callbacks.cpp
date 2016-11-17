@@ -75,6 +75,7 @@ Planet *Neptune;
 Planet *Sun;
 Planet *Space;
 
+
 // Initialize OpenGL's rendering modes
 void OpenGLInit( void )
 {
@@ -163,51 +164,55 @@ void setCelestialBodies()
     byte* image;
 	char * filename;
 		
+		
 	filename = stringToChar("mercury.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Mercury = new Planet("Mercury",1416,88,   2439, 58, nrows, ncols, image);
+    Mercury = new Planet("Mercury",1416,88,   2439, 58, nrows, ncols, image, 0.5, 0.25, 0.0 );
         
-        
+         
 	filename = stringToChar("venus.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Venus = new Planet("Venus",    5832,225,  6052, 108, nrows, ncols, image);
+    Venus = new Planet("Venus",    5832,225,  6052, 108, nrows, ncols, image, 0.7, 0.4, 0.0  );
+
 
 	filename = stringToChar("earth.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Earth = new Planet("Earth",    24,  365,  6378, 150, nrows, ncols, image);
+    Earth = new Planet("Earth",    24,  365,  6378, 150, nrows, ncols, image, 0.0, 0.45, 0.1  );
+
 
 	filename = stringToChar("mars.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Mars = new Planet("Mars",      24.6,687,  3394, 228, nrows, ncols, image);
+    Mars = new Planet("Mars",      24.6,687,  3394, 228, nrows, ncols, image, 0.75, 0.0, 0.0  );
 
 
 	filename = stringToChar("jupiter.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Jupiter = new Planet("Jupiter",9.8, 4332, 71398/2.0,779, nrows, ncols, image);
+    Jupiter = new Planet("Jupiter",9.8, 4332, 71398/2.0,779, nrows, ncols, image, 0.75, 0.75, 0.0  );
 
-
+	
 	filename = stringToChar("saturn.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Saturn = new Planet("Saturn",  10.2,10761,60270/2.0,1424, nrows, ncols, image);
+    Saturn = new Planet("Saturn",  10.2,10761,60270/2.0,1424, nrows, ncols, image, 1.0, 0.75, 0.0  );
 
-
+	
 	filename = stringToChar("uranus.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Uranus = new Planet("Uranus",  15.5,30682,25550,2867, nrows, ncols, image);
+    Uranus = new Planet("Uranus",  15.5,30682,25550,2867, nrows, ncols, image, 0.0, 0.5, 0.5  );
+
 
 	filename = stringToChar("neptune.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Neptune = new Planet("Neptune",15.8,60195.0,24750,4492, nrows, ncols, image);
+    Neptune = new Planet("Neptune",15.8,60195.0,24750,4492, nrows, ncols, image, 0.0, 1.0, 1.0   );
         
-        
+      
     filename = stringToChar("sun.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Sun = new Planet("Sun", 25, 0, 696000.0/10.0 * SizeScale, 0, nrows, ncols, image);
+    Sun = new Planet("Sun", 25, 0, 696000.0/10.0 * SizeScale, 0, nrows, ncols, image, 1.0, 1.0, 0.0  );
         
-        
+     
     filename = stringToChar("space.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Space = new Planet("Space", 0, 0, 100, 0, nrows, ncols, image);
+    Space = new Planet("Space", 0, 0, 100, 0, nrows, ncols, image, 1.0, 0.5, 0.0  );
 }
 
 
