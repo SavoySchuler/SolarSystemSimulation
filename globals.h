@@ -3,10 +3,10 @@
 // function prototypes
 void OpenGLInit( void );
 void Animate( void );
-void Key_r( void );
-void Key_s( void );
-void Key_up( void );
-void Key_down( void );
+void startStopAnimation( void );
+void stepAnimation( void );
+void speedUp( void );
+void speedDown( void );
 void ResizeWindow( int w, int h );
 void KeyPressFunc( unsigned char Key, int x, int y );
 void SpecialKeyFunc( int Key, int x, int y );
@@ -16,10 +16,10 @@ void HandleRotate();
 void DrawMoon(int DayOfYear);
 void DrawPlanet(Planet *plant);
 void DrawSun(Planet *sun);
-void Forward();
-void Backward();
-void Left();
-void Right();
+void moveForward();
+void moveBackward();
+void moveLeft();
+void moveRight();
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
@@ -42,7 +42,7 @@ static inline int GetNumBytesPerRow( int NumCols );
 int setTexture( byte* image, int rows, int ncols );
 void CreateMenus();
 void DrawSpace(Planet *space);
-
+void setCelestialBodies();
 
 
 // global variables
