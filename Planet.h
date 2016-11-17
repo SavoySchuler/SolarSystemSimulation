@@ -1,13 +1,51 @@
+/******************************************************************************
+*	File: 
+*
+*	Authors: 
+*
+*	Date: 
+*
+*	Functions Included:
+*
+*
+*	Description:
+*
+*
+*	Modified: Original
+*
+*
+******************************************************************************/
+
 #ifndef _TANK_H_
 #define _TANK_H_
+
+/**************************** Library Includes *******************************/
 
 #include <GL/freeglut.h>
 #include <string>
 
+/******************************* Name Space **********************************/
+
 using namespace std;
+
+/******************************** Type Def ***********************************/
 
 typedef unsigned char byte;
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 class Planet
 {
     public:
@@ -37,7 +75,6 @@ class Planet
 	
 	
 	/// Hit box functions
-
 
     private:
     string Name;

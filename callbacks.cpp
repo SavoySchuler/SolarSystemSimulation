@@ -1,25 +1,27 @@
 /******************************************************************************
-*	File: gpgpuPrimes.cu
+*	File: 
 *
-*	Authors: Savoy Schuler
+*	Authors: 
 *
-*	Date: November 2, 2016
+*	Date: 
 *
 *	Functions Included:
 *
-*		gpuProperties
-*		countPrimes	<kernel>
-*		isPrime		<kernal>
-*		gpgpuSearch
+*		
 *
 *	Description:
 *
-*		This files contains all functions needed for parallelizing a range
-*		inclusive prime number count using GPGPU, Cuda, and an Nvidia graphics
-*		card. Thie file contains one hose function that calls two kernels on the
-*		device; one to check if a number is a prime (storing a 1 on an
-*		associative array if true) and one to count the number of 1's in an
-*		array in parallel.
+*		
+*
+*
+*	File Structure and Order:
+*
+*		- Window functions
+*		- Animation cycle functions
+*		- Key press functions and handling
+*		- Special key press functions and handling 
+*		- Mouse click functions and handling
+*		- Drop-down menu and handling
 *
 *	Modified: Original
 *
@@ -43,7 +45,7 @@ using namespace std;
 GLenum spinMode = GL_TRUE;
 GLenum singleStep = GL_TRUE;
 
-bool light = true, shade = false, wire = false, paths = true, planetNames = true;
+bool light = true, shade = false, wire = false, paths = true, planetNames = true, textureToggle = true;
 
 float HourOfDay = 0.0;
 float DayOfYear = 0.0;
@@ -56,7 +58,6 @@ float Zpan = -5.0;
 float Xrot = -69.0;
 float Yrot = 0.0;
 float Zrot = 64.0;
-bool textureToggle = true;
 int Resolution = 100;
 int ScreenHeight = 0;
 bool MouseClicked = false;
@@ -822,23 +823,26 @@ void MouseDragFunc(int x, int y)
 ******************************************************************************/
 void CreateMenus()
 {
-    //create main menu
+	//create controls submenu
     int value = 1;
-    int mainmenu = glutCreateMenu( MainMenuHandler );
-    
-	glutAddMenuEntry(	"Camera Controls:", value++ );
+    int submenu1 = glutCreateMenu( SubMenuHandlerControls );
+	glutAddMenuEntry(	"mouse click & drag - Rotate view", value++ );
 	glutAddMenuEntry(	"Up Arrow       -  Rotate up", value++ );
 	glutAddMenuEntry(	"Down Arrow  - Rotate down", value++ );
 	glutAddMenuEntry(	"Left Arrow     - Rotate left", value++ );
 	glutAddMenuEntry(	"Right Arrow   - Rotate right", value++ );
 	glutAddMenuEntry(	"a             - Pan left in X direction", value++ );
-	glutAddMenuEntry(	"d             - Pan right in Y direction", value++ );
+	glutAddMenuEntry(	"d             - Pan right in X direction", value++ );
 	glutAddMenuEntry(	"w            - Pan forward in Y direction", value++ );
 	glutAddMenuEntry(	"s             - Pan backward in Y direction", value++ );
 	glutAddMenuEntry(	"q             - Pan down in Z direction", value++ );
 	glutAddMenuEntry(	"e             - Pan up in Z direction", value++ );
-	glutAddMenuEntry(	"                                   ", value++ );
-	glutAddMenuEntry(	"Options:                                   ", value++ );
+
+
+
+	//create options submenu
+    value = 1;
+    int submenu2 = glutCreateMenu( SubMenuHandlerOptions );
 	glutAddMenuEntry(	"r              - Start/suspend animation", value++ );
 	glutAddMenuEntry(	"f              - Single step animation", value++ );
 	glutAddMenuEntry(	"1             - Speed Down Animation", value++ );
@@ -854,8 +858,15 @@ void CreateMenus()
 	glutAddMenuEntry(	"p             - Toggle planet names", value++ );
 	glutAddMenuEntry(	"+ (=)        - Increase Resolution", value++ );
 	glutAddMenuEntry(	"-             - Decrease Resolution", value++ );
-	glutAddMenuEntry(	"                                   ", value++ );
-	glutAddMenuEntry(	"Esc         - Quit", value++ );
+
+
+    //create main menu
+    value = 1;
+    int mainmenu = glutCreateMenu( MainMenuHandler );
+    
+	glutAddSubMenu( "Controls", submenu1 );
+	glutAddSubMenu( "Options", submenu2 );
+    glutAddMenuEntry( "Exit (Esc)", value++ );
 
 	//trivial fix to supress unused variable warnings	
 	mainmenu = mainmenu;
@@ -885,7 +896,36 @@ void MainMenuHandler( int item )
     switch ( item )
     {
         case 1:
-        	break;
+			exit( 1 );
+            break; 
+        default:
+            //Should not be reached, error catching.
+            cout << "invalid main menu item " << item << endl;
+            break;
+    }
+}
+
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
+void SubMenuHandlerControls ( int item )
+{
+	//for casing user input
+    switch ( item )
+    {
+        case 1:
+        	break;  
         case 2:
             Xrot = Xrot - 1;
 	        if(Xrot < -180)
@@ -920,31 +960,52 @@ void MainMenuHandler( int item )
         case 11:
             if (Zpan > -290.0)
             	Zpan = Zpan - 0.5;
-        	break;        
-        
-        case 12:		//Separator
-        	break;
-        case 13:		//Options:
-        	break;
-        case 14:
+        	break;  
+		default:
+            //Should not be reached, error catching.
+            cout << "invalid main menu item " << item << endl;
+            break;    
+    }
+}
+
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
+void SubMenuHandlerOptions ( int item )
+{
+	//for casing user input
+    switch ( item )
+    { 
+        case 1:
 			startStopAnimation();
         	break;        
-        case 15:
+        case 2:
 			stepAnimation();  
             break;
-        case 16:
+        case 3:
 			speedDown();
             break;
-        case 17:
+        case 4:
 			speedUp();
         	break;
-        case 18:
+        case 5:
 			( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
         	break;        
-        case 19:
+        case 6:
 		    ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
             break;              
-        case 20:
+        case 7:
         	if (textureToggle == false)
 			{
 				glEnable( GL_TEXTURE_2D );
@@ -956,44 +1017,39 @@ void MainMenuHandler( int item )
         		textureToggle = false;
         	}
         	break;        
-        case 21:
+        case 8:
 		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
 
             break;    
-        case 22:
+        case 9:
 			moveToStartView();
 
         	break;        
-        case 23:
+        case 10:
 			moveToTopDownView();
         	break;   
-        case 24:
+        case 11:
        		resetPlanets();
         	break;
-        case 25:
+        case 12:
             paths = !paths;
             break;
-      	case 26:
+      	case 13:
             planetNames = !planetNames;
             break;  	
-        case 27:
+        case 14:
         	if (Resolution <= 9)
         		Resolution += 1;
         	else if (Resolution <= 145)
         		Resolution += 5;
 
         	break;   
-        case 28:
+        case 15:
         	if (Resolution >= 15)
             	Resolution -= 5;
             else if (Resolution >= 4)
             	Resolution -= 1;	
-        	break;           	
-        case 29:
-        	break;
-        case 30:
-			exit( 1 );
-            break; 
+        	break;    
         default:
             //Should not be reached, error catching.
             cout << "invalid main menu item " << item << endl;

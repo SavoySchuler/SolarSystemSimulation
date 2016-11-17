@@ -166,6 +166,7 @@ void SetMoonLightProps(Planet *Moon)
 	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	}
+
 }
 
 void DrawOrbit(double planetDistance)
