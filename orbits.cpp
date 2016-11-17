@@ -214,8 +214,9 @@ void DrawPlanet(Planet *plant)
 
 	
 
-	
-    DrawOrbit(Distance);
+	if(paths == true);
+    	DrawOrbit(Distance);
+    
     if ( spinMode )
     {
         // Update the animation state
@@ -243,8 +244,8 @@ void DrawPlanet(Planet *plant)
     // Third, draw the earth as a wireframe sphere.
     
     
-    DrawTextString(plant->getName(), plant->getRadius());
-
+    if (planetNames == true)
+	    DrawTextString(plant->getName(), plant->getRadius());
 
     
     glColor3f( 1.0, 1.0, 1.0 );
