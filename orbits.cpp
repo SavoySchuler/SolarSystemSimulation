@@ -5,6 +5,7 @@
 #include "Planet.h"
 #include "globals.h"
 
+
 void HandleRotate()
 {
         glRotatef( Xrot, 1.0, 0.0, 0.0);
@@ -33,7 +34,7 @@ void DrawRings(double planetRadius)
 	byte* image;
 	
 	
-	if ( firstTimeSaturn == true)
+	if ( firstTimeSaturn = true);
 	{
 		char * filename;
 	    filename = stringToChar("saturnrings.bmp");
@@ -102,9 +103,8 @@ void DrawMoon(int DayOfYear)
 	    //Draw the moon. Use DayOfYear to control its rotation around the earth
     glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 0.0, 1.0 );
     glTranslatef( 0.7, 0.0, 0.0 );
-    glColor3f( 1.0, 1.0, 1.0 );
-    
-	if ( firstTimeMoon == true)
+
+	if ( firstTimeMoon = true);
 	{
 		char * filename;
 	    filename = stringToChar("moon.bmp");
@@ -147,10 +147,7 @@ void DrawMoon(int DayOfYear)
 		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	}
 	
-	nrows = Moon->getRows();
-	ncols = Moon->getCols();
-	image = Moon->getImage();
-
+	
 	setTexture(image, nrows, ncols);
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
    
@@ -297,7 +294,6 @@ void DrawPlanet(Planet *plant)
     
     if(plant->getName() == "Earth")
     {
-        DrawTextString("Moon", plant->getRadius());
         DrawMoon(DayOfYear);
     }
     else if(plant->getName() == "Saturn")
@@ -475,15 +471,12 @@ int setTexture( byte* image, int nrows, int ncols )
 
 void DrawTextString( string str, double radius)
 {
-	if ( textureToggle == true ) 
-		glDisable( GL_TEXTURE_2D );
-
    	GLfloat mat_emission[] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     GLfloat textColor[] = { 1.0, 1.0, 1.0 };
     glColor3fv( textColor );
     if(str == "Moon")
-        glRasterPos3i( 0,0, radius * SizeScale - 1.5);
+        glRasterPos3i( 0,0, radius * SizeScale - 1 );
     else
         glRasterPos3i( 0,0, radius * SizeScale + 1 );
 
@@ -491,8 +484,4 @@ void DrawTextString( string str, double radius)
     {
         glutBitmapCharacter( GLUT_BITMAP_9_BY_15, str[i] );
     }
-    
-    if ( textureToggle == true ) 
-		glEnable( GL_TEXTURE_2D );
-	
 }
