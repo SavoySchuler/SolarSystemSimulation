@@ -19,7 +19,8 @@ Key Assignments
 
 	Camera Controls:
 	
-	Up Arrow      -  Rotate up
+	Mouse Click & Drag - Camera rotation
+	Up Arrow      - Rotate up
 	Down Arrow    - Rotate down
 	Left Arrow    - Rotate left
 	Right Arrow   - Rotate right
@@ -48,4 +49,4 @@ Key Assignments
 	+ (=)         - Increase Resolution
 	-             - Decrease Resolution
 	                                   
-	Esc         - Quit
+	Esc           - Quit

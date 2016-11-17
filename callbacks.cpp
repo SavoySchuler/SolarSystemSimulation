@@ -1,20 +1,19 @@
 /******************************************************************************
-*	File:
+*	File: callbacks.cpp
 *
-*	Authors:
+*	Authors: Savoy Schuler and Daniel Hodgin
 *
-*	Date:
-*
-*	Functions Included:
-*
-*
+*	Date: 11-17-16
 *
 *	Description:
 *
+*		This file contains all callback and associated event handling functions 
+*		used by openGL. This includes calls and functions for keyboard, mouse, 
+*		and special user input as well as redisplay callbacks and the main 
+*		animation loop. 
 *
 *
-*
-*	File Structure and Order:
+*	File Order and Structure:
 *
 *		- Window functions
 *		- Animation cycle functions
@@ -23,8 +22,52 @@
 *		- Mouse click functions and handling
 *		- Drop-down menu and handling
 *
-*	Modified: Original
+*	Modified: 
 *
+*		none - Original
+*
+*	Functions Included:
+*		
+*			//Window functions
+*
+*		void OpenGLInit( void );
+*		void ResizeWindow( int w, int h );
+*		
+*			//Cycle functions
+*
+*		void Animate( void );
+*		void setCelestialBodies();
+*		
+*			//Key press functions and handling
+*
+*		void KeyPressFunc( unsigned char Key, int x, int y );
+*		void moveBackward();
+*		void moveForward();
+*		void moveLeft();
+*		void moveRight();
+*		void moveToStartView();
+*		void moveToTopDownView();
+*		void resetPlanets();
+*		void speedUp( void );
+*		void speedDown( void );
+*		void startStopAnimation( void );
+*		void stepAnimation( void );
+*		
+*			//Special key press functions and handling
+*
+*		void SpecialKeyFunc( int Key, int x, int y );
+*		
+*			//Mouse click functions and handling
+*
+*		void MouseFunc(int button, int state, int x, int y);
+*		void MouseDragFunc(int x, int y);
+*		
+*			//Drop-down menu and handling
+*
+*		void CreateMenus();
+*		void MainMenuHandler( int item );
+*		void SubMenuHandlerControls ( int item );
+*		void SubMenuHandlerOptions ( int item );
 *
 ******************************************************************************/
 
@@ -41,17 +84,26 @@
 
 using namespace std;
 
-// global variables
+//Globals for animate style.
 GLenum spinMode = GL_TRUE;
 GLenum singleStep = GL_TRUE;
 
-bool light = true, shade = false, wire = false, paths = true, planetNames = true, textureToggle = true;
+//Binary globals for mode toggling.
+bool light = true;
+bool shade = false;
+bool wire = false;
+bool paths = true;
+bool planetNames = true;
+bool textureToggle = true;
 
+//Global Earth times used for Earth moon animation.
 float HourOfDay = 0.0;
 float DayOfYear = 0.0;
-float MercuryHour = 0.0;
-float MercuryDay = 0.0;
-float AnimateIncrement = 0.5;  // Time step for animation (hours)
+
+//Global time step for animation (in Earth hours).
+float AnimateIncrement = 0.5;  
+
+//Globals for camera control.
 float Xpan = 1.6;
 float Ypan = 9.0;
 float Zpan = -5.0;
@@ -59,9 +111,12 @@ float Xrot = -69.0;
 float Yrot = 0.0;
 float Zrot = 64.0;
 int Resolution = 100;
+
+//Globals for mouse control.
 int ScreenHeight = 0;
 bool MouseClicked = false;
 
+//Global pointers to planet objects.
 Planet *Mercury;
 Planet *Venus;
 Planet *Earth;
@@ -76,91 +131,110 @@ Planet *Space;
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: OpenGLInit
 *
 * Description:
 *
-*
+*	Set and enable run parameters for openGP, e.g. lighting, textures, shade
+*	model, clear color, and depth tests.
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void OpenGLInit( void )
 {
-    glShadeModel( GL_SMOOTH );
-    glClearColor( 0.0, 0.0, 0.0, 0.0 );
-    glClearDepth( 1.0 );
-    glEnable( GL_DEPTH_TEST );
+	glEnable( GL_LIGHTING );
     glEnable( GL_TEXTURE_2D );
-    glEnable( GL_LIGHTING );
+    glEnable( GL_DEPTH_TEST );
+    glShadeModel( GL_SMOOTH );
+    glClearColor( 0.0, 0.0, 0.0, 0.0 );		//Keep space dark.
+    glClearDepth( 1.0 );
 }
 
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: ResizeWindow
 *
 * Description:
 *
-*
+*	ResizeWindow is called when the window is resized. This function ensures
+*	the program behaves well with the window manager and different window sizes.
 *
 * Parameters:
 *
+*	int w	- window width
+*
+*	int h	- window height
+*
 ******************************************************************************/
-// ResizeWindow is called when the window is resized
 void ResizeWindow( int w, int h )
 {
+	//Local variable for aspec ratio.
     float aspectRatio;
+
+	//Avoid errors by ensuring a mininum window width and height.
     h = ( h == 0 ) ? 1 : h;
     w = ( w == 0 ) ? 1 : w;
-    glViewport( 0, 0, w, h );	// View port uses whole window
+
+	//View port uses whole window.
+    glViewport( 0, 0, w, h );	
     aspectRatio = ( float ) w / ( float ) h;
+
+	//Update screen height global used for mouse location and mouse events. 
     ScreenHeight = h;
-    // Set up the projection view matrix (not very well!)
+
+    //Set up the projection view matrix.
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-
     gluPerspective( 60.0, aspectRatio, 1.0, 600.0 );
-
     gluLookAt (0,0,2,0,0,0,0,1,0);
 
-    // Select the Modelview matrix
+    //Select the Model View matrix.
     glMatrixMode( GL_MODELVIEW );
 }
 
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: Animate
 *
 * Description:
 *
-*
+*	This is the main animation loop of the program. It handles calling functions
+*	for creating (only on the first pass) and drawing all celestial objects. 
 *
 * Parameters:
 *
+*		void	- No input parameters needed.
+*
 ******************************************************************************/
-// Animate() handles the animation and the redrawing of the graphics window contents.
 void Animate( void )
 {
+	//Will want to create planet objects the first iteration only.
     static bool firstTime = true;
 
-
+	/*If this is the first pass, call set up function to create all celestial 
+	objects.*/
     if(firstTime == true)
     {
         setCelestialBodies();
-
         firstTime = false;
     }
-    // Clear the redering window
+
+    //Clear the redering window.
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+	/*Redraw all celestial objects at updated coordinates each iteration of the 
+	main animation loop.*/
     DrawSpace(Space);
     DrawSun(Sun);
     DrawPlanet(Mercury);
@@ -171,110 +245,183 @@ void Animate( void )
     DrawPlanet(Saturn);
     DrawPlanet(Uranus);
     DrawPlanet(Neptune);
+
+	//Clear matrix, handle camera movements.
     glLoadIdentity();
     glTranslatef ( Xpan, Ypan, Zpan );
     HandleRotate();
 
+	
+																				//FLAG FOR COMMENT BY DAN
     glColor3f( 0.3, 0.7, 0.3 );
     GLUquadric *quad = gluNewQuadric();
     gluCylinder(quad,0.5,0.5,0.5,0.5,0.5);
 
 
-    // Flush the pipeline, and swap the buffers
+    //Flush the pipeline, and swap the buffers.
     glFlush();
     glutSwapBuffers();
 
+	/*If single step animation mode enabled, stop animation loop after each
+	iteration.*/
     if ( singleStep )
     {
         spinMode = GL_FALSE;
     }
 
-    glutPostRedisplay();		// Request a re-draw for animation purposes
+	/*Always ensure a redraw for mode toggling and etc. they may not be updated
+	otherwise.*/ 
+    glutPostRedisplay();		
 }
 
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: setCelestialBodies
 *
 * Description:
 *
-*
+*	This function creates planet objects for each of the 8 planets, the sun, and
+*	the space backdrop and sets the fields for each. Each planet object is 
+*	addressed by its corresponding global pointer declrated at the top of this 
+*	file. 
+* 
+*	The planet object has the following fields in order:
+*	
+*		name	- planet name
+*		hours	- planet's hours in a day
+*		days	- planet's days in a year
+*		radius	- planet's raduis
+*		row 	- number of rows in planet's texture .bmp image
+*		cols	- number of columns in planet's texture .bmp image
+*		image	- pointer to location in memory of planet's stored texture map 
+*					read in from .bmp image
+*		r		- planet's red value (used for color when no texture map)
+*		g		- planet's green value (used for color when no texture map)
+*		b		- planet's blue value (used for color when no texture map)
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void setCelestialBodies()
 {
+	/*Variables needed for storing a pointer to and dimensions of a planet's 
+	texture map. */ 
     int nrows, ncols;
     byte* image;
     char * filename;
 
+							/*Set up each planet*/
+
+
+	//Convert a texture map's string name into a character array.
+	//Load a planet's texure map into memory.
+	//Construct a planet object pointed to by a global pointer (planet's name).
 
     filename = stringToChar("mercury.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Mercury = new Planet("Mercury",1416,88,   2439, 58, nrows, ncols, image, 0.5, 0.25, 0.0 );
+    Mercury = new Planet( "Mercury", 1416, 88, 2439, 58, nrows, ncols, image, 0.5, 0.25, 0.0 );
 
 
     filename = stringToChar("venus.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Venus = new Planet("Venus",    5832,225,  6052, 108, nrows, ncols, image, 0.7, 0.4, 0.0  );
+    Venus = new Planet( "Venus", 5832, 225, 6052, 108, nrows, ncols, image, 0.7, 0.4, 0.0 );
 
 
     filename = stringToChar("earth.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Earth = new Planet("Earth",    24,  365,  6378, 150, nrows, ncols, image, 0.0, 0.45, 0.1  );
+    Earth = new Planet( "Earth", 24, 365,  6378, 150, nrows, ncols, image, 0.0, 0.45, 0.1  );
 
 
     filename = stringToChar("mars.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Mars = new Planet("Mars",      24.6,687,  3394, 228, nrows, ncols, image, 0.75, 0.0, 0.0  );
+    Mars = new Planet( "Mars", 24.6, 687, 3394, 228, nrows, ncols, image, 0.75, 0.0, 0.0  );
 
 
     filename = stringToChar("jupiter.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Jupiter = new Planet("Jupiter",9.8, 4332, 71398/2.0,779, nrows, ncols, image, 0.75, 0.75, 0.0  );
+    Jupiter = new Planet( "Jupiter", 9.8, 4332, 71398/2.0, 779, nrows, ncols, image, 0.75, 0.75, 0.0  );
 
 
     filename = stringToChar("saturn.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Saturn = new Planet("Saturn",  10.2,10761,60270/2.0,1424, nrows, ncols, image, 1.0, 0.75, 0.0  );
+    Saturn = new Planet( "Saturn", 10.2, 10761, 60270/2.0, 1424, nrows, ncols, image, 1.0, 0.75, 0.0  );
 
 
     filename = stringToChar("uranus.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Uranus = new Planet("Uranus",  15.5,30682,25550,2867, nrows, ncols, image, 0.0, 0.5, 0.5  );
+    Uranus = new Planet( "Uranus", 15.5, 30682, 25550, 2867, nrows, ncols, image, 0.0, 0.5, 0.5  );
 
 
     filename = stringToChar("neptune.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Neptune = new Planet("Neptune",15.8,60195.0,24750,4492, nrows, ncols, image, 0.0, 1.0, 1.0   );
+    Neptune = new Planet( "Neptune", 15.8, 60195.0, 24750, 4492, nrows, ncols, image, 0.0, 1.0, 1.0   );
 
 
     filename = stringToChar("sun.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Sun = new Planet("Sun", 25, 0, 696000.0/10.0 * SizeScale, 0, nrows, ncols, image, 1.0, 1.0, 0.0  );
+    Sun = new Planet( "Sun", 25, 0, 696000.0/10.0 * SizeScale, 0, nrows, ncols, image, 1.0, 1.0, 0.0  );
 
 
     filename = stringToChar("space.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
-    Space = new Planet("Space", 0, 0, 100, 0, nrows, ncols, image, 1.0, 0.5, 0.0  );
+    Space = new Planet( "Space", 0, 0, 100, 0, nrows, ncols, image, 1.0, 0.5, 0.0  );
 }
 
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: KeyPressFunc
 *
 * Description:
 *
+*	This is the keyboard callback function used for handeling keyboard events.
 *
+*							   Key Assignments:
+*					(complete list available in readme.txt)
+*
+*		Camera Controls:
+*	
+*		a             - Pan left in X direction
+*		d             - Pan right in Y direction
+*		w             - Pan forward in Y direction
+*		s             - Pan backward in Y direction
+*		q             - Pan down in Z direction
+*		e             - Pan up in Z direction
+*	                                   
+*		Options:                                   
+*	
+*		r             - Start/suspend animation
+*		f             - Single step animation
+*		1             - Speed Down Animation
+*		2             - Speed Up Animation
+*		3             - Smooth/Flat Shading
+*		4             - Wireframe/Polygon Rendering
+*		5             - Texture Mapping
+*		6             - Lighting
+*		7             - Default view
+*		8             - Top-down view
+*		9             - Reset planets
+*		0             - Toggle orbital paths
+*		p             - Toggle planet names
+*		+ (=)         - Increase Resolution
+*		-             - Decrease Resolution
+*		                                   
+*		Esc           - Quit
 *
 * Parameters:
+*
+*		key	- the key pressed that caused the callback 
+*
+*		x	- the x screen coordinate of the mouse at time of key press
+*
+*		y	- the y screen coordinate of the mouse at time of key press
 *
 ******************************************************************************/
 // glutKeyboardFunc is called to set this function to handle normal key presses.
@@ -282,18 +429,23 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 {
     switch ( Key )
     {
+	//Slow down animation.
     case '1':
-        speedDown();
+        speedDown();	
         break;
+	//Speed up animation.
     case '2':
         speedUp();
         break;
+	//Toggle flat or smooth shading.
     case '3':
         ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
         break;
+	//Toffle wireframe or polygon rendering mode.
     case '4':
         ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
         break;
+	//Toggle texture mapping on or off.
     case '5':
         if (textureToggle == false)
         {
@@ -306,62 +458,79 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             textureToggle = false;
         }
         break;
+	//Toggle light source on or off.
     case '6':
         ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
         break;
+	//Reset camera to original position.
     case '7':
         moveToStartView();
         break;
+	//Set camera to top-down view.
     case '8':
         moveToTopDownView();
         break;
+	//Reset planet's to original position.
     case '9':
         resetPlanets();
         break;
+	//Toggle drawing of orbital paths.
     case '0':
         paths = !paths;
         break;
+	//Toggle display of planet and moon names.
     case 'p':
         planetNames = !planetNames;
         break;
+	//Increase resolution (number of slices and stacks) of planets, sun, and moon.
     case '=':
         if (Resolution <= 9)
             Resolution += 1;
         else if (Resolution <= 145)
             Resolution += 5;
         break;
+	//Decrease resolution (number of slices and stacks) of planets, sun, and moon.
     case '-':
         if (Resolution >= 15)
             Resolution -= 5;
         else if (Resolution >= 4)
             Resolution -= 1;
         break;
+	//Start or stop animation.
     case 'r':
         startStopAnimation();
         break;
+	//Step animation forward one iteration.
     case 'f':
         stepAnimation();
         break;
+	//Move camera forward  (Y direction).
     case 'w':
         moveForward();
         break;
+	//Move camera backward (Y direction).
     case 's':
         moveBackward();
         break;
+	//Move camera left (X direction).
     case 'a':
         moveLeft();
         break;
+	//Move camera right (X direction).
     case 'd':
         moveRight();
         break;
+	//Move camera down (Z direction), bound position to within cutoff & backdrop.
     case 'q':
         if (Zpan < 290.0)
             Zpan = Zpan + .5;
         break;
+	//Move camera up (Z direction), bound position to within cutoff & backdrop.
     case 'e':
         if (Zpan > -290.0)
             Zpan = Zpan - .5;
         break;
+	//Close program.
     case 27: 	// Escape key
         exit( 1 );
     }
@@ -370,25 +539,34 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: moveBackward
 *
 * Description:
 *
+*	This function is used for moving the camera backward (Y direction), 
+*	accounting for the current camera angle. Positional bounds are implented to 
+*	ensure that the camera remains within the the cutoff window and inside the 
+*	space backdrop.
 *
+* Parameters: 
 *
-* Parameters:
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void moveBackward()
 {
+	//Move camera backwards, accounting for camera angle.
     Ypan = Ypan + 0.5 * cos(Zrot * PI / 180);
     Xpan = Xpan + 0.5 * sin(Zrot * PI / 180);
-
+	
+	/*Bound x,y camera position to remain within cutoff window and space 
+	backdrop.*/
+	
     if(Xpan > 290)
     {
-        Xpan = 290;
+        Xpan = 290;	
     }
     else if(Xpan < -290)
     {
@@ -403,27 +581,35 @@ void moveBackward()
     {
         Ypan = -290;
     }
-
 }
 
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: moveForward
 *
 * Description:
 *
+*	This function is used for moving the camera forward (Y direction), 
+*	accounting for the current camera angle. Positional bounds are implented to 
+*	ensure that the camera remains within the the cutoff window and inside the 
+*	space backdrop.
 *
+* Parameters: 
 *
-* Parameters:
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void moveForward()
 {
+	//Move camera forward, accounting for camera angle.
     Ypan = Ypan - 0.5 * cos(Zrot * PI / 180);
     Xpan = Xpan - 0.5 * sin(Zrot * PI / 180);
+
+	/*Bound x,y camera position to remain within cutoff window and space 
+	backdrop.*/	
 
     if(Xpan > 290)
     {
@@ -447,23 +633,33 @@ void moveForward()
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: moveLeft
 *
 * Description:
 *
+*	This function is used for moving the camera left (X direction), 
+*	accounting for the current camera angle. Positional bounds are implented to 
+*	ensure that the camera remains within the the cutoff window and inside the 
+*	space backdrop.
 *
+* Parameters: 
 *
-* Parameters:
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void moveLeft()
 {
+	//Move camera left, accounting for camera angle.
+
     float rotation = Zrot + 90;
     Ypan = Ypan + 0.5 * cos(rotation * PI / 180);
     Xpan = Xpan + 0.5 * sin(rotation * PI / 180);
 
+	/*Bound x,y camera position to remain within cutoff window and space 
+	backdrop.*/
+
     if(Xpan > 290)
     {
         Xpan = 290;
@@ -486,22 +682,31 @@ void moveLeft()
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: moveRight
 *
 * Description:
 *
+*	This function is used for moving the camera right (X direction), 
+*	accounting for the current camera angle. Positional bounds are implented to 
+*	ensure that the camera remains within the the cutoff window and inside the 
+*	space backdrop.
 *
+* Parameters: 
 *
-* Parameters:
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void moveRight()
 {
+	//Move camera right, accounting for camera angle.
     float rotation = Zrot - 90;
     Ypan = Ypan + 0.5 * cos(rotation * PI / 180);
     Xpan = Xpan + 0.5 * sin(rotation * PI / 180);
+
+	/*Bound x,y camera position to remain within cutoff window and space 
+	backdrop.*/
 
     if(Xpan > 290)
     {
@@ -525,15 +730,17 @@ void moveRight()
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: moveToStartView
 *
 * Description:
 *
-*
+*	This function is used to reset the camera view to its original position.
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void moveToStartView()
@@ -549,15 +756,17 @@ void moveToStartView()
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: moveToTopDownView
 *
 * Description:
 *
-*
+*	This function is used to set the camera view to a top-down position.
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void moveToTopDownView()
@@ -573,15 +782,18 @@ void moveToTopDownView()
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: resetPlanets
 *
 * Description:
 *
-*
+*	This function is used to reset the position of the planets. The moon's 
+	position is dependent on Earth's and will be reset implicitly.
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void resetPlanets()
@@ -614,91 +826,123 @@ void resetPlanets()
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: speedUp
 *
 * Description:
 *
-*
+*	This function is used speed up animation by adjusting the animation time 
+*	step (the amount of time passed between frames). Presently, each press will
+*	double the time step. A reasonable bound is set to avoid approaching 
+*	infinitely.
 *
 * Parameters:
 *
+*		void	- No input parameters needed.
+*
 ******************************************************************************/
-// animation speed
 void speedUp( void )
 {
+	//Bound the animation speed to avoid implicitly setting it to infinity.
     if (AnimateIncrement < 4380.0)
-        AnimateIncrement *= 2.0;			// Double the animation time step
+	{
+		
+		//Double the animation time step.
+        AnimateIncrement *= 2.0;			
+	}
 }
 
 
-
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: speedDown
 *
 * Description:
 *
-*
+*	This function is used slow down animation by adjusting the animation time 
+*	step (the amount of time passed between frames). Presently, each press will
+*	halve the time step. A bound is set to avoid reducing the time step to zero
+*	from which it cannot be brought back up due to the multiplicative nature
+*	of the speedUp() function.
 *
 * Parameters:
 *
+*		void	- No input parameters needed.
+*
 ******************************************************************************/
-// animation speed
 void speedDown( void )
 {
+	//Bound the animation speed to avoid accidentally setting it to zero.
     if (AnimateIncrement > 0.0125)
-        AnimateIncrement /= 2.0;			// Halve the animation time step
+	{
+ 
+		//Halve the animation time step.
+		AnimateIncrement /= 2.0;			
+	}
 }
 
 
-
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: startStopAnimation
 *
 * Description:
 *
-*
+*	This function is used to start or stop the animation loop. Essentially, 
+*	allows the user to pause animation.
 *
 * Parameters:
 *
+*		void	- No input parameters needed.
+*
 ******************************************************************************/
-// restart animation
 void startStopAnimation( void )
 {
+
+	/*If single step mode is enabled, it must first be disabled before allowing 
+	the animation loop to proceed. */	
+
     if ( singleStep )
-    {   // If ending single step mode
+    {   
+		//End single step mode.
         singleStep = GL_FALSE;
-        spinMode = GL_TRUE;		// Restart animation
+
+		//Enable animation to continue. 
+        spinMode = GL_TRUE;	
     }
     else
     {
-        spinMode = !spinMode;	// Toggle animation on and off.
+		//Toggle continuous run of the animation loop on or off.
+        spinMode = !spinMode;	
     }
 }
 
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: stepAnimation
 *
 * Description:
 *
-*
+*	This function allows the user to stop continuous animation and rather 
+*	advance the animation loop by one iteration at a time.
 *
 * Parameters:
 *
+*		void	- No input parameters needed.
+*
 ******************************************************************************/
-// single step animation
 void stepAnimation( void )
 {
+	//Enable single stepping through animation.
     singleStep = GL_TRUE;
+
+	//Enable planets spinning.
     spinMode = GL_TRUE;
 }
 
