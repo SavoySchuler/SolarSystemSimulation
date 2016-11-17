@@ -43,7 +43,26 @@ void DrawRings(double planetRadius)
 		firstTimeSaturn = false;
 	}
 	
+    SetRingsLightingProps(Rings);
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+
 	
+	
+	GLUquadric *quad;
+	quad = gluNewQuadric();
+    
+	gluQuadricTexture(quad, GL_TRUE);
+	gluCylinder(quad, planetRadius * SizeScale + 0.5, planetRadius * SizeScale + 2 ,0.1, Resolution, Resolution);
+	gluDeleteQuadric( quad );
+	
+
+	glEnable( GL_CULL_FACE ); 
+
+}
+
+void SetRingsLightingProps(Planet *Rings)
+{
     glColor3f( 1.0, 1.0, 1.0 );
     
     if ( textureToggle == false )
@@ -75,22 +94,6 @@ void DrawRings(double planetRadius)
 	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	}
-	
-	setTexture(image, nrows, ncols);
-	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-
-	
-	
-	GLUquadric *quad;
-	quad = gluNewQuadric();
-    
-	gluQuadricTexture(quad, GL_TRUE);
-	gluCylinder(quad, planetRadius * SizeScale + 0.5, planetRadius * SizeScale + 2 ,0.1, Resolution, Resolution);
-	gluDeleteQuadric( quad );
-	
-
-	glEnable( GL_CULL_FACE ); 
-
 }
 
 void DrawMoon(int DayOfYear)
@@ -115,6 +118,23 @@ void DrawMoon(int DayOfYear)
 		firstTimeMoon = false;
 	}
     
+    SetMoonLightProps(Moon);
+	
+	
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+   
+    DrawTextString(Moon->getName(), Moon->getRadius());
+    GLUquadric *quad;
+	quad = gluNewQuadric();
+	gluQuadricTexture(quad, GL_TRUE);
+	gluSphere(quad, 0.1, Resolution, Resolution );
+	gluDeleteQuadric( quad );
+    
+}
+
+void SetMoonLightProps(Planet *Moon)
+{
     glColor3f( 1.0, 1.0, 1.0 );
     
     if ( textureToggle == false )
@@ -146,18 +166,6 @@ void DrawMoon(int DayOfYear)
 	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	}
-	
-	
-	setTexture(image, nrows, ncols);
-	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-   
-    DrawTextString(Moon->getName(), Moon->getRadius());
-    GLUquadric *quad;
-	quad = gluNewQuadric();
-	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, 0.1, Resolution, Resolution );
-	gluDeleteQuadric( quad );
-    
 }
 
 void DrawOrbit(double planetDistance)
@@ -167,18 +175,7 @@ void DrawOrbit(double planetDistance)
 	if ( textureToggle == true ) 
 		glDisable( GL_TEXTURE_2D );
 	
-    GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 1.0 };
-    GLfloat mat_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
-    GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
-    GLfloat mat_shininess = { 0.0 };
-   	GLfloat mat_emission[] = {0.0, 0.0, 1.0, 1.0};
-
-
-    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
-    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
-    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
-    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
-	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
+    SetOrbitLightProps();
     
     glColor3f( 0.0, 0.0, 1.0 );
 	GLUquadric *quad;
@@ -191,10 +188,23 @@ void DrawOrbit(double planetDistance)
 	if ( textureToggle == true ) 
 		glEnable( GL_TEXTURE_2D );
 	
-	
 	glEnable( GL_CULL_FACE ); 
-	
-	
+}
+
+void SetOrbitLightProps()
+{
+    GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_shininess = { 0.0 };
+   	GLfloat mat_emission[] = {0.0, 0.0, 1.0, 1.0};
+
+
+    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 }
 
 void DrawPlanet(Planet *plant)
@@ -211,8 +221,6 @@ void DrawPlanet(Planet *plant)
 	float hourIncrement;
     int Radius = plant->getRadius();
     float Distance = plant->getDistance()*DistScale + 69600*SizeScale;
-
-	
 
 	if(paths == true)
     	DrawOrbit(Distance);
@@ -247,7 +255,36 @@ void DrawPlanet(Planet *plant)
     if (planetNames == true)
 	    DrawTextString(plant->getName(), plant->getRadius());
 
+    SetPlanetLightProps(plant);
+
+	int nrows = plant->getRows();
+	int ncols = plant->getCols();
+	byte* image = plant->getImage();
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+
+    GLUquadric *quad;
+	quad = gluNewQuadric();
+	gluQuadricTexture(quad, GL_TRUE);
+	gluSphere(quad, Radius*SizeScale, Resolution, Resolution);
+    gluDeleteQuadric( quad );
     
+    if(plant->getName() == "Earth")
+    {
+        DrawMoon(DayOfYear);
+    }
+    else if(plant->getName() == "Saturn")
+    {
+        DrawRings(Radius);
+    }
+
+	
+    glPopMatrix();	
+					// Restore matrix state
+}
+
+void SetPlanetLightProps(Planet *plant)
+{
     glColor3f( 1.0, 1.0, 1.0 );
     
     if ( textureToggle == false )
@@ -279,35 +316,7 @@ void DrawPlanet(Planet *plant)
 	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	}
-	
-	int nrows = plant->getRows();
-	int ncols = plant->getCols();
-	byte* image = plant->getImage();
-	setTexture(image, nrows, ncols);
-	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-
-    
-    GLUquadric *quad;
-	quad = gluNewQuadric();
-	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, Radius*SizeScale, Resolution, Resolution);
-    gluDeleteQuadric( quad );
-    
-    if(plant->getName() == "Earth")
-    {
-        DrawMoon(DayOfYear);
-    }
-    else if(plant->getName() == "Saturn")
-    {
-        DrawRings(Radius);
-    }
-
-	
-    glPopMatrix();	
-					// Restore matrix state
 }
-
-
 
 
 void DrawSun(Planet *sun)
@@ -317,8 +326,38 @@ void DrawSun(Planet *sun)
     if ( spinMode )
         hours += AnimateIncrement;
 
+	SetSunLightProp(sun);
 	
+	float radius = sun->getRadius();
+	int nrows = sun->getRows();
+	int ncols = sun->getCols();
+	byte* image = sun->getImage();
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+	
+	// Clear the current matrix (Modelview)
+    glLoadIdentity();
+    HandleRotate();
+    // Back off eight units to be able to view from the origin.
+    glTranslatef ( Xpan, Ypan, Zpan );
+    
+    // Rotate the plane of the elliptic
+    // (rotate the model's plane about the x axis by fifteen degrees)
 
+    //calculate rotation.
+	glRotatef(360.0 * hours/25.0, 0.0, 0.0, 1.0 );
+   
+   //glutSolidSphere
+	GLUquadric *quad;
+	quad = gluNewQuadric();
+	gluQuadricTexture(quad, GL_TRUE);
+	gluSphere(quad, radius, Resolution, Resolution );
+	gluDeleteQuadric( quad );
+	
+}
+
+void SetSunLightProp(Planet *sun)
+{
     glColor3f( 1.0, 1.0, 1.0 );
     
     if ( textureToggle == false )
@@ -350,36 +389,7 @@ void DrawSun(Planet *sun)
 	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
 	}
-	
-	float radius = sun->getRadius();
-	int nrows = sun->getRows();
-	int ncols = sun->getCols();
-	byte* image = sun->getImage();
-	setTexture(image, nrows, ncols);
-	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-	
-	// Clear the current matrix (Modelview)
-    glLoadIdentity();
-    HandleRotate();
-    // Back off eight units to be able to view from the origin.
-    glTranslatef ( Xpan, Ypan, Zpan );
-    
-    // Rotate the plane of the elliptic
-    // (rotate the model's plane about the x axis by fifteen degrees)
-
-    //calculate rotation.
-	glRotatef(360.0 * hours/25.0, 0.0, 0.0, 1.0 );
-   
-   //glutSolidSphere
-	GLUquadric *quad;
-	quad = gluNewQuadric();
-	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, radius, Resolution, Resolution );
-	gluDeleteQuadric( quad );
-	
 }
-
-
 
 // set up light and material properties
 void SetLightModel()
@@ -466,8 +476,6 @@ int setTexture( byte* image, int nrows, int ncols )
    
     return 0;
 }
-
-
 
 
 void DrawTextString( string str, double radius)

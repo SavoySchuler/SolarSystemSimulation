@@ -25,6 +25,11 @@ void moveRight();
 void moveToStartView();
 void moveToTopDownView();
 void resetPlanets();
+void SetRingsLightingProps(Planet *Rings);
+void SetMoonLightProps(Planet *Moon);
+void SetOrbitLightProps();
+void SetPlanetLightProps(Planet *plant);
+void SetSunLightProp(Planet *sun);
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
