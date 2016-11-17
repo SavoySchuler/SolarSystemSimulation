@@ -242,6 +242,15 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 		case '6':
 		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
 			break;
+        case '7':
+            MoveToStartView();
+            break;
+        case '8':
+            MoveToTopDownView();
+            break;
+        case '9':
+            ResetPlanets();
+            break;
         case '=':
         	if (Resolution <= 9)
         		Resolution += 1;
@@ -383,6 +392,53 @@ void moveRight()
     {
         Ypan = -290;
     }
+}
+
+void MoveToStartView()
+{
+    Xpan = 1.6;
+    Ypan = 9.0;
+    Zpan = -5.0;
+    Xrot = -69.0;
+    Yrot = 0.0;
+    Zrot = 64.0;
+}
+
+void MoveToTopDownView()
+{
+    Xpan = 0.0;
+    Ypan = 0.0;
+    Zpan = -250;
+    Xrot = 0.0;
+    Yrot = 0.0;
+    Zrot = 90.0;
+}
+
+void ResetPlanets()
+{
+    Mercury->setHourOfDay(0.0);
+    Mercury->setDayOfYear(0.0);
+
+    Venus->setHourOfDay(0.0);
+    Venus->setDayOfYear(0.0);
+
+    Earth->setHourOfDay(0.0);
+    Earth->setDayOfYear(0.0);
+
+    Mars->setHourOfDay(0.0);
+    Mars->setDayOfYear(0.0);
+
+    Jupiter->setHourOfDay(0.0);
+    Jupiter->setDayOfYear(0.0);
+
+    Saturn->setHourOfDay(0.0);
+    Saturn->setDayOfYear(0.0);
+
+    Uranus->setHourOfDay(0.0);
+    Uranus->setDayOfYear(0.0);
+
+    Neptune->setHourOfDay(0.0);
+    Neptune->setDayOfYear(0.0);
 }
 
 // animation speed

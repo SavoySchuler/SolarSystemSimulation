@@ -49,16 +49,6 @@ int Planet::getDistance()
     return Distance;
 }
 
-void Planet::setHoursOfYear(float hours)
-{
-	HoursOfYear = hours;
-}
-
-float Planet::getHoursOfYear()
-{
-	return HoursOfYear;
-}
-
 void Planet::setDayOfYear(float day)
 {
 	DayOfYear = day;

@@ -23,8 +23,6 @@ class Planet
     float getDaysPerYear();
     int getRadius();
     int getDistance();
-	void setHoursOfYear(float hours);
-	float getHoursOfYear();
     void setDayOfYear(float day);
     float getDayOfYear();
     void setHourOfDay(float hour);
