@@ -14,7 +14,7 @@ class Planet
     
 	/// Constructors and Destructor
 	Planet();
-	Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image);
+	Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image, GLfloat r, GLfloat g, GLfloat b);
 	~Planet();
 	
 	/// Get/Set functions
@@ -30,6 +30,10 @@ class Planet
 	int getRows();
 	int getCols();
 	byte* getImage();
+	GLfloat getR(); 
+    GLfloat getG(); 
+    GLfloat getB();
+
 	
 	
 	/// Hit box functions
@@ -48,7 +52,9 @@ class Planet
     int Rows; 
     int Col;
     byte* Image;
-   
+    GLfloat R; 
+    GLfloat G; 
+    GLfloat B;
 };
 
 #endif

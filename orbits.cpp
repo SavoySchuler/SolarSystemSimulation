@@ -39,22 +39,48 @@ void DrawRings(double planetRadius)
 		char * filename;
 	    filename = stringToChar("saturnrings.bmp");
     	LoadBmpFile( filename, nrows, ncols, image );
-        Rings = new Planet("Saturn Rings", 0, 0, 0, 0, nrows, ncols, image);
+        Rings = new Planet("Saturn Rings", 0, 0, 0, 0, nrows, ncols, image, 1.0, 0.75, 0.0 );
 		firstTimeSaturn = false;
 	}
 	
-
-	nrows = Rings->getRows();
-	ncols = Rings->getCols();
-	image = Rings->getImage();
-
-
-	setTexture(image, nrows, ncols);
-	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );	
-
-
-	 
+	
     glColor3f( 1.0, 1.0, 1.0 );
+    
+    if ( textureToggle == false )
+	{
+	    GLfloat mat_shininess = { 100.0 };
+	   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+
+		GLfloat color[] = {Rings->getR(), Rings->getG(), Rings->getB()};
+		glColor3f( Rings->getR(), Rings->getG(), Rings->getB() );
+		
+	    glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
+	    glMaterialfv( GL_FRONT, GL_AMBIENT, color );
+	    glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
+	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );	
+	}
+    
+    else
+	{	
+		GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
+		GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
+	    GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
+	    GLfloat mat_shininess = { 100.0 };
+	   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+
+	    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+	    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+	    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
+	}
+	
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+
+	
+	
 	GLUquadric *quad;
 	quad = gluNewQuadric();
     
@@ -77,28 +103,54 @@ void DrawMoon(int DayOfYear)
 	    //Draw the moon. Use DayOfYear to control its rotation around the earth
     glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 0.0, 1.0 );
     glTranslatef( 0.7, 0.0, 0.0 );
-    glColor3f( 1.0, 1.0, 1.0 );
 
 	if ( firstTimeMoon = true);
 	{
 		char * filename;
 	    filename = stringToChar("moon.bmp");
     	LoadBmpFile( filename, nrows, ncols, image );
-        Moon = new Planet("Moon", 0, 0, 0, 0, nrows, ncols, image);
+	    float mercuryColor[3] = {1.0, 1.0, 0.0};
+    	float *ptrMercuryColor = mercuryColor;
+        Moon = new Planet("Moon", 0, 0, 0, 0, nrows, ncols, image, 1.0, 1.0, 1.0 );
 		firstTimeMoon = false;
 	}
+    
+    glColor3f( 1.0, 1.0, 1.0 );
+    
+    if ( textureToggle == false )
+	{
+	    GLfloat mat_shininess = { 100.0 };
+	   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+
+		GLfloat color[] = {Moon->getR(), Moon->getG(), Moon->getB()};
+		glColor3f(Moon->getR(), Moon->getG(), Moon->getB());
+		 
+	    glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
+	    glMaterialfv( GL_FRONT, GL_AMBIENT, color );
+	    glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
+	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );	
+	}
+    
+    else
+	{	
+		GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
+		GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
+	    GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
+	    GLfloat mat_shininess = { 100.0 };
+	   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+
+	    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+	    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+	    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
+	}
 	
-    DrawTextString(Moon->getName(), Moon->getRadius());
-	nrows = Moon->getRows();
-	ncols = Moon->getCols();
-	image = Moon->getImage();
-
-
+	
 	setTexture(image, nrows, ncols);
-	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );	
-
-
-
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+   
     
     GLUquadric *quad;
 	quad = gluNewQuadric();
@@ -159,12 +211,10 @@ void DrawPlanet(Planet *plant)
 	float hourIncrement;
     int Radius = plant->getRadius();
     float Distance = plant->getDistance()*DistScale + 69600*SizeScale;
-	int nrows = plant->getRows();
-	int ncols = plant->getCols();
-	byte* image = plant->getImage();
-	setTexture(image, nrows, ncols);
-	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
+	
+
+	
     DrawOrbit(Distance);
     if ( spinMode )
     {
@@ -191,27 +241,53 @@ void DrawPlanet(Planet *plant)
     // Second, rotate the earth on its axis. Use MecuryHour to determine its rotation.
     glRotatef( 360.0 * HourOfDay/HoursPerDay, 0.0, 0.0, 1.0 );
     // Third, draw the earth as a wireframe sphere.
-    glColor3f( 0.8, 0.8, 0.0 );
+    
     
     DrawTextString(plant->getName(), plant->getRadius());
 
-	GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
-    GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
-    GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
-    GLfloat mat_shininess = { 100.0 };
-   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
-    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
-    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
-    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
-    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
-	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     
+    glColor3f( 1.0, 1.0, 1.0 );
+    
+    if ( textureToggle == false )
+	{
+	    GLfloat mat_shininess = { 100.0 };
+	   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+
+		GLfloat color[] = {plant->getR(), plant->getG(), plant->getB()};
+		glColor3f( plant->getR(), plant->getG(), plant->getB() );
+	    
+	    glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
+	    glMaterialfv( GL_FRONT, GL_AMBIENT, color );
+	    glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
+	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );	
+	}
+    
+    else
+	{	
+		GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
+		GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
+	    GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
+	    GLfloat mat_shininess = { 100.0 };
+	   	GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+
+	    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+	    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+	    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
+	}
+	
+	int nrows = plant->getRows();
+	int ncols = plant->getCols();
+	byte* image = plant->getImage();
+	setTexture(image, nrows, ncols);
+	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+
     
     GLUquadric *quad;
 	quad = gluNewQuadric();
-//	gluQuadricDrawStyle( quad, GLU_FILL );
-//	gluQuadricOrientation( quad, GLU_OUTSIDE );
 	gluQuadricTexture(quad, GL_TRUE);
 	gluSphere(quad, Radius*SizeScale, Resolution, Resolution);
     gluDeleteQuadric( quad );
@@ -239,28 +315,47 @@ void DrawSun(Planet *sun)
     static float hours = 0.0;
     if ( spinMode )
         hours += AnimateIncrement;
-    GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
-    GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
-    GLfloat mat_ambient[] = { 0.5, 1.0, 0.0, 1.0 };
-    GLfloat mat_shininess = { 100.0 };
-    GLfloat mat_emission[] = {1.0, 1.0, 0.0, 1.0};
 
-    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
-    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
-    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
-    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
-    glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
-	glPushMatrix();
 	
+
+    glColor3f( 1.0, 1.0, 1.0 );
+    
+    if ( textureToggle == false )
+	{
+	    GLfloat mat_shininess = { 100.0 };
+	   	GLfloat mat_emission[] = {1.0, 1.0, 0.0, 1.0};
+
+		GLfloat color[] = {sun->getR(), sun->getG(), sun->getB()};
+		glColor3f( sun->getR(), sun->getG(), sun->getB() );
+	    
+	    glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
+	    glMaterialfv( GL_FRONT, GL_AMBIENT, color );
+	    glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
+	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );	
+	}
+    
+    else
+	{	
+    	GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
+    	GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
+    	GLfloat mat_ambient[] = { 0.5, 1.0, 0.0, 1.0 };
+    	GLfloat mat_shininess = { 100.0 };
+    	GLfloat mat_emission[] = {1.0, 1.0, 0.0, 1.0};
+
+	    glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
+	    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
+	    glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
+	    glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
+		glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
+	}
 	
+	float radius = sun->getRadius();
 	int nrows = sun->getRows();
 	int ncols = sun->getCols();
 	byte* image = sun->getImage();
-	float radius = sun->getRadius();
-
 	setTexture(image, nrows, ncols);
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-	
 	
 	// Clear the current matrix (Modelview)
     glLoadIdentity();
@@ -273,12 +368,8 @@ void DrawSun(Planet *sun)
 
     //calculate rotation.
 	glRotatef(360.0 * hours/25.0, 0.0, 0.0, 1.0 );
-    // Draw the sun	-- as a yellow, wireframe sphere
-    glColor3f( 1.0, 1.0, 1.0 );
    
    //glutSolidSphere
-
-
 	GLUquadric *quad;
 	quad = gluNewQuadric();
 	gluQuadricTexture(quad, GL_TRUE);
