@@ -123,8 +123,8 @@ void DrawMoon(int DayOfYear)
 	
 	setTexture(image, nrows, ncols);
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
-   
-    DrawTextString(Moon->getName(), Moon->getRadius());
+    if (planetNames == true)
+    	DrawTextString(Moon->getName(), Moon->getRadius());
     GLUquadric *quad;
 	quad = gluNewQuadric();
 	gluQuadricTexture(quad, GL_TRUE);
