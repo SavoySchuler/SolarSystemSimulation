@@ -490,20 +490,20 @@ void SpecialKeyFunc( int Key, int x, int y )
     switch ( Key )
     {
         case GLUT_KEY_UP:
-            Xrot = Xrot - 1;
+            Xrot = Xrot - 3;
 	        if(Xrot < -180)
 		        Xrot = -180;
             break;
         case GLUT_KEY_DOWN:
-            Xrot = Xrot + 1;
+            Xrot = Xrot + 3;
 	        if(Xrot > 0)
 		        Xrot = 0;
             break;
         case GLUT_KEY_LEFT:
-        	Zrot = Zrot - 1;
+        	Zrot = Zrot - 3;
             break;
         case GLUT_KEY_RIGHT:
-        	Zrot = Zrot + 1;
+        	Zrot = Zrot + 3;
             break;
     }
 }
