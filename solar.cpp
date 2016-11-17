@@ -30,7 +30,8 @@ int main( int argc, char** argv )
     // Set up callback functions for key presses
     glutKeyboardFunc( KeyPressFunc );
     glutSpecialFunc( SpecialKeyFunc );
-
+	glutMouseFunc( MouseFunc );
+    glutMotionFunc( MouseDragFunc );
     // Callback for graphics image redrawing   
 	glutDisplayFunc( Animate );
 

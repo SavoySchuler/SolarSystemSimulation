@@ -61,6 +61,8 @@ float Yrot = 0.0;
 float Zrot = 64.0;
 bool textureToggle = true;
 int Resolution = 100;
+int ScreenHeight = 0;
+bool MouseClicked = false;
 
 Planet *Mercury;
 Planet *Venus;
@@ -94,7 +96,7 @@ void ResizeWindow( int w, int h )
     w = ( w == 0 ) ? 1 : w;
     glViewport( 0, 0, w, h );	// View port uses whole window
     aspectRatio = ( float ) w / ( float ) h;
-   
+    ScreenHeight = h;
     // Set up the projection view matrix (not very well!)
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
@@ -506,8 +508,44 @@ void SpecialKeyFunc( int Key, int x, int y )
     }
 }
 
+void MouseFunc(int button, int state, int x, int y)
+{
+	MouseClicked = !MouseClicked;
+    if(!MouseClicked)
+        MouseDragFunc(x,y);
+}
 
+void MouseDragFunc(int x, int y)
+{
+	static int lastX = 10000;
+    static int lastY = 10000;
+    int xDiff;
+    int yDiff;
+    y = ScreenHeight - y;
+    if(lastX == 10000)
+    {
+        lastX = x;
+        lastY = y;
+    }
 
+    xDiff = x - lastX;
+    yDiff = y - lastY;
+
+    Zrot -= xDiff/10;
+    Xrot -= yDiff/10;
+
+    if(MouseClicked)
+    {
+        lastX = x;
+        lastY = y;
+    }
+    else
+    {
+        lastX = 10000;
+        lastY = 10000;
+    }
+    
+}
 void CreateMenus()
 {
     //create main menu

@@ -10,6 +10,8 @@ void speedDown( void );
 void ResizeWindow( int w, int h );
 void KeyPressFunc( unsigned char Key, int x, int y );
 void SpecialKeyFunc( int Key, int x, int y );
+void MouseFunc(int button, int state, int x, int y);
+void MouseDragFunc(int x, int y);
 void DrawSun();
 void SetLightModel();
 void HandleRotate();
@@ -64,5 +66,7 @@ extern float Xrot;
 extern float Yrot;
 extern float Zrot;
 extern int Resolution;
+extern int ScreenHeight;
 extern bool textureToggle, light, shade, wire;
+extern bool MouseClicked;
 
