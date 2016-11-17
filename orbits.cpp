@@ -214,7 +214,7 @@ void DrawPlanet(Planet *plant)
 
 	
 
-	if(paths == true);
+	if(paths == true)
     	DrawOrbit(Distance);
     
     if ( spinMode )
