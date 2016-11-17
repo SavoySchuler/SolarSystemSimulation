@@ -13,6 +13,16 @@
 *
 *		
 *
+*
+*	File Structure and Order:
+*
+*		- Window functions
+*		- Animation cycle functions
+*		- Key press functions and handling
+*		- Special key press functions and handling 
+*		- Mouse click functions and handling
+*		- Drop-down menu and handling
+*
 *	Modified: Original
 *
 *
@@ -35,7 +45,7 @@ using namespace std;
 GLenum spinMode = GL_TRUE;
 GLenum singleStep = GL_TRUE;
 
-bool light = true, shade = false, wire = false, paths = true, planetNames = true;
+bool light = true, shade = false, wire = false, paths = true, planetNames = true, textureToggle = true;
 
 float HourOfDay = 0.0;
 float DayOfYear = 0.0;
@@ -48,7 +58,6 @@ float Zpan = -5.0;
 float Xrot = -69.0;
 float Yrot = 0.0;
 float Zrot = 64.0;
-bool textureToggle = true;
 int Resolution = 100;
 int ScreenHeight = 0;
 bool MouseClicked = false;
