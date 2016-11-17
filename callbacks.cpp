@@ -46,7 +46,7 @@ using namespace std;
 GLenum spinMode = GL_TRUE;
 GLenum singleStep = GL_TRUE;
 
-bool light = true, shade = false, wire = false;
+bool light = true, shade = false, wire = false, paths = true, planetNames = true;
 
 float HourOfDay = 0.0;
 float DayOfYear = 0.0;
@@ -258,6 +258,12 @@ void KeyPressFunc( unsigned char Key, int x, int y )
         case '9':
             resetPlanets();
             break;
+      	case '0':
+            paths = !paths;
+            break;
+      	case 'p':
+            planetNames = !planetNames;
+            break;            
         case '=':
         	if (Resolution <= 9)
         		Resolution += 1;
@@ -576,6 +582,8 @@ void CreateMenus()
 	glutAddMenuEntry(	"7             - Default view", value++ );
 	glutAddMenuEntry(	"8             - Top-down view", value++ );
 	glutAddMenuEntry(	"9             - Reset planets", value++ );
+	glutAddMenuEntry(	"0             - Toggle orbital paths", value++ );
+	glutAddMenuEntry(	"p             - Toggle planet names", value++ );
 	glutAddMenuEntry(	"+ (=)        - Increase Resolution", value++ );
 	glutAddMenuEntry(	"-             - Decrease Resolution", value++ );
 	glutAddMenuEntry(	"                                   ", value++ );
@@ -680,22 +688,28 @@ void MainMenuHandler( int item )
         case 24:
        		resetPlanets();
         	break;
-        case 25:
+        case '25':
+            paths = !paths;
+            break;
+      	case '26':
+            planetNames = !planetNames;
+            break;  	
+        case 27:
         	if (Resolution <= 9)
         		Resolution += 1;
         	else if (Resolution <= 145)
         		Resolution += 5;
 
         	break;   
-        case 26:
+        case 28:
         	if (Resolution >= 15)
             	Resolution -= 5;
             else if (Resolution >= 4)
             	Resolution -= 1;	
         	break;           	
-        case 27:
+        case 29:
         	break;
-        case 28:
+        case 30:
 			exit( 1 );
             break; 
         default:
