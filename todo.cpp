@@ -1,10 +1,7 @@
 //TODO:
 
- - Reset to default
- - Inc/Dec Resolution
  - Modularize/Refactor orbits.cpp
  - Clean shit out of orbits.cpp and globals.
- - Views, add views to menu.
  - Planet color.
 
 //Extra:

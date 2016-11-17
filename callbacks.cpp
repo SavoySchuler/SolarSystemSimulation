@@ -243,13 +243,13 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
 			break;
         case '7':
-            MoveToStartView();
+            moveToStartView();
             break;
         case '8':
-            MoveToTopDownView();
+            moveToTopDownView();
             break;
         case '9':
-            ResetPlanets();
+            resetPlanets();
             break;
         case '=':
         	if (Resolution <= 9)
@@ -393,7 +393,7 @@ void moveRight()
     }
 }
 
-void MoveToStartView()
+void moveToStartView()
 {
     Xpan = 1.6;
     Ypan = 9.0;
@@ -403,7 +403,7 @@ void MoveToStartView()
     Zrot = 64.0;
 }
 
-void MoveToTopDownView()
+void moveToTopDownView()
 {
     Xpan = 0.0;
     Ypan = 0.0;
@@ -413,7 +413,7 @@ void MoveToTopDownView()
     Zrot = 90.0;
 }
 
-void ResetPlanets()
+void resetPlanets()
 {
     Mercury->setHourOfDay(0.0);
     Mercury->setDayOfYear(0.0);
@@ -532,6 +532,7 @@ void CreateMenus()
 	glutAddMenuEntry(	"6             - Lighting", value++ );
 	glutAddMenuEntry(	"7             - Default view", value++ );
 	glutAddMenuEntry(	"8             - Top-down view", value++ );
+	glutAddMenuEntry(	"9             - Reset planets", value++ );
 	glutAddMenuEntry(	"+ (=)        - Increase Resolution", value++ );
 	glutAddMenuEntry(	"-             - Decrease Resolution", value++ );
 	glutAddMenuEntry(	"                                   ", value++ );
@@ -627,29 +628,31 @@ void MainMenuHandler( int item )
 
             break;    
         case 22:
-			//Default View
+			moveToStartView();
 
         	break;        
         case 23:
-			//Top Down View
-
+			moveToTopDownView();
         	break;   
         case 24:
+       		resetPlanets();
+        	break;
+        case 25:
         	if (Resolution <= 9)
         		Resolution += 1;
         	else if (Resolution <= 145)
         		Resolution += 5;
 
         	break;   
-        case 25:
+        case 26:
         	if (Resolution >= 15)
             	Resolution -= 5;
             else if (Resolution >= 4)
             	Resolution -= 1;	
         	break;           	
-        case 26:
-        	break;
         case 27:
+        	break;
+        case 28:
 			exit( 1 );
             break; 
         default:
