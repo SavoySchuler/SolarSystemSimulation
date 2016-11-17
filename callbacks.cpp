@@ -275,11 +275,11 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             break;
         case 'q':
         	if (Zpan < 290.0)
-           		Zpan = Zpan + 0.5;
+           		Zpan = Zpan + .5;
             break;          
         case 'e':
             if (Zpan > -290.0)
-            	Zpan = Zpan - 0.5;
+            	Zpan = Zpan - .5;
 	    	break;
         case 27: 	// Escape key
             exit( 1 );
@@ -288,29 +288,101 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 
 void moveForward()
 {
-    cerr << Zrot << endl;
-    Ypan = Ypan + 0.1 * cos(Zrot * PI / 180);
-    Xpan = Xpan + 0.1 * sin(Zrot * PI / 180);
+    Ypan = Ypan + 0.5 * cos(Zrot * PI / 180);
+    Xpan = Xpan + 0.5 * sin(Zrot * PI / 180);
+
+    if(Xpan > 290)
+    {
+        Xpan = 290;
+    }
+    else if(Xpan < -290)
+    {
+        Xpan = -290;
+    }
+
+    if(Ypan > 290)
+    {
+        Ypan = 290;
+    }
+    else if(Ypan < -290)
+    {
+        Ypan = -290;
+    }
+	
 }
 
 void moveBackward()
 {
-    Ypan = Ypan - 0.1 * cos(Zrot * PI / 180);
-    Xpan = Xpan - 0.1 * sin(Zrot * PI / 180);
+    Ypan = Ypan - 0.5 * cos(Zrot * PI / 180);
+    Xpan = Xpan - 0.5 * sin(Zrot * PI / 180);
+
+    if(Xpan > 290)
+    {
+        Xpan = 290;
+    }
+    else if(Xpan < -290)
+    {
+        Xpan = -290;
+    }
+
+    if(Ypan > 290)
+    {
+        Ypan = 290;
+    }
+    else if(Ypan < -290)
+    {
+        Ypan = -290;
+    }
 }
 
 void moveLeft()
 {
     float rotation = Zrot + 90;
-    Ypan = Ypan + 0.1 * cos(rotation * PI / 180);
-    Xpan = Xpan + 0.1 * sin(rotation * PI / 180);
+    Ypan = Ypan + 0.5 * cos(rotation * PI / 180);
+    Xpan = Xpan + 0.5 * sin(rotation * PI / 180);
+
+    if(Xpan > 290)
+    {
+        Xpan = 290;
+    }
+    else if(Xpan < -290)
+    {
+        Xpan = -290;
+    }
+
+    if(Ypan > 290)
+    {
+        Ypan = 290;
+    }
+    else if(Ypan < -290)
+    {
+        Ypan = -290;
+    }
 }
 
 void moveRight()
 {
     float rotation = Zrot - 90;
-    Ypan = Ypan + 0.1 * cos(rotation * PI / 180);
-    Xpan = Xpan + 0.1 * sin(rotation * PI / 180);
+    Ypan = Ypan + 0.5 * cos(rotation * PI / 180);
+    Xpan = Xpan + 0.5 * sin(rotation * PI / 180);
+
+    if(Xpan > 290)
+    {
+        Xpan = 290;
+    }
+    else if(Xpan < -290)
+    {
+        Xpan = -290;
+    }
+
+    if(Ypan > 290)
+    {
+        Ypan = 290;
+    }
+    else if(Ypan < -290)
+    {
+        Ypan = -290;
+    }
 }
 
 // animation speed
@@ -428,21 +500,21 @@ void MainMenuHandler( int item )
 			stepAnimation();  
             break;
         case 4:
-            Xrot = Xrot - 1;
+            Xrot = Xrot - 2;
 	        if(Xrot < -180)
 		        Xrot = -180;
 
         	break;
         case 5:
-            Xrot = Xrot + 1;
+            Xrot = Xrot + 2;
 	        if(Xrot > 0)
 		        Xrot = 0;
         	break;        
         case 6:
-			Zrot = Zrot - 1;
+			Zrot = Zrot - 2;
             break;
         case 7:
-			Zrot = Zrot + 1;
+			Zrot = Zrot + 2;
         	break;
         case 8:
 

@@ -133,7 +133,7 @@ void DrawOrbit(double planetDistance)
 	quad = gluNewQuadric();
     
 	gluQuadricTexture(quad, GL_TRUE);
-    gluPartialDisk(quad,planetDistance, planetDistance+0.05,Resolution,Resolution,0,360);
+    gluPartialDisk(quad,planetDistance, planetDistance+0.05,50,50,0,360);
 	gluDeleteQuadric( quad );
 	
 	if ( textureToggle == true ) 
@@ -356,7 +356,7 @@ void DrawSpace(Planet *space)
 	GLUquadric *quad;
 	quad = gluNewQuadric();
 	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, 300.0, Resolution, Resolution );
+	gluSphere(quad, 300.0, 100, 100 );
 	gluDeleteQuadric( quad );
 	glEnable( GL_CULL_FACE );  
 }
