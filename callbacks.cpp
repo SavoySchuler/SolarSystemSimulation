@@ -46,6 +46,8 @@ using namespace std;
 GLenum spinMode = GL_TRUE;
 GLenum singleStep = GL_TRUE;
 
+bool light = true, shade = false, wire = false;
+
 float HourOfDay = 0.0;
 float DayOfYear = 0.0;
 float MercuryHour = 0.0;
@@ -211,15 +213,13 @@ void setCelestialBodies()
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
-	static bool light = true, shade = true, wire = false;
-
     switch ( Key )
     {
     	case '1':
-            speedUp();
+            speedDown();
             break;
         case '2':
-            speedDown();
+            speedUp();
             break;
 		case '3':
 		    ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
@@ -262,7 +262,6 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             	Resolution -= 5;
             else if (Resolution >= 4)
             	Resolution -= 1;	
-            	
             break;
         case 'r':
             startStopAnimation();
@@ -271,10 +270,10 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             stepAnimation();  
             break;
 		case 'w':
-        	moveBackward();
+        	moveForward();
             break;
         case 's':
-        	moveForward();
+        	moveBackward();
             break;
         case 'a':
             moveLeft();
@@ -295,7 +294,7 @@ void KeyPressFunc( unsigned char Key, int x, int y )
     }
 }
 
-void moveForward()
+void moveBackward()
 {
     Ypan = Ypan + 0.5 * cos(Zrot * PI / 180);
     Xpan = Xpan + 0.5 * sin(Zrot * PI / 180);
@@ -320,7 +319,7 @@ void moveForward()
 	
 }
 
-void moveBackward()
+void moveForward()
 {
     Ypan = Ypan - 0.5 * cos(Zrot * PI / 180);
     Xpan = Xpan - 0.5 * sin(Zrot * PI / 180);
@@ -443,14 +442,16 @@ void ResetPlanets()
 
 // animation speed
 void speedUp( void )
-{
-    AnimateIncrement *= 2.0;			// Double the animation time step
+{	
+	if (AnimateIncrement < 4380.0)
+   		AnimateIncrement *= 2.0;			// Double the animation time step
 }
 
 // animation speed
 void speedDown( void )
 {
-    AnimateIncrement /= 2.0;			// Halve the animation time step
+	if (AnimateIncrement > 0.0125)
+    	AnimateIncrement /= 2.0;			// Halve the animation time step
 }
 
 
@@ -508,9 +509,7 @@ void CreateMenus()
     int value = 1;
     int mainmenu = glutCreateMenu( MainMenuHandler );
     
-	glutAddMenuEntry(	"Controls:", value++ );
-	glutAddMenuEntry(	"r              - Start/suspend animation", value++ );
-	glutAddMenuEntry(	"f              - Single step animation", value++ );
+	glutAddMenuEntry(	"Camera Controls:", value++ );
 	glutAddMenuEntry(	"Up Arrow       -  Rotate up", value++ );
 	glutAddMenuEntry(	"Down Arrow  - Rotate down", value++ );
 	glutAddMenuEntry(	"Left Arrow     - Rotate left", value++ );
@@ -519,19 +518,23 @@ void CreateMenus()
 	glutAddMenuEntry(	"d             - Pan right in Y direction", value++ );
 	glutAddMenuEntry(	"w            - Pan forward in Y direction", value++ );
 	glutAddMenuEntry(	"s             - Pan backward in Y direction", value++ );
-	
-	
-	glutAddMenuEntry(	"q             - Pan up in Z direction", value++ );
-	glutAddMenuEntry(	"e             - Pan down in Z direction", value++ );
-	glutAddMenuEntry(	"1             - Speed Up Animation", value++ );
-	glutAddMenuEntry(	"2             - Speed Down Animation", value++ );
-	
-	
+	glutAddMenuEntry(	"q             - Pan down in Z direction", value++ );
+	glutAddMenuEntry(	"e             - Pan up in Z direction", value++ );
+	glutAddMenuEntry(	"                                   ", value++ );
+	glutAddMenuEntry(	"Options:                                   ", value++ );
+	glutAddMenuEntry(	"r              - Start/suspend animation", value++ );
+	glutAddMenuEntry(	"f              - Single step animation", value++ );
+	glutAddMenuEntry(	"1             - Speed Down Animation", value++ );
+	glutAddMenuEntry(	"2             - Speed Up Animation", value++ );
 	glutAddMenuEntry(	"3             - Smooth/Flat Shading", value++ );
 	glutAddMenuEntry(	"4             - Wireframe/Polygon Rendering", value++ );
 	glutAddMenuEntry(	"5             - Texture Mapping", value++ );
 	glutAddMenuEntry(	"6             - Lighting", value++ );
-	glutAddMenuEntry(	"+/-          - Inc/Dec Resolution", value++ );
+	glutAddMenuEntry(	"7             - Default view", value++ );
+	glutAddMenuEntry(	"8             - Top-down view", value++ );
+	glutAddMenuEntry(	"+ (=)        - Increase Resolution", value++ );
+	glutAddMenuEntry(	"-             - Decrease Resolution", value++ );
+	glutAddMenuEntry(	"                                   ", value++ );
 	glutAddMenuEntry(	"Esc         - Quit", value++ );
 
 	//trivial fix to supress unused variable warnings	
@@ -550,74 +553,110 @@ void MainMenuHandler( int item )
         case 1:
         	break;
         case 2:
-			startStopAnimation();
-        	break;        
-        case 3:
-			stepAnimation();  
-            break;
-        case 4:
-            Xrot = Xrot - 2;
+            Xrot = Xrot - 1;
 	        if(Xrot < -180)
 		        Xrot = -180;
-
+        	break;        
+        case 3:
+			Xrot = Xrot + 1;
+	        if(Xrot > 0)
+		        Xrot = 0; 
+            break;
+        case 4:
+			Zrot = Zrot - 1;
         	break;
         case 5:
-            Xrot = Xrot + 2;
-	        if(Xrot > 0)
-		        Xrot = 0;
-        	break;        
+			Zrot = Zrot + 1;
         case 6:
-			Zrot = Zrot - 2;
-            break;
+			moveLeft();
+        	break;        
         case 7:
-			Zrot = Zrot + 2;
-        	break;
-        case 8:
-
-
-        	break;        
-        case 9:
-
-
+			moveRight();
             break;
-        case 10:
-
-
+        case 8:
+			moveForward();
         	break;
-        case 11:
-
-
+        case 9:
+			moveBackward();
         	break;        
-        case 12:
-
+        case 10:
+       		if (Zpan < 290.0)
+           		Zpan = Zpan + 0.5;
+            break;    
+        case 11:
+            if (Zpan > -290.0)
+            	Zpan = Zpan - 0.5;
+        	break;        
+        
+        case 12:		//Separator
+        	break;
+        case 13:		//Options:
+        	break;
+        case 14:
+			startStopAnimation();
+        	break;        
+        case 15:
+			stepAnimation();  
+            break;
+        case 16:
+			speedDown();
+            break;
+        case 17:
+			speedUp();
+        	break;
+        case 18:
+			( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
+        	break;        
+        case 19:
+		    ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+            break;              
+        case 20:
+        	if (textureToggle == false)
+			{
+				glEnable( GL_TEXTURE_2D );
+        		textureToggle = true;
+        	}
+        	else 
+        	{
+				glDisable( GL_TEXTURE_2D );
+        		textureToggle = false;
+        	}
+        	break;        
+        case 21:
+		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
 
             break;    
-        case 13:
-
+        case 22:
+			//Default View
 
         	break;        
-        case 14:
+        case 23:
+			//Top Down View
 
+        	break;   
+        case 24:
+        	if (Resolution <= 9)
+        		Resolution += 1;
+        	else if (Resolution <= 145)
+        		Resolution += 5;
 
-            break;
-        case 15:
-
-
+        	break;   
+        case 25:
+        	if (Resolution >= 15)
+            	Resolution -= 5;
+            else if (Resolution >= 4)
+            	Resolution -= 1;	
+        	break;           	
+        case 26:
         	break;
-        case 16:
-
-
-        	break;        
-        case 17:
-
-
-            break;              
-            
-            
+        case 27:
+			exit( 1 );
+            break; 
         default:
             //Should not be reached, error catching.
             cout << "invalid main menu item " << item << endl;
             break;
     }
 }
+
 
