@@ -61,4 +61,5 @@ extern float Xrot;
 extern float Yrot;
 extern float Zrot;
 extern int Resolution;
-extern bool textureToggle;
+extern bool textureToggle, light, shade, wire;
+
