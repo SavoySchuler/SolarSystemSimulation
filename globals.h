@@ -67,6 +67,6 @@ extern float Yrot;
 extern float Zrot;
 extern int Resolution;
 extern int ScreenHeight;
-extern bool textureToggle, light, shade, wire;
+extern bool textureToggle, light, shade, wire, paths, planetNames;
 extern bool MouseClicked;
 
