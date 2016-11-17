@@ -1,25 +1,17 @@
 /******************************************************************************
-*	File: gpgpuPrimes.cu
+*	File: 
 *
-*	Authors: Savoy Schuler
+*	Authors: 
 *
-*	Date: November 2, 2016
+*	Date: 
 *
 *	Functions Included:
 *
-*		gpuProperties
-*		countPrimes	<kernel>
-*		isPrime		<kernal>
-*		gpgpuSearch
+*		
 *
 *	Description:
 *
-*		This files contains all functions needed for parallelizing a range
-*		inclusive prime number count using GPGPU, Cuda, and an Nvidia graphics
-*		card. Thie file contains one hose function that calls two kernels on the
-*		device; one to check if a number is a prime (storing a 1 on an
-*		associative array if true) and one to count the number of 1's in an
-*		array in parallel.
+*		
 *
 *	Modified: Original
 *
