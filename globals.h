@@ -108,6 +108,8 @@ void MouseDragFunc(int x, int y);
 //Drop-down menu and handling
 void CreateMenus();
 void MainMenuHandler( int item );
+void SubMenuHandlerControls ( int item );
+void SubMenuHandlerOptions ( int item );
 
 
 
