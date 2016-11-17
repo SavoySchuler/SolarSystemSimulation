@@ -1,37 +1,32 @@
-/*
-* orbit.cpp
+/******************************************************************************
+*	File: gpgpuPrimes.cu
 *
-* Program to demonstrate how to use a local
-* coordinate method to position parts of a
-* model in relation to other model parts.
+*	Authors: Savoy Schuler
 *
-* Draws a simple solar system, with a sun, planet and moon.
-* Based on sample code from the OpenGL programming guide
-* by Woo, Neider, Davis.  Addison-Wesley.
+*	Date: November 2, 2016
 *
-* Author: Samuel R. Buss
+*	Functions Included:
 *
-* Software accompanying the book
-* 3D Computer Graphics: A Mathematical Introduction with OpenGL,
-* by S. Buss, Cambridge University Press, 2003.
+*		gpuProperties
+*		countPrimes	<kernel>
+*		isPrime		<kernal>
+*		gpgpuSearch
 *
-* Software is "as-is" and carries no warranty.  It may be used without
-* restriction, but if you modify it, please change the filenames to
-* prevent confusion between different versions.
+*	Description:
 *
-* Bug reports: Sam Buss, sbuss@ucsd.edu.
-* Web page: http://math.ucsd.edu/~sbuss/MathCG
+*		This files contains all functions needed for parallelizing a range
+*		inclusive prime number count using GPGPU, Cuda, and an Nvidia graphics
+*		card. Thie file contains one hose function that calls two kernels on the
+*		device; one to check if a number is a prime (storing a 1 on an
+*		associative array if true) and one to count the number of 1's in an
+*		array in parallel.
 *
-* USAGE:
-*    Press "r" key to toggle (off and on) running the animation
-*    Press "s" key to single-step animation
-*    The up and down array keys control the time step used in the animation rate.
-*    Each key press multiplies or divides the times by a factor of two.
-*    Press ESCAPE to exit.r
-*/
+*	Modified: Original
+*
+*
+******************************************************************************/
 
-// JMW: Minor modifications for CSC433/533 Computer Graphics, Fall 2016.
-
+/**************************** Library Includes *******************************/
 #include <cstdlib>
 #include <cmath>
 #include <GL/freeglut.h>
@@ -39,6 +34,8 @@
 #include <string>
 #include "Planet.h"
 #include "globals.h"
+
+/******************************* Name Space **********************************/
 
 using namespace std;
 
@@ -76,7 +73,19 @@ Planet *Sun;
 Planet *Space;
 
 
-// Initialize OpenGL's rendering modes
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void OpenGLInit( void )
 {
     glShadeModel( GL_SMOOTH );
@@ -88,6 +97,19 @@ void OpenGLInit( void )
 }
 
 
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 // ResizeWindow is called when the window is resized
 void ResizeWindow( int w, int h )
 {
@@ -110,6 +132,19 @@ void ResizeWindow( int w, int h )
 }
 
 
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 // Animate() handles the animation and the redrawing of the graphics window contents.
 void Animate( void )
 {
@@ -158,6 +193,18 @@ void Animate( void )
 
 
 
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void setCelestialBodies()
 {
 	int nrows, ncols;
@@ -217,6 +264,18 @@ void setCelestialBodies()
 
 
 
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
@@ -307,6 +366,20 @@ void KeyPressFunc( unsigned char Key, int x, int y )
     }
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void moveBackward()
 {
     Ypan = Ypan + 0.5 * cos(Zrot * PI / 180);
@@ -332,6 +405,20 @@ void moveBackward()
 	
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void moveForward()
 {
     Ypan = Ypan - 0.5 * cos(Zrot * PI / 180);
@@ -356,6 +443,20 @@ void moveForward()
     }
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void moveLeft()
 {
     float rotation = Zrot + 90;
@@ -381,6 +482,20 @@ void moveLeft()
     }
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void moveRight()
 {
     float rotation = Zrot - 90;
@@ -406,6 +521,20 @@ void moveRight()
     }
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void moveToStartView()
 {
     Xpan = 1.6;
@@ -416,6 +545,20 @@ void moveToStartView()
     Zrot = 64.0;
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void moveToTopDownView()
 {
     Xpan = 0.0;
@@ -426,6 +569,20 @@ void moveToTopDownView()
     Zrot = 90.0;
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void resetPlanets()
 {
     Mercury->setHourOfDay(0.0);
@@ -453,6 +610,20 @@ void resetPlanets()
     Neptune->setDayOfYear(0.0);
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 // animation speed
 void speedUp( void )
 {	
@@ -460,6 +631,20 @@ void speedUp( void )
    		AnimateIncrement *= 2.0;			// Double the animation time step
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 // animation speed
 void speedDown( void )
 {
@@ -468,6 +653,19 @@ void speedDown( void )
 }
 
 
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 // restart animation
 void startStopAnimation( void )
 {
@@ -482,6 +680,20 @@ void startStopAnimation( void )
     }
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 // single step animation
 void stepAnimation( void )
 {
@@ -489,6 +701,20 @@ void stepAnimation( void )
     spinMode = GL_TRUE;
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 // glutSpecialFunc is called to set this function to handle all special key presses
 // See glut.h for the names of special keys.
 void SpecialKeyFunc( int Key, int x, int y )
@@ -514,6 +740,19 @@ void SpecialKeyFunc( int Key, int x, int y )
     }
 }
 
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void MouseFunc(int button, int state, int x, int y)
 {
 	MouseClicked = !MouseClicked;
@@ -521,6 +760,20 @@ void MouseFunc(int button, int state, int x, int y)
         MouseDragFunc(x,y);
 }
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void MouseDragFunc(int x, int y)
 {
 	static int lastX = 10000;
@@ -552,6 +805,21 @@ void MouseDragFunc(int x, int y)
     }
     
 }
+
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void CreateMenus()
 {
     //create main menu
@@ -597,6 +865,20 @@ void CreateMenus()
 }
 
 
+
+
+/******************************************************************************
+* Author: 
+*
+* Function: 
+*
+* Description:
+*
+*	
+*
+* Parameters: 
+*
+******************************************************************************/
 void MainMenuHandler( int item )
 {
 	//for casing user input
@@ -718,5 +1000,3 @@ void MainMenuHandler( int item )
             break;
     }
 }
-
-
