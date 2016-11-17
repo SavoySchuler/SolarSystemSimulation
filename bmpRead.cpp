@@ -49,7 +49,7 @@ bool LoadBmpFile( const char* filename, int &NumRows, int &NumCols, unsigned cha
     int bChar = fgetc( infile );
     int mChar = fgetc( infile );
     if ( bChar == 'B' && mChar == 'M' )
-    {			// If starts with "BM" for "BitMap"
+    {   // If starts with "BM" for "BitMap"
         skipChars( infile, 4 + 2 + 2 + 4 + 4 );			// Skip 4 fields we don't care about
         NumCols = readLong( infile );
         NumRows = readLong( infile );

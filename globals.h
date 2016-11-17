@@ -1,9 +1,9 @@
 /******************************************************************************
-*	File: 
+*	File:
 *
-*	Authors: 
+*	Authors:
 *
-*	Date: 
+*	Date:
 *
 *	Functions Included:
 *
@@ -38,8 +38,8 @@ const float PI = 3.14159265358979323846264;
 /*************************** Global Variables *****************************/
 
 
-				     /* Externs defined in callbacks.cpp: */
-//Mode booleans				  	
+/* Externs defined in callbacks.cpp: */
+//Mode booleans
 extern GLenum spinMode;
 extern GLenum singleStep;
 extern bool light, shade, wire, paths, planetNames, textureToggle;
@@ -51,7 +51,7 @@ extern float MercuryHour;
 extern float MercuryDay;
 
 // Time step for animation (hours)
-extern float AnimateIncrement;  
+extern float AnimateIncrement;
 
 //Camera controls
 extern float Xpan;
@@ -64,7 +64,7 @@ extern int ScreenHeight;
 extern bool MouseClicked;
 
 
-//Resolution toggling 
+//Resolution toggling
 extern int Resolution;
 
 
@@ -72,7 +72,7 @@ extern int Resolution;
 /*************************** Function Prototypes *****************************/
 
 
-				  /* Located in callbacks.cpp in order: */
+/* Located in callbacks.cpp in order: */
 
 //Window functions
 void OpenGLInit( void );
@@ -96,7 +96,7 @@ void speedDown( void );
 void startStopAnimation( void );
 void stepAnimation( void );
 
-//Special key press functions and handling 
+//Special key press functions and handling
 void SpecialKeyFunc( int Key, int x, int y );
 
 //Mouse click functions and handling
@@ -111,7 +111,7 @@ void SubMenuHandlerOptions ( int item );
 
 
 
-				    /* Located in orbits.cpp in order: */
+/* Located in orbits.cpp in order: */
 
 void DrawSun();
 void SetLightModel();
@@ -132,6 +132,6 @@ void SetPlanetLightProps(Planet *plant);
 void SetSunLightProp(Planet *sun);
 
 
-			         /* Located in bmpRead.cpp in order: */
+/* Located in bmpRead.cpp in order: */
 
 bool LoadBmpFile( const char* filename, int &nrows, int &ncols, byte* &image );

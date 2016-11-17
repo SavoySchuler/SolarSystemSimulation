@@ -41,7 +41,7 @@
  *
  *
  *
- *		 
+ *
  *
  * @par Modifications:
  *
@@ -71,7 +71,7 @@
 *
 * Description:
 *
-*	
+*
 *
 * Parameters:
 *
@@ -84,7 +84,7 @@
 // Set up OpenGL, hook up callbacks, and start the main loop
 int main( int argc, char** argv )
 {
-	char *filename = argc > 1 ? strdup( argv[1] ) : NULL;
+    char *filename = argc > 1 ? strdup( argv[1] ) : NULL;
 
 
     // Need to double buffer for animation
@@ -99,20 +99,20 @@ int main( int argc, char** argv )
     // Initialize OpenGL.
     OpenGLInit();
 
-	// Set up the callback function for resizing windows
+    // Set up the callback function for resizing windows
     glutReshapeFunc( ResizeWindow );
 
     // Set up callback functions for key presses
     glutKeyboardFunc( KeyPressFunc );
     glutSpecialFunc( SpecialKeyFunc );
-	glutMouseFunc( MouseFunc );
+    glutMouseFunc( MouseFunc );
     glutMotionFunc( MouseDragFunc );
-    // Callback for graphics image redrawing   
-	glutDisplayFunc( Animate );
+    // Callback for graphics image redrawing
+    glutDisplayFunc( Animate );
 
-	CreateMenus();
+    CreateMenus();
 
-	glClearColor( 0.0, 0.0, 0.0, 1.0 );	
+    glClearColor( 0.0, 0.0, 0.0, 1.0 );
 
     // Start the main loop.  glutMainLoop never returns.
     glutMainLoop( );

@@ -1,9 +1,9 @@
 /******************************************************************************
-*	File: 
+*	File:
 *
-*	Authors: 
+*	Authors:
 *
-*	Date: 
+*	Date:
 *
 *	Functions Included:
 *
@@ -35,27 +35,27 @@ typedef unsigned char byte;
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 class Planet
 {
-    public:
-    
-	/// Constructors and Destructor
-	Planet();
-	Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image, GLfloat r, GLfloat g, GLfloat b);
-	~Planet();
-	
-	/// Get/Set functions
+public:
+
+    /// Constructors and Destructor
+    Planet();
+    Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image, GLfloat r, GLfloat g, GLfloat b);
+    ~Planet();
+
+    /// Get/Set functions
     string getName();
     float getHoursPerDay();
     float getDaysPerYear();
@@ -65,18 +65,18 @@ class Planet
     float getDayOfYear();
     void setHourOfDay(float hour);
     float getHourOfDay();
-	int getRows();
-	int getCols();
-	byte* getImage();
-	GLfloat getR(); 
-    GLfloat getG(); 
+    int getRows();
+    int getCols();
+    byte* getImage();
+    GLfloat getR();
+    GLfloat getG();
     GLfloat getB();
 
-	
-	
-	/// Hit box functions
 
-    private:
+
+    /// Hit box functions
+
+private:
     string Name;
     float DayOfYear;
     float HourOfDay;
@@ -85,12 +85,12 @@ class Planet
     int Radius;
     int Distance;
     float HoursOfYear;
-	string Texture;
-    int Rows; 
+    string Texture;
+    int Rows;
     int Col;
     byte* Image;
-    GLfloat R; 
-    GLfloat G; 
+    GLfloat R;
+    GLfloat G;
     GLfloat B;
 };
 

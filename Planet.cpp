@@ -1,9 +1,9 @@
 /******************************************************************************
-*	File: 
+*	File:
 *
-*	Authors: 
+*	Authors:
 *
-*	Date: 
+*	Date:
 *
 *	Functions Included:
 *
@@ -27,15 +27,15 @@ using namespace std;
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 Planet::Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image, GLfloat r, GLfloat g, GLfloat b)
@@ -47,26 +47,26 @@ Planet::Planet(string name, int hours, int days, int radius, int distance, int n
     Distance = distance;
     HourOfDay = 0.0;
     DayOfYear = 0.0;
-	Rows = nrow;
-	Col = cols;
-	Image = image;
-	R = r;
-	G = g; 
-	B = b;
+    Rows = nrow;
+    Col = cols;
+    Image = image;
+    R = r;
+    G = g;
+    B = b;
 
 }
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 string Planet::getName()
@@ -77,15 +77,15 @@ string Planet::getName()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 float Planet::getHoursPerDay()
@@ -96,15 +96,15 @@ float Planet::getHoursPerDay()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 float Planet::getDaysPerYear()
@@ -114,15 +114,15 @@ float Planet::getDaysPerYear()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 int Planet::getRadius()
@@ -132,15 +132,15 @@ int Planet::getRadius()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 int Planet::getDistance()
@@ -151,90 +151,90 @@ int Planet::getDistance()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 void Planet::setDayOfYear(float day)
 {
-	DayOfYear = day;
+    DayOfYear = day;
 }
 
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 float Planet::getDayOfYear()
 {
-	return fmod(DayOfYear,DaysPerYear);
+    return fmod(DayOfYear,DaysPerYear);
 }
 
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 void Planet::setHourOfDay(float hour)
 {
-	HourOfDay = hour;
+    HourOfDay = hour;
 }
 
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 float Planet::getHourOfDay()
 {
-	return fmod(HourOfDay,HoursPerDay);
+    return fmod(HourOfDay,HoursPerDay);
 }
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 int Planet::getRows()
@@ -244,15 +244,15 @@ int Planet::getRows()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 int Planet::getCols()
@@ -263,15 +263,15 @@ int Planet::getCols()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 byte* Planet::getImage()
@@ -282,15 +282,15 @@ byte* Planet::getImage()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 GLfloat Planet::getR()
@@ -301,15 +301,15 @@ GLfloat Planet::getR()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 GLfloat Planet::getG()
@@ -320,15 +320,15 @@ GLfloat Planet::getG()
 
 
 /******************************************************************************
-* Author: 
+* Author:
 *
-* Function: 
+* Function:
 *
 * Description:
 *
-*	
 *
-* Parameters: 
+*
+* Parameters:
 *
 ******************************************************************************/
 GLfloat Planet::getB()
