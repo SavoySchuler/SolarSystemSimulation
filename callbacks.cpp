@@ -58,6 +58,7 @@ float Xrot = -69.0;
 float Yrot = 0.0;
 float Zrot = 64.0;
 bool textureToggle = true;
+int Resolution = 100;
 
 Planet *Mercury;
 Planet *Venus;
@@ -214,13 +215,19 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 
     switch ( Key )
     {
-		case '6':
-		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
-			break;
-        case 'r':
-            startStopAnimation();
+    	case '1':
+            speedUp();
             break;
-        case '5': 
+        case '2':
+            speedDown();
+            break;
+		case '3':
+		    ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
+			break;
+		case '4':
+		    ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+			break;
+		case '5': 
         	if (textureToggle == false)
 			{
 				glEnable( GL_TEXTURE_2D );
@@ -232,29 +239,33 @@ void KeyPressFunc( unsigned char Key, int x, int y )
         		textureToggle = false;
         	}
         	break;
-	    case '3':
-		    ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
+		case '6':
+		    ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
 			break;
-		case '4':
-		    ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-			break;
-        case '1':
-            speedUp();
+        case '+':
+        	if (Resolution <= 195)
+        		Resolution += 5;
             break;
-        case '2':
-            speedDown();
+        case '-':
+        	if (Resolution >= 10)
+            	Resolution -= 5;
+        case 'r':
+            startStopAnimation();
             break;
-        case 'd':
-        	moveRight();
+        case 'f':
+            stepAnimation();  
             break;
-        case 'a':
-            moveLeft();
-            break;
-        case 'w':
+		case 'w':
         	moveBackward();
             break;
         case 's':
         	moveForward();
+            break;
+        case 'a':
+            moveLeft();
+            break;
+        case 'd':
+        	moveRight();
             break;
         case 'q':
         	if (Zpan > -290.0)
@@ -262,11 +273,8 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             break;
         case 'e':
         	if (Zpan < 290.0)
-            Zpan = Zpan + 0.5;
-	    break;
-        case 'f':
-            stepAnimation();  
-            break;
+           		Zpan = Zpan + 0.5;
+	    	break;
         case 27: 	// Escape key
             exit( 1 );
     }
