@@ -20,9 +20,9 @@ void moveForward();
 void moveBackward();
 void moveLeft();
 void moveRight();
-void MoveToStartView();
-void MoveToTopDownView();
-void ResetPlanets();
+void moveToStartView();
+void moveToTopDownView();
+void resetPlanets();
 
 int loadTextureFromFile( char *filename );
 void initTextureMap( char *filename );
