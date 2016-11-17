@@ -59,7 +59,7 @@ void DrawRings(double planetRadius)
 	quad = gluNewQuadric();
     
 	gluQuadricTexture(quad, GL_TRUE);
-	gluCylinder(quad, planetRadius * SizeScale + 0.5, planetRadius * SizeScale + 2 ,0.1, 100, 100);
+	gluCylinder(quad, planetRadius * SizeScale + 0.5, planetRadius * SizeScale + 2 ,0.1, Resolution, Resolution);
 	gluDeleteQuadric( quad );
 	
 
@@ -103,7 +103,7 @@ void DrawMoon(int DayOfYear)
     GLUquadric *quad;
 	quad = gluNewQuadric();
 	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, 0.1, 5, 5 );
+	gluSphere(quad, 0.1, Resolution, Resolution );
 	gluDeleteQuadric( quad );
     
 }
@@ -133,7 +133,7 @@ void DrawOrbit(double planetDistance)
 	quad = gluNewQuadric();
     
 	gluQuadricTexture(quad, GL_TRUE);
-    gluPartialDisk(quad,planetDistance, planetDistance+0.05,100,100,0,360);
+    gluPartialDisk(quad,planetDistance, planetDistance+0.05,Resolution,Resolution,0,360);
 	gluDeleteQuadric( quad );
 	
 	if ( textureToggle == true ) 
@@ -213,7 +213,7 @@ void DrawPlanet(Planet *plant)
 //	gluQuadricDrawStyle( quad, GLU_FILL );
 //	gluQuadricOrientation( quad, GLU_OUTSIDE );
 	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, Radius*SizeScale, 100, 100);
+	gluSphere(quad, Radius*SizeScale, Resolution, Resolution);
     gluDeleteQuadric( quad );
     
     if(plant->getName() == "Earth")
@@ -280,7 +280,7 @@ void DrawSun(Planet *sun)
 	GLUquadric *quad;
 	quad = gluNewQuadric();
 	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, radius, 15, 15 );
+	gluSphere(quad, radius, Resolution, Resolution );
 	gluDeleteQuadric( quad );
 	
 }
@@ -358,7 +358,7 @@ void DrawSpace(Planet *space)
 	GLUquadric *quad;
 	quad = gluNewQuadric();
 	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, 300.0, 50, 50 );
+	gluSphere(quad, 300.0, Resolution, Resolution );
 	gluDeleteQuadric( quad );
 	glEnable( GL_CULL_FACE );  
 }

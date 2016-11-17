@@ -51,12 +51,12 @@ float DayOfYear = 0.0;
 float MercuryHour = 0.0;
 float MercuryDay = 0.0;
 float AnimateIncrement = 0.5;  // Time step for animation (hours)
-float Xpan = 0.0;
-float Ypan = 0.0;
-float Zpan = -20.0;
-float Xrot = -90;
+float Xpan = 1.6;
+float Ypan = 9.0;
+float Zpan = -5.0;
+float Xrot = -69.0;
 float Yrot = 0.0;
-float Zrot = 0.0;
+float Zrot = 64.0;
 bool textureToggle = true;
 
 // glutKeyboardFunc is called to set this function to handle normal key presses.
