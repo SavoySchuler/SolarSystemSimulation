@@ -688,10 +688,10 @@ void MainMenuHandler( int item )
         case 24:
        		resetPlanets();
         	break;
-        case '25':
+        case 25:
             paths = !paths;
             break;
-      	case '26':
+      	case 26:
             planetNames = !planetNames;
             break;  	
         case 27:
