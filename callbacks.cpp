@@ -33,6 +33,7 @@
 // JMW: Minor modifications for CSC433/533 Computer Graphics, Fall 2016.
 
 #include <cstdlib>
+#include <cmath>
 #include <GL/freeglut.h>
 #include <iostream>
 #include <string>
@@ -40,7 +41,6 @@
 #include "globals.h"
 
 using namespace std;
-
 
 // global variables
 GLenum spinMode = GL_TRUE;
@@ -54,7 +54,7 @@ float AnimateIncrement = 0.5;  // Time step for animation (hours)
 float Xpan = 0.0;
 float Ypan = 0.0;
 float Zpan = -20.0;
-float Xrot = -15.0;
+float Xrot = -90;
 float Yrot = 0.0;
 float Zrot = 0.0;
 bool textureToggle = true;
@@ -100,20 +100,16 @@ void KeyPressFunc( unsigned char Key, int x, int y )
             Key_down();
             break;
         case 'd':
-        	if (Xpan > -290.0)
-            	Xpan = Xpan - 0.1;
+        	Right();
             break;
         case 'a':
-            if (Xpan < 290.0)
-            	Xpan = Xpan + 0.1;
+            Left();
             break;
         case 'w':
-        	if (Ypan > -290.0)
-            	Ypan = Ypan - 0.1;
+        	Backward();
             break;
         case 's':
-        	if (Ypan < 290.0)
-            	Ypan = Ypan + 0.1;
+        	Forward();
             break;
         case 'q':
         	if (Zpan > -290.0)
@@ -131,6 +127,33 @@ void KeyPressFunc( unsigned char Key, int x, int y )
     }
 }
 
+void Forward()
+{
+    cerr << Zrot << endl;
+    Ypan = Ypan + 0.1 * cos(Zrot * PI / 180);
+    Xpan = Xpan + 0.1 * sin(Zrot * PI / 180);
+}
+
+void Backward()
+{
+    Ypan = Ypan - 0.1 * cos(Zrot * PI / 180);
+    Xpan = Xpan - 0.1 * sin(Zrot * PI / 180);
+}
+
+void Left()
+{
+    float rotation = Zrot + 90;
+    Ypan = Ypan + 0.1 * cos(rotation * PI / 180);
+    Xpan = Xpan + 0.1 * sin(rotation * PI / 180);
+}
+
+void Right()
+{
+    float rotation = Zrot - 90;
+    Ypan = Ypan + 0.1 * cos(rotation * PI / 180);
+    Xpan = Xpan + 0.1 * sin(rotation * PI / 180);
+}
+
 // glutSpecialFunc is called to set this function to handle all special key presses
 // See glut.h for the names of special keys.
 void SpecialKeyFunc( int Key, int x, int y )
@@ -139,9 +162,13 @@ void SpecialKeyFunc( int Key, int x, int y )
     {
         case GLUT_KEY_UP:
             Xrot = Xrot - 1;
+	        if(Xrot < -180)
+		        Xrot = -180;
             break;
         case GLUT_KEY_DOWN:
             Xrot = Xrot + 1;
+	        if(Xrot > 0)
+		        Xrot = 0;
             break;
         case GLUT_KEY_LEFT:
         	Zrot = Zrot - 1;
