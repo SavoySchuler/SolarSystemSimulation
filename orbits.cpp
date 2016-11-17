@@ -471,6 +471,11 @@ int setTexture( byte* image, int nrows, int ncols )
 
 void DrawTextString( string str, double radius)
 {
+
+	if ( textureToggle == true ) 
+		glDisable( GL_TEXTURE_2D );
+
+
    	GLfloat mat_emission[] = {1.0, 1.0, 1.0, 1.0};
 	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     GLfloat textColor[] = { 1.0, 1.0, 1.0 };
@@ -484,4 +489,9 @@ void DrawTextString( string str, double radius)
     {
         glutBitmapCharacter( GLUT_BITMAP_9_BY_15, str[i] );
     }
+    
+    
+    if ( textureToggle == true ) 
+		glEnable( GL_TEXTURE_2D );
+    
 }
