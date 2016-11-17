@@ -1,3 +1,61 @@
+/*************************************************************************//**
+ * @file solar.cpp
+ *
+ * @mainpage Programming Assignment #3: Solar System Simulation
+ *
+ * @author  Savoy Schuler, Daniel Hodgin
+ *
+ * @date  November 17, 2016
+ *
+ * @par Professor: Dr. John Weiss
+ *
+ * @par Course: CSC 433 Computer Graphics - M001 -  9:00 am
+ *
+ * @par Location:  McLaury - 205
+ *
+ * @par System Requirements:
+ *		system: Unix Lab Computer
+ *		requirements: OpenGL
+ *		os: Fedora, CentOS
+ *		compiler: c++11
+ *
+ * @par Compiling Instructions:
+ *
+ *		make
+ *
+ * @par Usage Instructions:
+ *
+ *		solar
+ *
+ * @par Input:
+ *
+ *		<none>
+ *
+ * @par Output:
+ *
+ *		<none>
+ *
+ * @details:
+ *
+ *
+ *
+ *
+ *
+ *		 
+ *
+ * @par Modifications:
+ *
+ *		None	- Original Version
+ *
+ * @section todo_bugs_modification_section Todo, Bugs, and Modifications
+ *
+ * @bugs <none>
+ *
+ * @todo <none>
+ *
+ *****************************************************************************/
+
+/**************************** Library Includes *******************************/
 #include <cstdlib>
 #include <GL/freeglut.h>
 #include <iostream>
@@ -5,6 +63,23 @@
 #include <cstring>
 #include "globals.h"
 
+
+/******************************************************************************
+* Author: Savoy Schuler
+*
+* Function: main
+*
+* Description:
+*
+*	
+*
+* Parameters:
+*
+*	argc	- number of command line parameters
+*
+*	argv	- array of command line parameters
+*
+******************************************************************************/
 // Main routine
 // Set up OpenGL, hook up callbacks, and start the main loop
 int main( int argc, char** argv )
