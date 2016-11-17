@@ -476,7 +476,7 @@ void CreateMenus()
 	glutAddMenuEntry(	"6             - Lighting", value++ );
 	glutAddMenuEntry(	"7             - Default view", value++ );
 	glutAddMenuEntry(	"8             - Top-down view", value++ );
-	glutAddMenuEntry(	"+             - Increase Resolution", value++ );
+	glutAddMenuEntry(	"+ (=)        - Increase Resolution", value++ );
 	glutAddMenuEntry(	"-             - Decrease Resolution", value++ );
 	glutAddMenuEntry(	"                                   ", value++ );
 	glutAddMenuEntry(	"Esc         - Quit", value++ );

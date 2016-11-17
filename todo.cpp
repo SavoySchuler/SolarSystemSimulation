@@ -1,15 +1,15 @@
 //TODO:
 
- - Play with Starting position
  - Reset to default
  - Inc/Dec Resolution
  - Modularize/Refactor orbits.cpp
  - Clean shit out of orbits.cpp and globals.
+ - Views, add views to menu.
+ - Planet color.
 
 //Extra:
 
  - Panning may also be accomplished by clicking the left mouse button and dragging.
- - Commands may also be issued via a popup menu, accessed by clicking the right mouse button.
 
 //End Steps:
 
