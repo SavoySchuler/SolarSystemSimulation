@@ -228,8 +228,7 @@ void Animate( void )
     static Planet *Neptune;
     static Planet *Sun;
     static Planet *Space;
-
-
+    float sunRadius = 696000.0/10.0 * SizeScale;
     if(firstTime == true)
     {
     	int nrows, ncols;
@@ -256,12 +255,12 @@ void Animate( void )
 
 		filename = stringToChar("jupiter.bmp");
     	LoadBmpFile( filename, nrows, ncols, image );
-        Jupiter = new Planet("Jupiter",9.8, 4332, 71398,779, nrows, ncols, image);
+        Jupiter = new Planet("Jupiter",9.8, 4332, 71398/2.0,779, nrows, ncols, image);
 
 
 		filename = stringToChar("saturn.bmp");
     	LoadBmpFile( filename, nrows, ncols, image );
-        Saturn = new Planet("Saturn",  10.2,10761,60270,1424, nrows, ncols, image);
+        Saturn = new Planet("Saturn",  10.2,10761,60270/2.0,1424, nrows, ncols, image);
 
 
 		filename = stringToChar("uranus.bmp");
@@ -270,12 +269,12 @@ void Animate( void )
 
 		filename = stringToChar("neptune.bmp");
     	LoadBmpFile( filename, nrows, ncols, image );
-        Neptune = new Planet("Neptune",15.8,60195,24750,4492, nrows, ncols, image);
+        Neptune = new Planet("Neptune",15.8,60195.0,24750,4492, nrows, ncols, image);
         
         
         filename = stringToChar("sun.bmp");
     	LoadBmpFile( filename, nrows, ncols, image );
-        Sun = new Planet("Sun", 25, 0, 0, 0, nrows, ncols, image);
+        Sun = new Planet("Sun", 25, 0, sunRadius, 0, nrows, ncols, image);
         
         
         filename = stringToChar("space.bmp");

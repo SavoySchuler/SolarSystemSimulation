@@ -115,11 +115,6 @@ void DrawOrbit(double planetDistance)
 	if ( textureToggle == true ) 
 		glDisable( GL_TEXTURE_2D );
 	
-
-
-
-
-
     GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -133,14 +128,12 @@ void DrawOrbit(double planetDistance)
     glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
 	glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     
-
-
     glColor3f( 0.0, 0.0, 1.0 );
 	GLUquadric *quad;
 	quad = gluNewQuadric();
     
 	gluQuadricTexture(quad, GL_TRUE);
-    gluPartialDisk(quad,planetDistance*DistScale, planetDistance*DistScale+0.05,100,100,0,360);
+    gluPartialDisk(quad,planetDistance, planetDistance+0.05,100,100,0,360);
 	gluDeleteQuadric( quad );
 	
 	if ( textureToggle == true ) 
@@ -158,9 +151,6 @@ void DrawPlanet(Planet *plant)
     HandleRotate();
     glTranslatef ( Xpan, Ypan, Zpan );
 	
-    DrawOrbit(plant->getDistance());
-
-
     float HoursPerDay = plant->getHoursPerDay();
     float DaysPerYear = plant->getDaysPerYear();
 	float DayOfYear = plant->getDayOfYear();
@@ -168,15 +158,14 @@ void DrawPlanet(Planet *plant)
 	float DayIncrement;
 	float hourIncrement;
     int Radius = plant->getRadius();
-    int Distance = plant->getDistance();
+    float Distance = plant->getDistance()*DistScale + 69600*SizeScale;
 	int nrows = plant->getRows();
 	int ncols = plant->getCols();
 	byte* image = plant->getImage();
-
-
 	setTexture(image, nrows, ncols);
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
+    DrawOrbit(Distance);
     if ( spinMode )
     {
         // Update the animation state
@@ -197,7 +186,7 @@ void DrawPlanet(Planet *plant)
     // Draw the Mecury
     // First position it around the sun. Use MecuryYear to determine its position.
     glRotatef( 360.0 * DayOfYear / DaysPerYear, 0.0, 0.0, 1.0 );
-    glTranslatef( Distance*DistScale, 0.0, 0.0 );
+    glTranslatef( Distance, 0.0, 0.0 );
     glPushMatrix();						// Save matrix state
     // Second, rotate the earth on its axis. Use MecuryHour to determine its rotation.
     glRotatef( 360.0 * HourOfDay/HoursPerDay, 0.0, 0.0, 1.0 );
@@ -224,7 +213,6 @@ void DrawPlanet(Planet *plant)
 //	gluQuadricDrawStyle( quad, GLU_FILL );
 //	gluQuadricOrientation( quad, GLU_OUTSIDE );
 	gluQuadricTexture(quad, GL_TRUE);
-	
 	gluSphere(quad, Radius*SizeScale, 100, 100);
     gluDeleteQuadric( quad );
     
@@ -266,7 +254,7 @@ void DrawSun(Planet *sun)
 	int nrows = sun->getRows();
 	int ncols = sun->getCols();
 	byte* image = sun->getImage();
-
+	float radius = sun->getRadius();
 
 	setTexture(image, nrows, ncols);
 	glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
@@ -289,11 +277,10 @@ void DrawSun(Planet *sun)
    //glutSolidSphere
 
 
-
 	GLUquadric *quad;
 	quad = gluNewQuadric();
 	gluQuadricTexture(quad, GL_TRUE);
-	gluSphere(quad, 1.0, 15, 15 );
+	gluSphere(quad, radius, 15, 15 );
 	gluDeleteQuadric( quad );
 	
 }
