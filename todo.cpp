@@ -1,12 +1,7 @@
 //TODO:
 
- - Saturn's ring (tex map)
- - Sun 1/10th its size
- - Planetary orbits use the square root of the distance from the Sun.
- - Jupiter and Saturn are displayed at half their actual size.
  - Play with Starting position
  - Reset to default
- - fix look around
  - Inc/Dec Resolution
 
 
