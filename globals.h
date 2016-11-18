@@ -65,7 +65,7 @@ extern int Resolution;
 /*************************** Function Prototypes *****************************/
 
 
-                    /* Located in callbacks.cpp in order: */
+/* Located in callbacks.cpp in order: */
 
 //Window functions
 void OpenGLInit( void );
@@ -104,9 +104,9 @@ void SubMenuHandlerOptions ( int item );
 
 
 
-                    /* Located in orbits.cpp in order: */
+/* Located in orbits.cpp in order: */
 
-    //Main functions. 
+//Main functions.
 
 //Create auxiliary planet objects Rings and Moon.
 void SetRingsandMoon();
@@ -114,7 +114,7 @@ void SetRingsandMoon();
 //Set light source.
 void SetLightModel();
 
-//Set object material properties. 
+//Set object material properties.
 void SetSunMatProp(Planet *sun);
 void SetPlanetMatProps(Planet *plant);
 void SetMoonMatProps(Planet *Moon);
@@ -131,18 +131,18 @@ void DrawOrbit(double planetDistance);
 void DrawTextString ( string str, double radius);
 
 
-//Set up texture map. 
+//Set up texture map.
 int SetTexture( byte* image, int rows, int ncols );
 
-    //Helper functions
+//Helper functions
 
 //Handle user view.
 void HandleRotate();
 
-//Convert image string files names to character arrays). 
+//Convert image string files names to character arrays).
 char* StringToChar (string str);
 
 
-                    /* Located in bmpRead.cpp in order: */
+/* Located in bmpRead.cpp in order: */
 
 bool LoadBmpFile( const char* filename, int &nrows, int &ncols, byte* &image );

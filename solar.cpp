@@ -38,15 +38,15 @@
  * @details:
  *
  *      This program is intended to be an exploration into the solar system
- *      as well as in applying computer graphics in 3D space, lighting and 
+ *      as well as in applying computer graphics in 3D space, lighting and
  *      texture mapping.
  *
  *      Planetary orbits are scaled by a constant factor of 1.0/37.5 to maintain
- *      a ratio of relative distance. All planets, except the Sun, Jupiter, and 
- *      Saturn, are scaled by a constant factor of 1.0/15945.0. The Sun is 
- *      displayed at 1/10 its actual size. Jupiter and Saturn are displayed at 
+ *      a ratio of relative distance. All planets, except the Sun, Jupiter, and
+ *      Saturn, are scaled by a constant factor of 1.0/15945.0. The Sun is
+ *      displayed at 1/10 its actual size. Jupiter and Saturn are displayed at
  *      half their actual size.
- *  
+ *
  *      The user views the program through a first person camera that
  *      is allowed to move through the space and see the planets in
  *      motion.
@@ -55,12 +55,12 @@
  *      the included readme.txt.
  *
  *      Extra features:
- *      
+ *
  *      Changing user view by left click and drag.
  *      Pop-up menus on right click
  *      Default views: top-down and Sun's point of view.
  *      Toggling planet names and orbit paths
- *      
+ *
  * @par Modifications:
  *
  *		None	- Original Version
@@ -88,9 +88,9 @@
 * Function: main
 *
 * Description:
-*      
-*   Main function of the program. Sets up the viewing screen and sets the 
-*   callback function before permenantly entering the glut main loop, never to 
+*
+*   Main function of the program. Sets up the viewing screen and sets the
+*   callback function before permenantly entering the glut main loop, never to
 *   return.
 *
 * Parameters:
@@ -122,7 +122,7 @@ int main( int argc, char** argv )
     glutSpecialFunc( SpecialKeyFunc );
     glutMouseFunc( MouseFunc );
     glutMotionFunc( MouseDragFunc );
-    
+
     //Callback for graphics image redrawing.
     glutDisplayFunc( Animate );
 

@@ -98,8 +98,8 @@ private:
     int Distance;       //distance from the suns surface
     int Rows;           //number of rows in planet's texture .bmp image
     int Col;            //number of columns in planet's texture .bmp image
-    byte* Image;        //pointer to location in memory of planet's stored texture map 
-       					//read in from .bmp image
+    byte* Image;        //pointer to location in memory of planet's stored texture map
+    //read in from .bmp image
     GLfloat R;          //planet's red value (used for color when no texture map)
     GLfloat G;          //planet's green value (used for color when no texture map)
     GLfloat B;          //planet's blue value (used for color when no texture map)
