@@ -1,15 +1,33 @@
 /******************************************************************************
-*	File:
+*	File: Planet.cpp
 *
-*	Authors:
+*	Authors: Daniel Hodgin and Savoy Schuler
 *
-*	Date:
+*	Date: 11-18-2016
 *
 *	Functions Included:
 *
+*       string getName();
+*       float getHoursPerDay();
+*       float getDaysPerYear();
+*       int getRadius();
+*       int getDistance();
+*       void setDayOfYear(float day);
+*       float getDayOfYear();
+*       void setHourOfDay(float hour);
+*       float getHourOfDay();
+*       int getRows();
+*       int getCols();
+*       byte* getImage();
+*       GLfloat getR();
+*       GLfloat getG();
+*       GLfloat getB();
 *
 *	Description:
-*
+*       This class contains all of the size and positional information
+*       for the planet. Its a series of getters and setters abstract
+*       the data for the planets
+*       
 *
 *	Modified: Original
 *
@@ -27,15 +45,37 @@ using namespace std;
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:Planet
 *
 * Description:
-*
+*       Constructor. Reads in the data for planet
 *
 *
 * Parameters:
+*
+*   name        -Name of planet
+*
+*   hours       -Hours Per Day
+*
+*   days        -Days per year
+*   
+*   radius      -Radius of the planet
+*
+*   distance    -distance from the suns surface
+*
+*   nrow        -rows of the image
+*
+*   cols        -number of columns of image
+*
+*   image       -byte array of image information
+*
+*   r           -Red value
+*
+*   g           -Green value
+*
+*   b           -Blue value
 *
 ******************************************************************************/
 Planet::Planet(string name, int hours, int days, int radius, int distance, int nrow, int cols, byte* image, GLfloat r, GLfloat g, GLfloat b)
@@ -58,15 +98,17 @@ Planet::Planet(string name, int hours, int days, int radius, int distance, int n
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getName
 *
 * Description:
-*
+*       returns name
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 string Planet::getName()
@@ -77,15 +119,17 @@ string Planet::getName()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getHoursPerDay
 *
 * Description:
-*
+*       returns HoursPerDay
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 float Planet::getHoursPerDay()
@@ -96,15 +140,17 @@ float Planet::getHoursPerDay()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getDaysPerYear
 *
 * Description:
-*
+*       returns DaysPerYear
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 float Planet::getDaysPerYear()
@@ -114,15 +160,17 @@ float Planet::getDaysPerYear()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getRadius
 *
 * Description:
-*
+*       returns Radius
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 int Planet::getRadius()
@@ -132,15 +180,17 @@ int Planet::getRadius()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getDistance
 *
 * Description:
-*
+*       returns Distance
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 int Planet::getDistance()
@@ -151,15 +201,17 @@ int Planet::getDistance()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:setDayOfYear
 *
 * Description:
-*
+*       Sets DayOfYear.
 *
 *
 * Parameters:
+*
+*   day        -current day of year
 *
 ******************************************************************************/
 void Planet::setDayOfYear(float day)
@@ -170,15 +222,17 @@ void Planet::setDayOfYear(float day)
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getDayOfYear
 *
 * Description:
-*
+*       returns DayOfYear
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 float Planet::getDayOfYear()
@@ -189,15 +243,17 @@ float Planet::getDayOfYear()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:setHourOfDay
 *
 * Description:
-*
+*       Sets HourOfDay.
 *
 *
 * Parameters:
+*
+*   hour        -current hour of the day
 *
 ******************************************************************************/
 void Planet::setHourOfDay(float hour)
@@ -208,15 +264,17 @@ void Planet::setHourOfDay(float hour)
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getHourOfDay
 *
 * Description:
-*
+*       returns HourOfDay
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 float Planet::getHourOfDay()
@@ -226,15 +284,17 @@ float Planet::getHourOfDay()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getRows
 *
 * Description:
-*
+*       returns Rows
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 int Planet::getRows()
@@ -244,15 +304,17 @@ int Planet::getRows()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getCols
 *
 * Description:
-*
+*       returns Col
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 int Planet::getCols()
@@ -263,15 +325,17 @@ int Planet::getCols()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getImage
 *
 * Description:
-*
+*       returns Image
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 byte* Planet::getImage()
@@ -282,15 +346,17 @@ byte* Planet::getImage()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getR
 *
 * Description:
-*
+*       returns R
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 GLfloat Planet::getR()
@@ -301,15 +367,17 @@ GLfloat Planet::getR()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getG
 *
 * Description:
-*
+*       returns G
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 GLfloat Planet::getG()
@@ -320,15 +388,17 @@ GLfloat Planet::getG()
 
 
 /******************************************************************************
-* Author:
+* Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function:getB
 *
 * Description:
-*
+*       returns B
 *
 *
 * Parameters:
+*   
+*   void        -no parameter
 *
 ******************************************************************************/
 GLfloat Planet::getB()

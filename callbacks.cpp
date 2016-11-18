@@ -233,7 +233,7 @@ void Animate( void )
     if(firstTime == true)
     {
         SetCelestialBodies();
-        setRingsandMoon();
+        SetRingsandMoon();
         firstTime = false;
     }
 
@@ -279,13 +279,13 @@ void Animate( void )
 /******************************************************************************
 * Author: Savoy Schuler and Daniel Hodgin
 *
-* Function: setCelestialBodies
+* Function: SetCelestialBodies
 *
 * Description:
 *
 *	This function creates planet objects for each of the 8 planets, the sun, and
 *	the space backdrop and sets the fields for each. Each planet object is 
-*	addressed by its corresponding global pointer declrated at the top of this 
+*	addressed by its corresponding global pointer declared at the top of this 
 *	file. 
 * 
 *	The planet object has the following fields in order:
