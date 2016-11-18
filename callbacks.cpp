@@ -434,7 +434,7 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 
     	//Slow down animation.
         case '1':
-            speedDown();	
+            SpeedDown();	
             break;
     
 	    //Speed up animation.
@@ -514,12 +514,12 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 
     	//Start or stop animation.
         case 'r':
-            startStopAnimation();
+            StartStopAnimation();
             break;
     
     	//Step animation forward one iteration.
         case 'f':
-            stepAnimation();
+            StepAnimation();
             break;
 
     	//Pan view forward  (Y direction).
@@ -1346,17 +1346,17 @@ void SubMenuHandlerOptions ( int item )
     {
         //Start/suspend animation.
         case 1:
-            startStopAnimation();
+            StartStopAnimation();
             break;
 
         //Single step animation.
         case 2:
-            stepAnimation();
+            StepAnimation();
             break;
 
         //Slow down animation.
         case 3:
-            speedDown();
+            SpeedDown();
             break;
 
         //Speed up animation.
