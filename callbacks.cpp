@@ -1271,7 +1271,7 @@ void MainMenuHandler( int item )
 *
 * Parameters:
 *
-*		void	- No input parameters needed.
+*		item	- the selected option
 *
 ******************************************************************************/
 void SubMenuHandlerControls ( int item )
@@ -1285,27 +1285,27 @@ void SubMenuHandlerControls ( int item )
 
         //Rotate view up, bound to avoid control inversion.
         case 2:
-            Xrot = Xrot - 1;
+            Xrot = Xrot - 3;
             if(Xrot < -180)
                 Xrot = -180;
             break;
 
         //Rotate view down, bound to avoid control inversion.
         case 3:
-            Xrot = Xrot + 1;
+            Xrot = Xrot + 3;
             if(Xrot > 0)
                 Xrot = 0;
             break;
 
         //Rotate view left.
         case 4:
-            Zrot = Zrot - 1;
+            Zrot = Zrot - 3;
             break;
 
         //Rotate the view right.
         case 5:
-            Zrot = Zrot + 1;
-
+            Zrot = Zrot + 3;
+            break;
         //Pan view left (X direction).
         case 6:
             MoveLeft();
@@ -1348,15 +1348,19 @@ void SubMenuHandlerControls ( int item )
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: SubMenuHandlerOptions
 *
 * Description:
 *
+*   This function is designed to handle user selection in the "Options" submenu.
+*   A submenu options apply to the objects in the program
 *
 *
 * Parameters:
+*
+*		item	- the selected option
 *
 ******************************************************************************/
 void SubMenuHandlerOptions ( int item )
