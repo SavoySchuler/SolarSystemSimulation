@@ -338,7 +338,7 @@ void SetMoonMatProps(Planet *Moon)
         GLfloat mat_shininess = { 100.0 };
         GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
-        GLfloat color[] = {Moon->getR(), Moon->getG(), Moon->getB()};           //##SAVOY
+        GLfloat color[] = {Moon->getR(), Moon->getG(), Moon->getB()};           
         glColor3f(Moon->getR(), Moon->getG(), Moon->getB());
 
         glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
