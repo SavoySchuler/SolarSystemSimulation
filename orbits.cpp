@@ -196,27 +196,33 @@ void SetLightModel()
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function: SetSunLMatProp
+* Function: SetSunMatProp
 *
 * Description:
 *
-*
+*   Function used for setting material properties for the sun object.
 *
 * Parameters:
+*
+*       sun - Planet object that holds the drawing information for the Sun.
 *
 ******************************************************************************/
 void SetSunMatProp(Planet *sun)
 {
-    glColor3f( 1.0, 1.0, 1.0 );
-
+    //Material properties for displaying without texture map.
     if ( textureToggle == false )
     {
-        GLfloat mat_shininess = { 100.0 };
+        //Set color arrays for material properties.
         GLfloat mat_emission[] = {1.0, 1.0, 0.0, 1.0};
+        GLfloat mat_shininess = { 100.0 };
 
-        GLfloat color[] = {sun->getR(), sun->getG(), sun->getB()};              //##SAVOY
+        //Derive material property colors from object RGB fields.  
+        GLfloat color[] = {sun->getR(), sun->getG(), sun->getB()};              
+        
+        //Derive object color from object RGB fields.
         glColor3f( sun->getR(), sun->getG(), sun->getB() );
 
+        //Set material properties using color arrays.
         glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
         glMaterialfv( GL_FRONT, GL_AMBIENT, color );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
@@ -224,14 +230,21 @@ void SetSunMatProp(Planet *sun)
         glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     }
 
+    //Material properties for displaying with texture map.
     else
-    {
+    {   
+        /*Set object color to white for best display with texture map and 
+        lighting.*/ 
+        glColor3f( 1.0, 1.0, 1.0 );
+    
+        //Set color arrays for material properties.
         GLfloat mat_specular[] = { 0.0, 1.0, 0.0, 1.0 };
         GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
         GLfloat mat_ambient[] = { 0.5, 1.0, 0.0, 1.0 };
-        GLfloat mat_shininess = { 100.0 };
         GLfloat mat_emission[] = {1.0, 1.0, 0.0, 1.0};
+        GLfloat mat_shininess = { 100.0 };
 
+        //Set material properties using color arrays.
         glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
         glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
@@ -249,23 +262,29 @@ void SetSunMatProp(Planet *sun)
 *
 * Description:
 *
-*
+*   Function used for setting material properties of the planets.
 *
 * Parameters:
 *
+*       planet - Planetbject that holds the drawing information for a planet.
+*
 ******************************************************************************/
-void SetPlanetMatProps(Planet *plant)
+void SetPlanetMatProps(Planet *planet)
 {
-    glColor3f( 1.0, 1.0, 1.0 );
-
+    //Material properties for displaying without texture map.
     if ( textureToggle == false )
     {
-        GLfloat mat_shininess = { 100.0 };
+        //Set color arrays for material properties.
         GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+        GLfloat mat_shininess = { 100.0 };
+        
+        //Derive material property colors from object RGB fields. 
+        GLfloat color[] = {planet->getR(), planet->getG(), planet->getB()};     
+      
+        //Derive object color from object RGB fields.
+        glColor3f( planet->getR(), planet->getG(), planet->getB() );
 
-        GLfloat color[] = {plant->getR(), plant->getG(), plant->getB()};        //##SAVOY
-        glColor3f( plant->getR(), plant->getG(), plant->getB() );
-
+        //Set material properties using color arrays.
         glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
         glMaterialfv( GL_FRONT, GL_AMBIENT, color );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
@@ -273,14 +292,21 @@ void SetPlanetMatProps(Planet *plant)
         glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     }
 
+    //Material properties for displaying with texture map.
     else
     {
+        /*Set object color to white for best display with texture map and 
+        lighting.*/ 
+        glColor3f( 1.0, 1.0, 1.0 );   
+
+        //Set color arrays for material properties.        
         GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
         GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
         GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
         GLfloat mat_shininess = { 100.0 };
         GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
+        //Set material properties using color arrays.
         glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
         glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
@@ -571,19 +597,19 @@ void DrawSun(Planet *sun)
 *   object and uses that data for the drawing information.
 *
 * Parameters:
-*   plant    -Planet object that contains all the information needed for drawing
+*   planet    -Planet object that contains all the information needed for drawing
 *
 ******************************************************************************/
-void DrawPlanet(Planet *plant)
+void DrawPlanet(Planet *planet)
 {    
-    float HoursPerDay = plant->getHoursPerDay();
-    float DaysPerYear = plant->getDaysPerYear();
-    float DayOfYear = plant->getDayOfYear();
-    float HourOfDay = plant->getHourOfDay();
+    float HoursPerDay = planet->getHoursPerDay();
+    float DaysPerYear = planet->getDaysPerYear();
+    float DayOfYear = planet->getDayOfYear();
+    float HourOfDay = planet->getHourOfDay();
     float DayIncrement;
     float hourIncrement;
-    int Radius = plant->getRadius();
-    float Distance = plant->getDistance()*DistScale + 69600*SizeScale;
+    int Radius = planet->getRadius();
+    float Distance = planet->getDistance()*DistScale + 69600*SizeScale;
 
     //Recenter drawing location
     glLoadIdentity();
@@ -610,13 +636,13 @@ void DrawPlanet(Planet *plant)
         HourOfDay += hourIncrement;
     
         //Save new times in planet object
-        plant->setDayOfYear(DayOfYear);
-        plant->setHourOfDay(HourOfDay);
+        planet->setDayOfYear(DayOfYear);
+        planet->setHourOfDay(HourOfDay);
     }
 
     //Get Day and Hour.
-    DayOfYear = plant->getDayOfYear();
-    HourOfDay = plant->getHourOfDay();
+    DayOfYear = planet->getDayOfYear();
+    HourOfDay = planet->getHourOfDay();
 
 
     //Draw the Planet
@@ -637,15 +663,15 @@ void DrawPlanet(Planet *plant)
     
     //Draw names if names are on.
     if (planetNames == true)
-        DrawTextString(plant->getName(), plant->getRadius());
+        DrawTextString(planet->getName(), planet->getRadius());
 
     //Set planets light properties.
-    SetPlanetMatProps(plant);
+    SetPlanetMatProps(planet);
 
     //Get the image and the rows and columns of the image.
-    int nrows = plant->getRows();
-    int ncols = plant->getCols();
-    byte* image = plant->getImage();
+    int nrows = planet->getRows();
+    int ncols = planet->getCols();
+    byte* image = planet->getImage();
     
     //Set the texture of the planet.
     SetTexture(image, nrows, ncols);
@@ -668,11 +694,11 @@ void DrawPlanet(Planet *plant)
 
     /*special cases for Saturn and Earth. If Earth draw moon. 
       If Saturn draw rings*/
-    if(plant->getName() == "Earth")
+    if(planet->getName() == "Earth")
     {
         DrawMoon(DayOfYear);
     }
-    else if(plant->getName() == "Saturn")
+    else if(planet->getName() == "Saturn")
     {
         DrawRings(Radius);
     }
