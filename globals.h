@@ -28,7 +28,7 @@ typedef unsigned char byte;
 
 /******************************* Constants **********************************/
 
-// these three variables control the animation's state and speed.
+//These three variables control the animation's state and speed.
 const float DistScale = 1.0/37.5;
 const float SizeScale = 1.0/15945.0;
 const float PI = 3.14159265358979323846264;
@@ -72,7 +72,7 @@ extern int Resolution;
 /*************************** Function Prototypes *****************************/
 
 
-/* Located in callbacks.cpp in order: */
+                    /* Located in callbacks.cpp in order: */
 
 //Window functions
 void OpenGLInit( void );
@@ -111,16 +111,28 @@ void SubMenuHandlerOptions ( int item );
 
 
 
-/* Located in orbits.cpp in order: */
+                    /* Located in orbits.cpp in order: */
 
-void DrawSun();
+    //Main functions. 
+
+//Create auxiliary planet objects Rings and Moon.
+void SetRingsandMoon();
+
+//Set light source.
 void SetLightModel();
-void HandleRotate();
-void DrawMoon(int DayOfYear);
-void DrawPlanet(Planet *plant);
+
+//Set object material properties. 
+void SetSunMatProp(Planet *sun);
+void SetPlanetMatProps(Planet *plant);
+void SetMoonMatProps(Planet *Moon);
+void SetRingsMatProps(Planet *Rings);
+void SetOrbitMatProps();
+
+//Draw objects.
+void DrawSpace(Planet *space);
 void DrawSun(Planet *sun);
-void initTextureMap( char *filename );
-void makeTexture( GLubyte image[64][64][3] );
+void DrawPlanet(Planet *plant);
+void DrawMoon(int DayOfYear);
 void DrawTextString( string str, double radius);
 char * stringToChar (string str);
 int setTexture( byte* image, int rows, int ncols );
@@ -133,6 +145,18 @@ void SetSunLightProp(Planet *sun);
 void SetRingsandMoon();
 
 
-/* Located in bmpRead.cpp in order: */
+//Set up texture map. 
+int SetTexture( byte* image, int rows, int ncols );
+
+    //Helper functions
+
+//Handle user view.
+void HandleRotate();
+
+//Convert image string files names to character arrays). 
+char* StringToChar (string str);
+
+
+                    /* Located in bmpRead.cpp in order: */
 
 bool LoadBmpFile( const char* filename, int &nrows, int &ncols, byte* &image );

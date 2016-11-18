@@ -8,14 +8,20 @@
 *	Description:
 *
 *		This file contains all of the draw function for the planets. It handles
-*       all the transforms, rotations, as well as setting the planets in the
-*       proper places around the sun.
-*
+*       setting lighting and light source location as well as material 
+*       properties. 
+*        
+*       This file includes functions for handling transforms, rotations, as well
+*       as setting the planets in the proper places around the sun.
 *
 *	File Order and Structure:
 *
-*		-Helper function
-*       -Draw function followed by corresponding property fucntions
+*       - Create auxiliary planet objects Rings and Moon.
+*       - Set light source.
+*       - Set object material properties. 
+*       - Draw objects.
+*       - Set up texture map. 
+*       - Helper functions
 *
 *	Modified: 
 *
@@ -23,6 +29,41 @@
 *
 *	Functions Included:
 *		
+*           //Create auxiliary planet objects Rings and Moon.
+*       
+*       void SetRingsandMoon();
+*
+*           //Set light source.
+*
+*       void SetLightModel();
+*
+*           //Set object material properties. 
+*
+*       void SetSunMatProp(Planet *sun);
+*       void SetPlanetMatProps(Planet *plant);
+*       void SetMoonMatProps(Planet *Moon);
+*       void SetRingsMatProps(Planet *Rings);
+*       void SetOrbitMatProps();
+*
+*           //Draw objects.
+*    
+*       void DrawSpace(Planet *space);
+*       void DrawSun(Planet *sun);
+*       void DrawPlanet(Planet *plant);
+*       void DrawMoon(int DayOfYear);
+*       void DrawTextString( string str, double radius);
+*
+*           //Set up texture map. 
+*        
+*       int SetTexture( byte* image, int rows, int ncols );
+*
+*           //Handle user view.
+*
+*       void HandleRotate();
+*
+*           //Convert image string files names to character arrays). 
+*
+*       char* stringToChar (string str);
 *
 ******************************************************************************/
 
@@ -34,24 +75,50 @@
 #include "Planet.h"
 #include "globals.h"
 
+/********************************* Globals ***********************************/
+
+//Global pointers to auxiliary planet objects.
+
 Planet *Moon;
 Planet *Rings;
+
+
 
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function: setRingsandMoon
+* Function: setCelestialBodies
 *
 * Description:
-*	This function initializes the Rings of Saturn and Moon. It also loads the
-*   bmp images for both.
+*
+*	This function creates planet objects for Saturn's rings and Earth's moon and
+*   sets the fields for each. Each planet object is addressed by its 
+*   corresponding global pointer declared at the top of this file. 
+*   SetRingsandMoon also handles calling functions for reading and storing each 
+*   objects texure map.
+* 
+*	The planet object has the following fields in order:
+*	
+*		name	- planet name
+*		hours	- planet's hours in a day
+*		days	- planet's days in a year
+*		radius	- planet's raduis
+*		row 	- number of rows in planet's texture .bmp image
+*		cols	- number of columns in planet's texture .bmp image
+*		image	- pointer to location in memory of planet's stored texture map 
+*					read in from .bmp image
+*		r		- planet's red value (used for color when no texture map)
+*		g		- planet's green value (used for color when no texture map)
+*		b		- planet's blue value (used for color when no texture map)
 *
 * Parameters:
-*   void            -no parameters
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
-void setRingsandMoon()
+void SetRingsandMoon()
 {
+
 	/*Variables needed for storing a pointer to and dimensions of a planet's 
 	texture map. */ 
     int nrows, ncols;
@@ -64,15 +131,78 @@ void setRingsandMoon()
 	//Load a planet's texure map into memory.
 	//Construct a planet object pointed to by a global pointer (planet's name).
 
-    filename = stringToChar("moon.bmp");
+    filename = StringToChar("moon.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Moon = new Planet("Moon", 0, 0, 0, 0, nrows, ncols, image, 1.0, 1.0, 1.0 );
 
-
-    filename = stringToChar("saturnrings.bmp");
+    filename = StringToChar("saturnrings.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Rings = new Planet("Saturn Rings", 0, 0, 0, 0, nrows, ncols, image, 1.0, 0.75, 0.0 );
 }
+
+
+
+/******************************************************************************
+* Author: Daniel Hodgin and Savoy Schuler
+*
+* Function: SetLightModel
+*
+* Description:
+*
+*   Set the position and properties of the point light source.
+*
+* Parameters:
+*
+*		void	- No input parameters needed.
+*
+******************************************************************************/
+void SetLightModel()
+{
+    //Reset position.
+    glLoadIdentity();
+    
+    //Handle rotion based on user view.
+    HandleRotate();
+
+    //Handle translation based on user view.
+    glTranslatef ( Xpan, Ypan, Zpan );
+
+    /*Set value arrays for ambient, diffuse, and specular light properties and 
+    position.*/
+    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
+
+    //Set the lighting properties.
+    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
+    glLightfv( GL_LIGHT0, GL_AMBIENT, light_ambient );
+    glLightfv( GL_LIGHT0, GL_DIFFUSE, light_diffuse );
+    glLightfv( GL_LIGHT0, GL_SPECULAR, light_specular );
+
+    //Enable light.
+    glEnable( GL_LIGHT0 );
+
+   
+    //glColor3f ( 0.5, 0.5, 0.5 );
+    glEnable( GL_NORMALIZE );    // automatic normalization of normals
+    glEnable( GL_CULL_FACE );    // eliminate backfacing polygons
+    glCullFace( GL_BACK );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -106,7 +236,7 @@ void HandleRotate()
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function: stringToChar
+* Function: StringToChar
 *
 * Description:
 *   This function converts a string into a * char
@@ -114,7 +244,7 @@ void HandleRotate()
 * Parameters:
 *   str         -string to convert to a char *
 ******************************************************************************/
-char * stringToChar (string str)
+char * StringToChar (string str)
 {
     //Allocate memory.
     char * filename = new char[str.size() + 1];
@@ -153,10 +283,10 @@ void DrawRings(double planetRadius)
     glDisable( GL_CULL_FACE );
 
     //Set the rings lighting properties.
-    SetRingsLightingProps(Rings);
+    SetRingsMatProps(Rings);
 
     //Set the rings texture properties.
-    setTexture(image, nrows, ncols);
+    SetTexture(image, nrows, ncols);
 
     //Combine texture mapping with lighting material properties.
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
@@ -194,7 +324,7 @@ void DrawRings(double planetRadius)
 * Parameters:
 *
 ******************************************************************************/
-void SetRingsLightingProps(Planet *Rings)
+void SetRingsMatProps(Planet *Rings)
 {
     glColor3f( 1.0, 1.0, 1.0 );
 
@@ -259,10 +389,10 @@ void DrawMoon(int DayOfYear)
     glTranslatef( 0.7, 0.0, 0.0 );
 
     //Set the moons lighting properties.
-    SetMoonLightProps(Moon);
+    SetMoonMatProps(Moon);
 
     //Set the moons textures properties.
-    setTexture(image, nrows, ncols);
+    SetTexture(image, nrows, ncols);
 
     //Combine texture and lighting properties.
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
@@ -288,7 +418,7 @@ void DrawMoon(int DayOfYear)
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function: SetMoonLightProps
+* Function: SetMoonMatProps
 *
 * Description:
 *
@@ -297,7 +427,7 @@ void DrawMoon(int DayOfYear)
 * Parameters:
 *
 ******************************************************************************/
-void SetMoonLightProps(Planet *Moon)
+void SetMoonMatProps(Planet *Moon)
 {
     glColor3f( 1.0, 1.0, 1.0 );
 
@@ -357,7 +487,7 @@ void DrawOrbit(double planetDistance)
         glDisable( GL_TEXTURE_2D );
 
     //Set orbits light properties.
-    SetOrbitLightProps();
+    SetOrbitMatProps();
 
     //Set color to blue.
     glColor3f( 0.0, 0.0, 1.0 );
@@ -386,7 +516,7 @@ void DrawOrbit(double planetDistance)
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function: SetOrbitLightProps
+* Function: SetOrbitMatProps
 *
 * Description:
 *
@@ -395,7 +525,7 @@ void DrawOrbit(double planetDistance)
 * Parameters:
 *
 ******************************************************************************/
-void SetOrbitLightProps()
+void SetOrbitMatProps()
 {
     GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
@@ -493,7 +623,7 @@ void DrawPlanet(Planet *plant)
         DrawTextString(plant->getName(), plant->getRadius());
 
     //Set planets light properties.
-    SetPlanetLightProps(plant);
+    SetPlanetMatProps(plant);
 
     //Get the image and the rows and columns of the image.
     int nrows = plant->getRows();
@@ -501,7 +631,7 @@ void DrawPlanet(Planet *plant)
     byte* image = plant->getImage();
     
     //Set the texture of the planet.
-    setTexture(image, nrows, ncols);
+    SetTexture(image, nrows, ncols);
 
     //Combine the texture and lighting propertites
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
@@ -540,7 +670,7 @@ void DrawPlanet(Planet *plant)
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function: SetPlanetLightProps
+* Function: SetPlanetMatProps
 *
 * Description:
 *
@@ -549,7 +679,7 @@ void DrawPlanet(Planet *plant)
 * Parameters:
 *
 ******************************************************************************/
-void SetPlanetLightProps(Planet *plant)
+void SetPlanetMatProps(Planet *plant)
 {
     glColor3f( 1.0, 1.0, 1.0 );
 
@@ -616,13 +746,14 @@ void DrawSun(Planet *sun)
     if ( spinMode )
     {
         hours += AnimateIncrement;
+        hours = hours;
     }
     
     //Set suns lighting properties.
-    SetSunLightProp(sun);
+    SetSunMatProp(sun);
 
     //Set the suns textures.
-    setTexture(image, nrows, ncols);
+    SetTexture(image, nrows, ncols);
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
     // Clear the current matrix (Modelview)
@@ -657,7 +788,7 @@ void DrawSun(Planet *sun)
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function: SetSunLightProp
+* Function: SetSunLMatProp
 *
 * Description:
 *
@@ -666,7 +797,7 @@ void DrawSun(Planet *sun)
 * Parameters:
 *
 ******************************************************************************/
-void SetSunLightProp(Planet *sun)
+void SetSunMatProp(Planet *sun)
 {
     glColor3f( 1.0, 1.0, 1.0 );
 
@@ -703,50 +834,7 @@ void SetSunLightProp(Planet *sun)
 
 
 
-/******************************************************************************
-* Author: Daniel Hodgin and Savoy Schuler
-*
-* Function: SetLightModel
-*
-* Description:
-*   Set the position and properties of the light point soure
-*
-*
-* Parameters:
-*   void        -no parameters
-******************************************************************************/
-void SetLightModel()
-{
-    //Reset position.
-    glLoadIdentity();
-    
-    //Handle rotion based on user view.
-    HandleRotate();
 
-    //Handle translation based on user view.
-    glTranslatef ( Xpan, Ypan, Zpan );
-
-    //set ambient, diffuse, specular, position values
-    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
-    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
-
-    //set the lighting properties
-    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
-    glLightfv( GL_LIGHT0, GL_AMBIENT, light_ambient );
-    glLightfv( GL_LIGHT0, GL_DIFFUSE, light_diffuse );
-    glLightfv( GL_LIGHT0, GL_SPECULAR, light_specular );
-
-    //enable light
-    glEnable( GL_LIGHT0 );
-
-    // glEnable( GL_DEPTH_TEST );
-    glColor3f ( 0.5, 0.5, 0.5 );
-    glEnable( GL_NORMALIZE );    // automatic normalization of normals
-    glEnable( GL_CULL_FACE );    // eliminate backfacing polygons
-    glCullFace( GL_BACK );
-}
 
 
 
@@ -786,7 +874,7 @@ void DrawSpace(Planet *space)
     byte* image = space->getImage();
 
     //set texture
-    setTexture(image, nrows, ncols);
+    SetTexture(image, nrows, ncols);
 
     //combine and light and texture properties
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
@@ -823,7 +911,7 @@ void DrawSpace(Planet *space)
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function: setTexture
+* Function: SetTexture
 *
 * Description:
 *
@@ -834,7 +922,7 @@ void DrawSpace(Planet *space)
 ******************************************************************************/
 // read texture map from BMP file
 // Ref: Buss, 3D Computer Graphics, 2003.
-int setTexture( byte* image, int nrows, int ncols )
+int SetTexture( byte* image, int nrows, int ncols )
 {
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
