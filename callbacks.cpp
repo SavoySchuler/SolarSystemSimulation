@@ -1038,7 +1038,9 @@ void SpecialKeyFunc( int Key, int x, int y )
 * Function: MouseFunc
 *
 * Description:
-*
+*       This function toggles a IsClicked boolean that is used in the 
+*       mousedrag function. It also calls the mouse dragged function
+*       one last time on mouse release. That resets the mousedrag function
 *	
 *
 * Parameters:
@@ -1052,7 +1054,7 @@ void SpecialKeyFunc( int Key, int x, int y )
 *		y	- y screen coordinate of the mouse at the time of the button click
 *
 ******************************************************************************/
-void MouseFunc(int button, int state, int x, int y)                                 //##DAN
+void MouseFunc(int button, int state, int x, int y)                              
 {
     //Check that left button has been clicked (avoid conflict with pop-up menu).
     if(button == 0)
@@ -1082,7 +1084,15 @@ void MouseFunc(int button, int state, int x, int y)                             
 * Function: MouseDragFunc
 *
 * Description:
-*
+*       This function handles looking around in the program by mouse movements
+*       It uses two static ints to keep last x and y positions. 
+*       The function works by calculating the difference in x's and y's
+*       then subtracting that (divided by ten) from the rotation value.
+*       then save the x and y value that just came in.
+*       10000 is used as dummy value to denote that it is the first time that
+*       the function is call after a mouse is pressed down. If this function
+*       is called when MouseClicked is false it sets x and y to the dummy
+*       values
 *
 *
 * Parameters:
@@ -1092,25 +1102,33 @@ void MouseFunc(int button, int state, int x, int y)                             
 *		y	- the y screen coordinate of the mouse
 *
 ******************************************************************************/
-void MouseDragFunc(int x, int y)                                                     //##DAN
+void MouseDragFunc(int x, int y)                                                 
 {
+    //Initialize statics.
     static int lastX = 10000;
     static int lastY = 10000;
     int xDiff;
     int yDiff;
+    
+    //Invert screen height to be bottom to top.
     y = ScreenHeight - y;
+
+    //If previous x and y contain dummy value set to x and y passed in.
     if(lastX == 10000)
     {
         lastX = x;
         lastY = y;
     }
 
+    //Calculate x and y differences
     xDiff = x - lastX;
     yDiff = y - lastY;
 
+    //Subrtacted values (divided by 10) from rotation values.
     Zrot -= xDiff/10;
     Xrot -= yDiff/10;
 
+    //If MouseClicked is true save x and y else set the dummy values.
     if(MouseClicked)
     {
         lastX = x;

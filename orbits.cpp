@@ -616,7 +616,6 @@ void DrawSun(Planet *sun)
     if ( spinMode )
     {
         hours += AnimateIncrement;
-        hours = hours % 25;
     }
     
     //Set suns lighting properties.
