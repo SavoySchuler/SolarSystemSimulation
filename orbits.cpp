@@ -362,8 +362,8 @@ void SetMoonMatProps(Planet *Moon)
         glColor3f( 1.0, 1.0, 1.0 );
 
         //Set color arrays for material properties.
-        GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
-        GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
+        GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+        GLfloat mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
         GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
         GLfloat mat_shininess = { 100.0 };
         GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
@@ -729,7 +729,7 @@ void DrawPlanet(Planet *planet)
     //Delete the Quadric.
     gluDeleteQuadric( quad );
 
-    /*special cases for Saturn and Earth. If Earth draw moon.
+    /*Special cases for Saturn and Earth. If Earth draw moon.
       If Saturn draw rings.*/
     if(planet->getName() == "Earth")
     {
@@ -784,10 +784,6 @@ void DrawMoon(int DayOfYear)
     //Combine texture and lighting properties.
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
-    //Draw name if names toggel is set to true.
-    if (planetNames == true)
-        DrawTextString(Moon->getName(), Moon->getRadius());
-
     //Create quadric object.
     GLUquadric *quad;
     quad = gluNewQuadric();
@@ -798,6 +794,10 @@ void DrawMoon(int DayOfYear)
     //Draw moon.
     gluSphere(quad, 0.1, Resolution, Resolution );
     gluDeleteQuadric( quad );
+    
+    //Draw name if names toggel is set to true.
+    if (planetNames == true)
+        DrawTextString(Moon->getName(), Moon->getRadius());
 }
 
 
