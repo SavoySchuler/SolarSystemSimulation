@@ -36,12 +36,24 @@
  *		<none>
  *
  * @details:
+ *      This program is intended to be an exploration into the solar system
+ *      as well as applying computer graphics in 3D space. It also is an
+ *      application in lighting and texture mapping.
  *
+ *      The planets are sized, move, and placed based of scaled version
+ *      of the planets attributes.
+ *  
+ *      The user is put into the program as a first person camera that
+ *      is allowed to move through the space and see the planets in
+ *      motion.
  *
- *
- *
- *
- *
+ *      Extra features:
+ *      
+ *      Changing user view by right click and drag.
+ *      Pop-up menus on left click
+ *      Default views.(Top Down and Suns Point of view)
+ *      Toggling Names and orbit paths
+ *      
  *
  * @par Modifications:
  *
@@ -65,12 +77,12 @@
 
 
 /******************************************************************************
-* Author: Savoy Schuler
+* Author: Savoy Schuler and Daniel Hodgin
 *
 * Function: main
 *
 * Description:
-*
+*       Sets up the viewing screen and sets the callback function
 *
 *
 * Parameters:

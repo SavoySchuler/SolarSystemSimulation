@@ -1,15 +1,14 @@
 /******************************************************************************
-*	File:
+*	File: globals.h
 *
-*	Authors:
+*	Authors: Daniel Hodgin and Savoy Schuler
 *
-*	Date:
-*
-*	Functions Included:
-*
+*	Date:  11-18-2016
 *
 *	Description:
-*
+*       Function prototype for the functions in orbits.cpp and callbacks.cpp.
+*       Prototypes seperated by file.
+*       Also, contains the global variables.
 *
 *	Modified: Original
 *
@@ -136,6 +135,7 @@ void DrawMoon (int DayOfYear);
 void DrawRings (double planetRadius);
 void DrawOrbit(double planetDistance);
 void DrawTextString ( string str, double radius);
+
 
 //Set up texture map. 
 int SetTexture( byte* image, int rows, int ncols );
