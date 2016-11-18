@@ -84,6 +84,8 @@
 
 using namespace std;
 
+/********************************* Globals ***********************************/
+
 //Globals for animate style.
 GLenum spinMode = GL_TRUE;
 GLenum singleStep = GL_TRUE;
