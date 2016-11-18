@@ -1130,6 +1130,15 @@ void MouseDragFunc(int x, int y)
     Zrot -= xDiff/10;
     Xrot -= yDiff/10;
 
+    
+    if(Xrot < -180)
+    {
+        Xrot = -180;
+    }
+    else if (Xrot > 0)
+    {
+        Xrot = 0;
+    }
     //If MouseClicked is true save x and y else set the dummy values.
     if(MouseClicked)
     {
