@@ -324,7 +324,7 @@ void SetPlanetMatProps(Planet *planet)
 *
 * Description:
 *
-*
+*   Function used for setting material properties of Earth's moon.
 *
 * Parameters:
 *
