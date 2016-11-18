@@ -550,7 +550,7 @@ void DrawSun(Planet *sun)
         hours = hours;
     }
     
-    //Set suns lighting properties.
+    //Set suns material properties.
     SetSunMatProp(sun);
 
     //Set the suns textures.
@@ -665,7 +665,8 @@ void DrawPlanet(Planet *planet)
     if (planetNames == true)
         DrawTextString(planet->getName(), planet->getRadius());
 
-    //Set planets light properties.
+
+    //Set planets Material properties.
     SetPlanetMatProps(planet);
 
     //Get the image and the rows and columns of the image.
@@ -736,7 +737,7 @@ void DrawMoon(int DayOfYear)
     //Translate the moon away from the earth.
     glTranslatef( 0.7, 0.0, 0.0 );
 
-    //Set the moons lighting properties.
+    //Set the moons material properties.
     SetMoonMatProps(Moon);
 
     //Set the moons textures properties.
@@ -786,7 +787,7 @@ void DrawRings(double planetRadius)
     //Enable drawing the back side of polygons
     glDisable( GL_CULL_FACE );
 
-    //Set the rings lighting properties.
+    //Set the rings material properties.
     SetRingsMatProps(Rings);
 
     //Set the rings texture properties.
@@ -837,7 +838,7 @@ void DrawOrbit(double planetDistance)
     if ( textureToggle == true )
         glDisable( GL_TEXTURE_2D );
 
-    //Set orbits light properties.
+    //Set orbits material properties.
     SetOrbitMatProps();
 
     //Set color to blue.
