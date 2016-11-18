@@ -36,22 +36,22 @@
 *			//Cycle functions
 *
 *		void Animate( void );
-*		void setCelestialBodies();
+*		void SetCelestialBodies();
 *		
 *			//Key press functions and handling
 *
 *		void KeyPressFunc( unsigned char Key, int x, int y );
-*		void moveBackward();
-*		void moveForward();
-*		void moveLeft();
-*		void moveRight();
-*		void moveToStartView();
-*		void moveToTopDownView();
-*		void resetPlanets();
-*		void speedUp( void );
-*		void speedDown( void );
-*		void startStopAnimation( void );
-*		void stepAnimation( void );
+*		void MoveBackward();
+*		void MoveForward();
+*		void MoveLeft();
+*		void MoveRight();
+*		void MoveToStartView();
+*		void MoveToTopDownView();
+*		void ResetPlanets();
+*		void SpeedUp( void );
+*		void SpeedDown( void );
+*		void StartStopAnimation( void );
+*		void StepAnimation( void );
 *		
 *			//Special key press functions and handling
 *
@@ -158,14 +158,20 @@ void OpenGLInit( void )
 
 
 /******************************************************************************
-* Author: Savoy Schuler and Daniel Hodgin
+* Author: Dr. John Weiss
 *
 * Function: ResizeWindow
 *
-* Description:
+* Description: 
 *
 *	ResizeWindow is called when the window is resized. This function ensures
 *	the program behaves well with the window manager and different window sizes.
+*
+* Modified by: Savoy Schuler and Daniel Hodgin
+*
+* Modifications: 
+*
+*   Added screen height update for use with mouse callbacks.
 *
 * Parameters:
 *
@@ -226,7 +232,7 @@ void Animate( void )
 	objects.*/
     if(firstTime == true)
     {
-        setCelestialBodies();
+        SetCelestialBodies();
         setRingsandMoon();
         firstTime = false;
     }
@@ -251,13 +257,6 @@ void Animate( void )
     glLoadIdentity();
     glTranslatef ( Xpan, Ypan, Zpan );
     HandleRotate();
-
-	
-																				//FLAG FOR COMMENT BY DAN
-    glColor3f( 0.3, 0.7, 0.3 );
-    GLUquadric *quad = gluNewQuadric();
-    gluCylinder(quad,0.5,0.5,0.5,0.5,0.5);
-
 
     //Flush the pipeline, and swap the buffers.
     glFlush();
@@ -308,7 +307,7 @@ void Animate( void )
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void setCelestialBodies()
+void SetCelestialBodies()
 {
 	/*Variables needed for storing a pointer to and dimensions of a planet's 
 	texture map. */ 
@@ -393,18 +392,18 @@ void setCelestialBodies()
 *		d             - Pan right in Y direction
 *		w             - Pan forward in Y direction
 *		s             - Pan backward in Y direction
-*		q             - Pan down in Z direction
 *		e             - Pan up in Z direction
+*		q             - Pan down in Z direction
 *	                                   
 *		Options:                                   
 *	
 *		r             - Start/suspend animation
 *		f             - Single step animation
-*		1             - Speed Down Animation
-*		2             - Speed Up Animation
-*		3             - Smooth/Flat Shading
-*		4             - Wireframe/Polygon Rendering
-*		5             - Texture Mapping
+*		1             - Slow down animation
+*		2             - Speed up animation
+*		3             - Smooth/flat shading
+*		4             - Wireframe/polygon rendering
+*		5             - Texture mapping
 *		6             - Lighting
 *		7             - Default view
 *		8             - Top-down view
@@ -428,112 +427,137 @@ void setCelestialBodies()
 // glutKeyboardFunc is called to set this function to handle normal key presses.
 void KeyPressFunc( unsigned char Key, int x, int y )
 {
+
+    //Case user input using switch statement. 
     switch ( Key )
     {
-	//Slow down animation.
-    case '1':
-        speedDown();	
-        break;
-	//Speed up animation.
-    case '2':
-        speedUp();
-        break;
-	//Toggle flat or smooth shading.
-    case '3':
-        ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
-        break;
-	//Toffle wireframe or polygon rendering mode.
-    case '4':
-        ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        break;
-	//Toggle texture mapping on or off.
-    case '5':
-        if (textureToggle == false)
-        {
-            glEnable( GL_TEXTURE_2D );
-            textureToggle = true;
-        }
-        else
-        {
-            glDisable( GL_TEXTURE_2D );
-            textureToggle = false;
-        }
-        break;
-	//Toggle light source on or off.
-    case '6':
-        ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
-        break;
-	//Reset camera to original position.
-    case '7':
-        moveToStartView();
-        break;
-	//Set camera to top-down view.
-    case '8':
-        moveToTopDownView();
-        break;
-	//Reset planet's to original position.
-    case '9':
-        resetPlanets();
-        break;
-	//Toggle drawing of orbital paths.
-    case '0':
-        paths = !paths;
-        break;
-	//Toggle display of planet and moon names.
-    case 'p':
-        planetNames = !planetNames;
-        break;
-	//Increase resolution (number of slices and stacks) of planets, sun, and moon.
-    case '=':
-        if (Resolution <= 9)
-            Resolution += 1;
-        else if (Resolution <= 145)
-            Resolution += 5;
-        break;
-	//Decrease resolution (number of slices and stacks) of planets, sun, and moon.
-    case '-':
-        if (Resolution >= 15)
-            Resolution -= 5;
-        else if (Resolution >= 4)
-            Resolution -= 1;
-        break;
-	//Start or stop animation.
-    case 'r':
-        startStopAnimation();
-        break;
-	//Step animation forward one iteration.
-    case 'f':
-        stepAnimation();
-        break;
-	//Move camera forward  (Y direction).
-    case 'w':
-        moveForward();
-        break;
-	//Move camera backward (Y direction).
-    case 's':
-        moveBackward();
-        break;
-	//Move camera left (X direction).
-    case 'a':
-        moveLeft();
-        break;
-	//Move camera right (X direction).
-    case 'd':
-        moveRight();
-        break;
-	//Move camera down (Z direction), bound position to within cutoff & backdrop.
-    case 'q':
-        if (Zpan < 290.0)
-            Zpan = Zpan + .5;
-        break;
-	//Move camera up (Z direction), bound position to within cutoff & backdrop.
-    case 'e':
-        if (Zpan > -290.0)
-            Zpan = Zpan - .5;
-        break;
-	//Close program.
-    case 27: 	// Escape key
-        exit( 1 );
+
+    	//Slow down animation.
+        case '1':
+            speedDown();	
+            break;
+    
+	    //Speed up animation.
+        case '2':
+            SpeedUp();
+            break;
+
+    	//Toggle flat or smooth shading.
+        case '3':
+            ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
+            break;
+
+    	//Toffle wireframe or polygon rendering mode.
+        case '4':
+            ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+            break;
+
+    	//Toggle texture mapping on or off.
+        case '5':
+            if (textureToggle == false)
+            {
+                glEnable( GL_TEXTURE_2D );
+                textureToggle = true;
+            }
+            else
+            {
+                glDisable( GL_TEXTURE_2D );
+                textureToggle = false;
+            }
+            break;
+
+    	//Toggle light source on or off.
+        case '6':
+            ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
+            break;
+
+    	//Reset camera to original position.
+        case '7':
+            MoveToStartView();
+            break;
+
+    	//Set camera to top-down view.
+        case '8':
+            MoveToTopDownView();
+            break;
+    
+    	//Reset planet's to original position.
+        case '9':
+            ResetPlanets();
+            break;
+
+    	//Toggle drawing of orbital paths.
+        case '0':
+            paths = !paths;
+            break;
+
+    	//Toggle display of planet and moon names.
+        case 'p':
+            planetNames = !planetNames;
+            break;
+
+    	//Increase resolution (number of slices and stacks) of planets, sun, and moon.
+        case '=':
+            if (Resolution <= 9)
+                Resolution += 1;
+            else if (Resolution <= 145)
+                Resolution += 5;
+            break;
+
+    	//Decrease resolution (number of slices and stacks) of planets, sun, and moon.
+        case '-':
+            if (Resolution >= 15)
+                Resolution -= 5;
+            else if (Resolution >= 4)
+                Resolution -= 1;
+            break;
+
+    	//Start or stop animation.
+        case 'r':
+            startStopAnimation();
+            break;
+    
+    	//Step animation forward one iteration.
+        case 'f':
+            stepAnimation();
+            break;
+
+    	//Pan view forward  (Y direction).
+        case 'w':
+            MoveForward();
+            break;
+
+    	//Pan view backward (Y direction).
+        case 's':
+            MoveBackward();
+            break;
+
+    	//Pan view left (X direction).
+        case 'a':
+            MoveLeft();
+            break;
+
+    	//Pan view right (X direction).
+        case 'd':
+            MoveRight();
+            break;
+
+    	//Pan view down (Z direction), bound position to within cutoff & backdrop.
+        case 'q':
+            if (Zpan < 290.0)
+                Zpan = Zpan + .5;
+            break;
+
+    	//Pan view up (Z direction), bound position to within cutoff & backdrop.
+        case 'e':
+            if (Zpan > -290.0)
+                Zpan = Zpan - .5;
+            break;
+
+    	//Close program.
+        case 27: 	// Escape key
+            exit( 1 );
+
     }
 }
 
@@ -556,7 +580,7 @@ void KeyPressFunc( unsigned char Key, int x, int y )
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void moveBackward()
+void MoveBackward()
 {
 	//Move camera backwards, accounting for camera angle.
     Ypan = Ypan + 0.5 * cos(Zrot * PI / 180);
@@ -603,7 +627,7 @@ void moveBackward()
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void moveForward()
+void MoveForward()
 {
 	//Move camera forward, accounting for camera angle.
     Ypan = Ypan - 0.5 * cos(Zrot * PI / 180);
@@ -650,7 +674,7 @@ void moveForward()
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void moveLeft()
+void MoveLeft()
 {
 	//Move camera left, accounting for camera angle.
 
@@ -699,7 +723,7 @@ void moveLeft()
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void moveRight()
+void MoveRight()
 {
 	//Move camera right, accounting for camera angle.
     float rotation = Zrot - 90;
@@ -744,7 +768,7 @@ void moveRight()
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void moveToStartView()
+void MoveToStartView()
 {
     Xpan = 1.6;
     Ypan = 9.0;
@@ -770,7 +794,7 @@ void moveToStartView()
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void moveToTopDownView()
+void MoveToTopDownView()
 {
     Xpan = 0.0;
     Ypan = 0.0;
@@ -797,7 +821,7 @@ void moveToTopDownView()
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void resetPlanets()
+void ResetPlanets()
 {
     Mercury->setHourOfDay(0.0);
     Mercury->setDayOfYear(0.0);
@@ -843,7 +867,7 @@ void resetPlanets()
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void speedUp( void )
+void SpeedUp( void )
 {
 	//Bound the animation speed to avoid implicitly setting it to infinity.
     if (AnimateIncrement < 4380.0)
@@ -853,6 +877,7 @@ void speedUp( void )
         AnimateIncrement *= 2.0;			
 	}
 }
+
 
 
 /******************************************************************************
@@ -866,14 +891,14 @@ void speedUp( void )
 *	step (the amount of time passed between frames). Presently, each press will
 *	halve the time step. A bound is set to avoid reducing the time step to zero
 *	from which it cannot be brought back up due to the multiplicative nature
-*	of the speedUp() function.
+*	of the SpeedUp() function.
 *
 * Parameters:
 *
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void speedDown( void )
+void SpeedDown( void )
 {
 	//Bound the animation speed to avoid accidentally setting it to zero.
     if (AnimateIncrement > 0.0125)
@@ -883,6 +908,7 @@ void speedDown( void )
 		AnimateIncrement /= 2.0;			
 	}
 }
+
 
 
 /******************************************************************************
@@ -900,7 +926,7 @@ void speedDown( void )
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void startStopAnimation( void )
+void StartStopAnimation( void )
 {
 
 	/*If single step mode is enabled, it must first be disabled before allowing 
@@ -938,7 +964,7 @@ void startStopAnimation( void )
 *		void	- No input parameters needed.
 *
 ******************************************************************************/
-void stepAnimation( void )
+void StepAnimation( void )
 {
 	//Enable single stepping through animation.
     singleStep = GL_TRUE;
@@ -950,59 +976,88 @@ void stepAnimation( void )
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: KeyPressFunc
 *
 * Description:
 *
+*	This is the special key callback function used for handeling special 
+*   keyboard (arrow key) events. All arrow key events are used to rotate the 
+*   viewing angle in the direction of the corresponding arrow key.
 *
+*   Vertical rotations are capped at 180 to avoid the user inverting their view-
+*   relative axis of movement.
 *
 * Parameters:
 *
+*		key	- the key pressed that caused the callback 
+*
+*		x	- the x screen coordinate of the mouse at time of key press
+*
+*		y	- the y screen coordinate of the mouse at time of key press
+*
 ******************************************************************************/
-// glutSpecialFunc is called to set this function to handle all special key presses
-// See glut.h for the names of special keys.
 void SpecialKeyFunc( int Key, int x, int y )
 {
+    
+    //Case user input using switch statement. 
     switch ( Key )
     {
-    case GLUT_KEY_UP:
-        Xrot = Xrot - 1;
-        if(Xrot < -180)
-            Xrot = -180;
-        break;
-    case GLUT_KEY_DOWN:
-        Xrot = Xrot + 1;
-        if(Xrot > 0)
-            Xrot = 0;
-        break;
-    case GLUT_KEY_LEFT:
-        Zrot = Zrot - 1;
-        break;
-    case GLUT_KEY_RIGHT:
-        Zrot = Zrot + 1;
-        break;
+        //Rotate view up, bound rotation.
+        case GLUT_KEY_UP:
+            Xrot = Xrot - 1;
+            if(Xrot < -180)
+                Xrot = -180;
+            break;
+            
+        //Rotate view down, bound rotation.    
+        case GLUT_KEY_DOWN:
+            Xrot = Xrot + 1;
+            if(Xrot > 0)
+                Xrot = 0;
+            break;
+            
+        //Rotate view left, no bound.    
+        case GLUT_KEY_LEFT:
+            Zrot = Zrot - 1;
+            break;
+            
+        //Rotate view right, no bound.    
+        case GLUT_KEY_RIGHT:
+            Zrot = Zrot + 1;
+            break;
     }
 }
 
 
+
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: MouseFunc
 *
 * Description:
 *
-*
+*	
 *
 * Parameters:
 *
+*		button  - mouse butten clicked 
+*
+*		state	- specifies press or release state of mouse button 
+*
+*		x	- x screen coordinate of the mouse at the time of the button click
+*
+*		y	- y screen coordinate of the mouse at the time of the button click
+*
 ******************************************************************************/
-void MouseFunc(int button, int state, int x, int y)
+void MouseFunc(int button, int state, int x, int y)                                 //##DAN
 {
+    //Check that left button has been clicked (avoid conflict with pop-up menu).
     if(button == 0)
     {
+        //Check that button is in pressed down state
         if(state == 0)
         {
             MouseClicked = true;
@@ -1011,16 +1066,20 @@ void MouseFunc(int button, int state, int x, int y)
         else
         {
             MouseClicked = false;
+            
+            //Call mouse drag to reset x and y coordinates on mouse release.
             MouseDragFunc(x,y);
             
         }
     }
 }
 
+
+
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: MouseDragFunc
 *
 * Description:
 *
@@ -1028,8 +1087,12 @@ void MouseFunc(int button, int state, int x, int y)
 *
 * Parameters:
 *
+*   	x	- the x screen coordinate of the mouse
+*
+*		y	- the y screen coordinate of the mouse
+*
 ******************************************************************************/
-void MouseDragFunc(int x, int y)
+void MouseDragFunc(int x, int y)                                                     //##DAN
 {
     static int lastX = 10000;
     static int lastY = 10000;
@@ -1064,20 +1127,27 @@ void MouseDragFunc(int x, int y)
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: CreateMenus
 *
 * Description:
 *
+*   This function is used to create, populate, and set handling for a pop-up 
+*   menu/submenus that list the movement, options, and program exit 
+*   controls for the user.
 *
+*   The pop-up menu acts as a control list, but also allows click-use of all 
+*   the entries of the menu and submenus. 
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void CreateMenus()
 {
-    //create controls submenu
+    //Create a useable submenu for view controls.
     int value = 1;
     int submenu1 = glutCreateMenu( SubMenuHandlerControls );
     glutAddMenuEntry(	"mouse click & drag - Rotate view", value++ );
@@ -1089,21 +1159,22 @@ void CreateMenus()
     glutAddMenuEntry(	"d             - Pan right in X direction", value++ );
     glutAddMenuEntry(	"w            - Pan forward in Y direction", value++ );
     glutAddMenuEntry(	"s             - Pan backward in Y direction", value++ );
-    glutAddMenuEntry(	"q             - Pan down in Z direction", value++ );
     glutAddMenuEntry(	"e             - Pan up in Z direction", value++ );
+    glutAddMenuEntry(	"q             - Pan down in Z direction", value++ );
 
 
 
-    //create options submenu
+
+    //Create a useable submenu for simulation options.
     value = 1;
     int submenu2 = glutCreateMenu( SubMenuHandlerOptions );
     glutAddMenuEntry(	"r              - Start/suspend animation", value++ );
     glutAddMenuEntry(	"f              - Single step animation", value++ );
-    glutAddMenuEntry(	"1             - Speed Down Animation", value++ );
-    glutAddMenuEntry(	"2             - Speed Up Animation", value++ );
-    glutAddMenuEntry(	"3             - Smooth/Flat Shading", value++ );
-    glutAddMenuEntry(	"4             - Wireframe/Polygon Rendering", value++ );
-    glutAddMenuEntry(	"5             - Texture Mapping", value++ );
+    glutAddMenuEntry(	"1             - Slow down animation", value++ );
+    glutAddMenuEntry(	"2             - Speed up animation", value++ );
+    glutAddMenuEntry(	"3             - Smooth/flat shading", value++ );
+    glutAddMenuEntry(	"4             - Wireframe/polygon rendering", value++ );
+    glutAddMenuEntry(	"5             - Texture mapping", value++ );
     glutAddMenuEntry(	"6             - Lighting", value++ );
     glutAddMenuEntry(	"7             - Default view", value++ );
     glutAddMenuEntry(	"8             - Top-down view", value++ );
@@ -1114,111 +1185,143 @@ void CreateMenus()
     glutAddMenuEntry(	"-             - Decrease Resolution", value++ );
 
 
-    //create main menu
+    //Create a main menu to dispaly submenus and the program exit control.
     value = 1;
     int mainmenu = glutCreateMenu( MainMenuHandler );
-
     glutAddSubMenu( "Controls", submenu1 );
     glutAddSubMenu( "Options", submenu2 );
     glutAddMenuEntry( "Exit (Esc)", value++ );
 
-    //trivial fix to supress unused variable warnings
+    //Trivial fix to supress warnings for what appears to be an unused variable.
     mainmenu = mainmenu;
 
-    //open menu with right click
+    //Open menu with right click.
     glutAttachMenu( GLUT_RIGHT_BUTTON );
 }
 
 
 
-
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: MainMenuHandler
 *
 * Description:
 *
-*
+*   This function is designed to handle user selection in the main pop-up menu.
+*   In this case, the only option is exiting the program.
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void MainMenuHandler( int item )
 {
-    //for casing user input
+    //Switch statement for casing user input.
     switch ( item )
     {
-    case 1:
-        exit( 1 );
-        break;
-    default:
-        //Should not be reached, error catching.
-        cout << "invalid main menu item " << item << endl;
-        break;
+        //Exit program if "Exit" is selected.
+        case 1:
+            exit( 1 );
+            break;
+            
+   
+        default:
+            cout << "invalid main menu item " << item << endl;
+            break;
     }
 }
 
 
 
 /******************************************************************************
-* Author:
+* Author: Savoy Schuler and Daniel Hodgin
 *
-* Function:
+* Function: SubMenuHandlerControls
 *
 * Description:
 *
+*   This function is designed to handle user selection in the "Controls" submenu.
+*   All submenu options are useable, except the first, and apply to view 
+*   position controls.
 *
+*   The first option is a read-only option that informs the user of left mouse 
+*   click-and-drag view rotatation.
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void SubMenuHandlerControls ( int item )
 {
-    //for casing user input
+    //Switch statement for casing user input.
     switch ( item )
     {
-    case 1:
-        break;
-    case 2:
-        Xrot = Xrot - 1;
-        if(Xrot < -180)
-            Xrot = -180;
-        break;
-    case 3:
-        Xrot = Xrot + 1;
-        if(Xrot > 0)
-            Xrot = 0;
-        break;
-    case 4:
-        Zrot = Zrot - 1;
-        break;
-    case 5:
-        Zrot = Zrot + 1;
-    case 6:
-        moveLeft();
-        break;
-    case 7:
-        moveRight();
-        break;
-    case 8:
-        moveForward();
-        break;
-    case 9:
-        moveBackward();
-        break;
-    case 10:
-        if (Zpan < 290.0)
-            Zpan = Zpan + 0.5;
-        break;
-    case 11:
-        if (Zpan > -290.0)
-            Zpan = Zpan - 0.5;
-        break;
-    default:
-        //Should not be reached, error catching.
-        cout << "invalid main menu item " << item << endl;
-        break;
+        //Read-only control for left mouse click-and-drag view rotatation.
+        case 1:
+            break;
+
+        //Rotate view up, bound to avoid control inversion.
+        case 2:
+            Xrot = Xrot - 1;
+            if(Xrot < -180)
+                Xrot = -180;
+            break;
+
+        //Rotate view down, bound to avoid control inversion.
+        case 3:
+            Xrot = Xrot + 1;
+            if(Xrot > 0)
+                Xrot = 0;
+            break;
+
+        //Rotate view left.
+        case 4:
+            Zrot = Zrot - 1;
+            break;
+
+        //Rotate the view right.
+        case 5:
+            Zrot = Zrot + 1;
+
+        //Pan view left (X direction).
+        case 6:
+            MoveLeft();
+            break;
+
+        //Pan view right (X direction).
+        case 7:
+            MoveRight();
+            break;
+
+        //Pan view forward (Y direction).
+        case 8:
+            MoveForward();
+            break;
+
+        //Pan view backward (Y direction).
+        case 9:
+            MoveBackward();
+            break;
+
+        //Pan view up (Z direction).
+        case 10:
+            if (Zpan > -290.0)
+                Zpan = Zpan - 0.5;
+            break;
+
+        //Pan view down (Z direction).
+        case 11:
+            if (Zpan < 290.0)
+                Zpan = Zpan + 0.5;
+            break;
+    
+        //For good practice and error catching. Should not be reached. 
+        default:
+            cout << "invalid main menu item " << item << endl;
+            break;
     }
 }
 
@@ -1238,75 +1341,103 @@ void SubMenuHandlerControls ( int item )
 ******************************************************************************/
 void SubMenuHandlerOptions ( int item )
 {
-    //for casing user input
+    //Switch statement for casing user input.
     switch ( item )
     {
-    case 1:
-        startStopAnimation();
-        break;
-    case 2:
-        stepAnimation();
-        break;
-    case 3:
-        speedDown();
-        break;
-    case 4:
-        speedUp();
-        break;
-    case 5:
-        ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
-        break;
-    case 6:
-        ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-        break;
-    case 7:
-        if (textureToggle == false)
-        {
-            glEnable( GL_TEXTURE_2D );
-            textureToggle = true;
-        }
-        else
-        {
-            glDisable( GL_TEXTURE_2D );
-            textureToggle = false;
-        }
-        break;
-    case 8:
-        ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
+        //Start/suspend animation.
+        case 1:
+            startStopAnimation();
+            break;
 
-        break;
-    case 9:
-        moveToStartView();
+        //Single step animation.
+        case 2:
+            stepAnimation();
+            break;
 
-        break;
-    case 10:
-        moveToTopDownView();
-        break;
-    case 11:
-        resetPlanets();
-        break;
-    case 12:
-        paths = !paths;
-        break;
-    case 13:
-        planetNames = !planetNames;
-        break;
-    case 14:
-        if (Resolution <= 9)
-            Resolution += 1;
-        else if (Resolution <= 145)
-            Resolution += 5;
+        //Slow down animation.
+        case 3:
+            speedDown();
+            break;
 
+        //Speed up animation.
+        case 4:
+            SpeedUp();
+            break;
+
+        //Toggle between smooth and flat shading.
+        case 5:
+            ( shade = !shade ) ? glShadeModel( GL_FLAT ) : glShadeModel( GL_SMOOTH );
+            break;
+
+        //Toggle between wireframe and polygon rendering.
+        case 6:
+            ( wire = !wire ) ? glPolygonMode( GL_FRONT_AND_BACK, GL_LINE ) : glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
         break;
-    case 15:
-        if (Resolution >= 15)
-            Resolution -= 5;
-        else if (Resolution >= 4)
-            Resolution -= 1;
-        break;
-    default:
-        //Should not be reached, error catching.
-        cout << "invalid main menu item " << item << endl;
-        break;
+
+        //Texture mapping.
+        case 7:
+            if (textureToggle == false)
+            {
+                glEnable( GL_TEXTURE_2D );
+                textureToggle = true;
+            }
+            else
+            {
+                glDisable( GL_TEXTURE_2D );
+                textureToggle = false;
+            }
+            break;
+
+        //Toggle lighting.
+        case 8:
+            ( light = !light ) ? glEnable( GL_LIGHTING ) : glDisable( GL_LIGHTING );
+    
+            break;
+
+        //Reset to default view position. 
+        case 9:
+            MoveToStartView();    
+            break;
+
+        //Set to top-down view.
+        case 10:
+            MoveToTopDownView();
+            break;
+
+        //Reset position of planets.
+        case 11:
+            ResetPlanets();
+            break;
+
+        //Toggle drawing of orbital paths.
+        case 12:
+            paths = !paths;
+            break;
+
+        //Toggle planet name display.
+        case 13:
+            planetNames = !planetNames;
+            break;
+
+        //Increase resolution of planet, moon, and sun.
+        case 14:
+            if (Resolution <= 9)
+                Resolution += 1;
+            else if (Resolution <= 145)
+                Resolution += 5;
+            break;
+
+        //Decrease resolution of planet, moon, and sun.
+        case 15:
+            if (Resolution >= 15)
+                Resolution -= 5;
+            else if (Resolution >= 4)
+                Resolution -= 1;
+            break;
+
+        //For good practice and error catching. Should not be reached. 
+        default:
+            cout << "invalid main menu item " << item << endl;
+            break;
     }
 }

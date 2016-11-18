@@ -17,9 +17,9 @@ Jupiter and Saturn are displayed at half their actual size.
 Key Assignments
 ---------------
 
-	Camera Controls:
+	View Controls:
 	
-	Mouse Click & Drag - Camera rotation
+	Mouse Click & Drag - Rotate view
 	Up Arrow      - Rotate up
 	Down Arrow    - Rotate down
 	Left Arrow    - Rotate left
@@ -28,25 +28,25 @@ Key Assignments
 	d             - Pan right in Y direction
 	w             - Pan forward in Y direction
 	s             - Pan backward in Y direction
-	q             - Pan down in Z direction
 	e             - Pan up in Z direction
+	q             - Pan down in Z direction
 	                                   
 	Options:                                   
 	
 	r             - Start/suspend animation
 	f             - Single step animation
-	1             - Speed Down Animation
-	2             - Speed Up Animation
-	3             - Smooth/Flat Shading
-	4             - Wireframe/Polygon Rendering
-	5             - Texture Mapping
+	1             - Slow down animation
+	2             - Speed up animation
+	3             - Smooth/flat shading
+	4             - Wireframe/polygon rendering
+	5             - Texture mapping
 	6             - Lighting
 	7             - Default view
 	8             - Top-down view
 	9             - Reset planets
 	0             - Toggle orbital paths
 	p             - Toggle planet names
-	+ (=)         - Increase Resolution
-	-             - Decrease Resolution
+	+ (=)         - Increase resolution
+	-             - Decrease resolution
 	                                   
 	Esc           - Quit
