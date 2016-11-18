@@ -227,6 +227,7 @@ void Animate( void )
     if(firstTime == true)
     {
         setCelestialBodies();
+        setRingsandMoon();
         firstTime = false;
     }
 
@@ -1000,12 +1001,21 @@ void SpecialKeyFunc( int Key, int x, int y )
 ******************************************************************************/
 void MouseFunc(int button, int state, int x, int y)
 {
-    MouseClicked = !MouseClicked;
-    if(!MouseClicked)
-        MouseDragFunc(x,y);
+    if(button == 0)
+    {
+        if(state == 0)
+        {
+            MouseClicked = true;
+
+        }
+        else
+        {
+            MouseClicked = false;
+            MouseDragFunc(x,y);
+            
+        }
+    }
 }
-
-
 
 /******************************************************************************
 * Author:

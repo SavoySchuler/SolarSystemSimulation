@@ -130,6 +130,7 @@ void SetMoonLightProps(Planet *Moon);
 void SetOrbitLightProps();
 void SetPlanetLightProps(Planet *plant);
 void SetSunLightProp(Planet *sun);
+void setRingsandMoon();
 
 
 /* Located in bmpRead.cpp in order: */

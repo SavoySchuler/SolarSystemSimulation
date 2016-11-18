@@ -5,6 +5,33 @@
 #include "Planet.h"
 #include "globals.h"
 
+Planet *Moon;
+Planet *Rings;
+
+
+void setRingsandMoon()
+{
+	/*Variables needed for storing a pointer to and dimensions of a planet's 
+	texture map. */ 
+    int nrows, ncols;
+    byte* image;
+    char * filename;
+
+							/*Set up each planet*/
+
+	//Convert a texture map's string name into a character array.
+	//Load a planet's texure map into memory.
+	//Construct a planet object pointed to by a global pointer (planet's name).
+
+    filename = stringToChar("moon.bmp");
+    LoadBmpFile( filename, nrows, ncols, image );
+    Moon = new Planet("Moon", 0, 0, 0, 0, nrows, ncols, image, 1.0, 1.0, 1.0 );
+
+
+    filename = stringToChar("saturnrings.bmp");
+    LoadBmpFile( filename, nrows, ncols, image );
+    Rings = new Planet("Saturn Rings", 0, 0, 0, 0, nrows, ncols, image, 1.0, 0.75, 0.0 );
+}
 
 void HandleRotate()
 {
@@ -25,40 +52,24 @@ void DrawRings(double planetRadius)
 {
     glDisable( GL_CULL_FACE );
 
-    GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
-    glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
 
-    static bool firstTimeSaturn = true;
-    static Planet *Rings;
-    int nrows, ncols;
-    byte* image;
-
-
-    if ( firstTimeSaturn = true);
-    {
-        char * filename;
-        filename = stringToChar("saturnrings.bmp");
-        LoadBmpFile( filename, nrows, ncols, image );
-        Rings = new Planet("Saturn Rings", 0, 0, 0, 0, nrows, ncols, image, 1.0, 0.75, 0.0 );
-        firstTimeSaturn = false;
-    }
 
     SetRingsLightingProps(Rings);
+
+    int nrows = Rings->getRows();
+    int ncols = Rings->getCols();
+    byte* image = Rings->getImage();
     setTexture(image, nrows, ncols);
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
-
-
+ 
     GLUquadric *quad;
     quad = gluNewQuadric();
-
     gluQuadricTexture(quad, GL_TRUE);
     gluCylinder(quad, planetRadius * SizeScale + 0.5, planetRadius * SizeScale + 2 ,0.1, Resolution, Resolution);
     gluDeleteQuadric( quad );
 
-
     glEnable( GL_CULL_FACE );
-
 }
 
 void SetRingsLightingProps(Planet *Rings)
@@ -69,12 +80,13 @@ void SetRingsLightingProps(Planet *Rings)
     {
         GLfloat mat_shininess = { 100.0 };
         GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
-
+        GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+        
         GLfloat color[] = {Rings->getR(), Rings->getG(), Rings->getB()};
         glColor3f( Rings->getR(), Rings->getG(), Rings->getB() );
 
         glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
-        glMaterialfv( GL_FRONT, GL_AMBIENT, color );
+        glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
         glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
         glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
@@ -84,9 +96,9 @@ void SetRingsLightingProps(Planet *Rings)
     {
         GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
         GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
-        GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
+        GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
         GLfloat mat_shininess = { 100.0 };
-        GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+        GLfloat mat_emission[] = {0.2, 0.2, 0.2, 1.0};
 
         glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
         glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
@@ -98,33 +110,23 @@ void SetRingsLightingProps(Planet *Rings)
 
 void DrawMoon(int DayOfYear)
 {
-    static bool firstTimeMoon = true;
-    static Planet *Moon;
-    int nrows, ncols;
-    byte* image;
-
     //Draw the moon. Use DayOfYear to control its rotation around the earth
     glRotatef( 360.0 * 12.0 * DayOfYear / 365.0, 0.0, 0.0, 1.0 );
     glTranslatef( 0.7, 0.0, 0.0 );
 
-    if ( firstTimeMoon = true);
-    {
-        char * filename;
-        filename = stringToChar("moon.bmp");
-        LoadBmpFile( filename, nrows, ncols, image );
-        float mercuryColor[3] = {1.0, 1.0, 0.0};
-        float *ptrMercuryColor = mercuryColor;
-        Moon = new Planet("Moon", 0, 0, 0, 0, nrows, ncols, image, 1.0, 1.0, 1.0 );
-        firstTimeMoon = false;
-    }
-
     SetMoonLightProps(Moon);
 
-
+    int nrows = Moon->getRows();
+    int ncols = Moon->getCols();
+    byte* image = Moon->getImage();
     setTexture(image, nrows, ncols);
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
+
+    
     if (planetNames == true)
         DrawTextString(Moon->getName(), Moon->getRadius());
+   
+   
     GLUquadric *quad;
     quad = gluNewQuadric();
     gluQuadricTexture(quad, GL_TRUE);
