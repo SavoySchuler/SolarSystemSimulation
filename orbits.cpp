@@ -200,7 +200,7 @@ void SetLightModel()
 *
 * Description:
 *
-*   Function used for setting material properties for the sun object.
+*   Function used for setting the material properties for the Sun.
 *
 * Parameters:
 *
@@ -324,23 +324,29 @@ void SetPlanetMatProps(Planet *planet)
 *
 * Description:
 *
-*   Function used for setting material properties of Earth's moon.
+*   Function used for setting the material properties of Earth's moon.
 *
 * Parameters:
+*
+*       Moon - Planet object that holds the drawing information for the moon.
 *
 ******************************************************************************/
 void SetMoonMatProps(Planet *Moon)
 {
-    glColor3f( 1.0, 1.0, 1.0 );
-
+    //Material properties for displaying without texture map.
     if ( textureToggle == false )
     {
-        GLfloat mat_shininess = { 100.0 };
+        //Set color arrays for material properties.    
         GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+        GLfloat mat_shininess = { 100.0 };
 
-        GLfloat color[] = {Moon->getR(), Moon->getG(), Moon->getB()};           //##SAVOY
+        //Derive material property colors from object RGB fields. 
+        GLfloat color[] = {Moon->getR(), Moon->getG(), Moon->getB()};
+        
+        //Derive object color from object RGB fields.                   
         glColor3f(Moon->getR(), Moon->getG(), Moon->getB());
 
+        //Set material properties using color arrays.
         glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
         glMaterialfv( GL_FRONT, GL_AMBIENT, color );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
@@ -348,21 +354,27 @@ void SetMoonMatProps(Planet *Moon)
         glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     }
 
+    //Material properties for displaying with texture map.
     else
     {
+        /*Set object color to white for best display with texture map and 
+        lighting.*/ 
+        glColor3f( 1.0, 1.0, 1.0 );
+
+        //Set color arrays for material properties. 
         GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
         GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
         GLfloat mat_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
         GLfloat mat_shininess = { 100.0 };
         GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
+        //Set material properties using color arrays.
         glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
         glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
         glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
         glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     }
-
 }
 
 
@@ -370,28 +382,35 @@ void SetMoonMatProps(Planet *Moon)
 /******************************************************************************
 * Author: Daniel Hodgin and Savoy Schuler
 *
-* Function:
+* Function: SetRingsMatProps
 *
 * Description:
 *
-*
+*   Function used for setting the material properties of Saturn's rings.
 *
 * Parameters:
+*
+*       Rings - Planet object that holds the drawing information for Saturn's 
+*               rings.
 *
 ******************************************************************************/
 void SetRingsMatProps(Planet *Rings)
 {
-    glColor3f( 1.0, 1.0, 1.0 );
-
+    //Material properties for displaying without texture map.
     if ( textureToggle == false )
     {
-        GLfloat mat_shininess = { 100.0 };
-        GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
+        //Set color arrays for material properties.      
+        GLfloat mat_emission[] = {0.2, 0.2, 0.2, 1.0};
         GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+        GLfloat mat_shininess = { 100.0 };
         
-        GLfloat color[] = {Rings->getR(), Rings->getG(), Rings->getB()};        //##SAVOY
+        //Derive material property colors from object RGB fields. 
+        GLfloat color[] = {Rings->getR(), Rings->getG(), Rings->getB()};        
+
+        //Derive object color from object RGB fields.   
         glColor3f( Rings->getR(), Rings->getG(), Rings->getB() );
 
+        //Set material properties using color arrays.
         glMaterialfv( GL_FRONT, GL_SPECULAR, color  );
         glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, color );
@@ -399,14 +418,21 @@ void SetRingsMatProps(Planet *Rings)
         glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     }
 
+    //Material properties for displaying with texture map.
     else
     {
+        /*Set object color to white for best display with texture map and 
+        lighting.*/ 
+        glColor3f( 1.0, 1.0, 1.0 );
+
+        //Set color arrays for material properties. 
         GLfloat mat_specular[] = { 0.8, 0.8, 0.0, 1.0 };
         GLfloat mat_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
         GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
         GLfloat mat_shininess = { 100.0 };
         GLfloat mat_emission[] = {0.2, 0.2, 0.2, 1.0};
 
+        //Set material properties using color arrays.
         glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
         glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
         glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
@@ -424,25 +450,29 @@ void SetRingsMatProps(Planet *Rings)
 *
 * Description:
 *
-*
+*   This function is used for reseting the material properties before drawing 
+*   the planet's orbital paths.
 *
 * Parameters:
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void SetOrbitMatProps()
 {
+    //Remove material properties for the drawing of the orbital paths. 
     GLfloat mat_specular[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_diffuse[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_shininess = { 0.0 };
     GLfloat mat_emission[] = {0.0, 0.0, 1.0, 1.0};
 
-
+    //Reset material properties using the zero value color arrays.
     glMaterialfv( GL_FRONT, GL_SPECULAR, mat_specular );
     glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
     glMaterialfv( GL_FRONT, GL_DIFFUSE, mat_diffuse );
     glMaterialf( GL_FRONT, GL_SHININESS, mat_shininess );
-    glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );               //##SAVOY
+    glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );             
 }
 
 
@@ -453,11 +483,13 @@ void SetOrbitMatProps()
 * Function: DrawSpace
 *
 * Description:
+*
 *   This function draws the stars in the background by drawing a sphere
 *   around the entire solar system and texture maping stars to that.
 *
 * Parameters:
-*   space       -space as a Planet object with drawing details
+*
+*       space   - Space as a Planet object with drawing details.
 *
 ******************************************************************************/
 void DrawSpace(Planet *space)
@@ -469,49 +501,47 @@ void DrawSpace(Planet *space)
     GLfloat mat_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat mat_emission[] = {0.0, 0.0, 0.0, 1.0};
 
-    //Set ambient and emmision of the space
+    //Set ambient and emmision of the space.
     glMaterialfv( GL_FRONT, GL_AMBIENT, mat_ambient );
     glMaterialfv( GL_FRONT_AND_BACK, GL_EMISSION, mat_emission );
     
-    //save the matrix
+    //save the matrix.
     glPushMatrix();
     glColor3f( 0.0, 0.0, 0.0 );
 
-    //get image and rows and cols
+    //Get image and rows and cols.
     int nrows = space->getRows();
     int ncols = space->getCols();
     byte* image = space->getImage();
 
-    //set texture
+    //Set texture.
     SetTexture(image, nrows, ncols);
 
-    //combine and light and texture properties
+    //Combine and light and texture properties.
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
 
-
-    // Clear the current matrix (Modelview)
+    //Clear the current matrix (Modelview).
     glLoadIdentity();
     HandleRotate();
-    // Back off eight units to be able to view from the origin.
+    
+    //Back off eight units to be able to view from the origin.
     glTranslatef ( Xpan, Ypan, Zpan );
 
-
-
-    // Draw the sun	-- as a yellow, wireframe sphere
+    //Draw the sun as a yellow, wireframe sphere.
     glColor3f( 0.0, 0.0, 0.0 );
 
-    //make quadric object.
+    //Make quadric object.
     GLUquadric *quad;
     quad = gluNewQuadric();
     
-    //Enable texture
+    //Enable texture.
     gluQuadricTexture(quad, GL_TRUE);
 
-    //Draw Sphere
+    //Draw Sphere.
     gluSphere(quad, 300.0, 100, 100 );
     gluDeleteQuadric( quad );
 
-    //Disable drawing background
+    //Disable drawing background.
     glEnable( GL_CULL_FACE );
 }
 
@@ -523,12 +553,15 @@ void DrawSpace(Planet *space)
 * Function: DrawSun
 *
 * Description: 
+*
 *   This function draws the sun. It takes in the sun as a planet object.
 *   This function also set the lighting and texture properties and sets
 *   a point light source for the entire field
 *
 * Parameters:
-*   sun     -Planet class that holds the drawing information for the sun
+*
+*       sun - Planet class that holds the drawing information for the sun.
+*
 ******************************************************************************/
 void DrawSun(Planet *sun)
 {    
@@ -557,7 +590,7 @@ void DrawSun(Planet *sun)
     SetTexture(image, nrows, ncols);
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
-    // Clear the current matrix (Modelview)
+    // Clear the current matrix (Modelview).
     glLoadIdentity();
 
     //Handle rotation by users view.
@@ -592,16 +625,19 @@ void DrawSun(Planet *sun)
 * Function: DrawPlanet
 *
 * Description:
+*
 *   This function will draw the planet. It sets the position of the planet by
 *   a geometric rotation and then a geometric translation. It takes in a planet
 *   object and uses that data for the drawing information.
 *
 * Parameters:
-*   planet    -Planet object that contains all the information needed for drawing
+*
+*   planet - Planet object that contains all the information needed for drawing.
 *
 ******************************************************************************/
 void DrawPlanet(Planet *planet)
 {    
+    //Get information for calculating planet's location.
     float HoursPerDay = planet->getHoursPerDay();
     float DaysPerYear = planet->getDaysPerYear();
     float DayOfYear = planet->getDayOfYear();
@@ -611,7 +647,7 @@ void DrawPlanet(Planet *planet)
     int Radius = planet->getRadius();
     float Distance = planet->getDistance()*DistScale + 69600*SizeScale;
 
-    //Recenter drawing location
+    //Recenter drawing location.
     glLoadIdentity();
     
     //Rotate to the correct spot.
@@ -620,22 +656,22 @@ void DrawPlanet(Planet *planet)
     //Translate to the correct spot.
     glTranslatef ( Xpan, Ypan, Zpan );
 
-    //if orbits are on then draw orbits
+    //if orbits are on then draw orbits.
     if(paths == true)
         DrawOrbit(Distance);
 
-    //if animation is on than increment the times of the planet
+    //if animation is on than increment the times of the planet.
     if ( spinMode )
     {
-        // Update the animation state
+        // Update the animation state.
         DayIncrement = AnimateIncrement / 24.0;
         hourIncrement = AnimateIncrement -(int)DayIncrement * 24;
 
-        //Increment the DayOfYear and HourOfDay
+        //Increment the DayOfYear and HourOfDay.
         DayOfYear += DayIncrement;
         HourOfDay += hourIncrement;
     
-        //Save new times in planet object
+        //Save new times in planet object.
         planet->setDayOfYear(DayOfYear);
         planet->setHourOfDay(HourOfDay);
     }
@@ -645,20 +681,20 @@ void DrawPlanet(Planet *planet)
     HourOfDay = planet->getHourOfDay();
 
 
-    //Draw the Planet
+    //Draw the Planet.
     
     /*First position it around the sun. Use DayOfYear and DaysPerYear
-      calculate positions*/   
+      calculate positions.*/   
     glRotatef( 360.0 * DayOfYear / DaysPerYear, 0.0, 0.0, 1.0 );
 
     //Then position it away from the sun.
     glTranslatef( Distance, 0.0, 0.0 );
     
-    // Save matrix state
+    // Save matrix state.
     glPushMatrix();						
     
     /* Second, rotate the earth on its axis. Use HourOfDay and HoursPerDay
-       to determine its rotation*/
+       to determine its rotation.*/
     glRotatef( 360.0 * HourOfDay/HoursPerDay, 0.0, 0.0, 1.0 );
     
     //Draw names if names are on.
@@ -677,24 +713,24 @@ void DrawPlanet(Planet *planet)
     //Set the texture of the planet.
     SetTexture(image, nrows, ncols);
 
-    //Combine the texture and lighting propertites
+    //Combine the texture and lighting propertites.
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
     //Create the quadric object.
     GLUquadric *quad;
     quad = gluNewQuadric();
     
-    //Enable texturing on the object
+    //Enable texturing on the object.
     gluQuadricTexture(quad, GL_TRUE);
 
-    //Draw the planet
+    //Draw the planet.
     gluSphere(quad, Radius*SizeScale, Resolution, Resolution);
 
-    //Delete the Quadric
+    //Delete the Quadric.
     gluDeleteQuadric( quad );
 
     /*special cases for Saturn and Earth. If Earth draw moon. 
-      If Saturn draw rings*/
+      If Saturn draw rings.*/
     if(planet->getName() == "Earth")
     {
         DrawMoon(DayOfYear);
@@ -704,9 +740,8 @@ void DrawPlanet(Planet *planet)
         DrawRings(Radius);
     }
 
-
+     //Restore matrix state.
     glPopMatrix();
-    // Restore matrix state
 }
 
 
@@ -717,13 +752,16 @@ void DrawPlanet(Planet *planet)
 * Function: DrawMoon
 *
 * Description:
+*
 *   This function draw the moon in the proper place around the earth.
 *   It reads in the day of the year and sets the location based of that value.
 *   This function uses the gluSphere function to draw the moon and texture
 *   map to it.
 *
 * Parameters:
-*   DayOfYear       - the time of year to set the location of the moon
+*
+*   DayOfYear       - The time of year to set the location of the moon.
+*
 ******************************************************************************/
 void DrawMoon(int DayOfYear)
 {    
@@ -750,7 +788,7 @@ void DrawMoon(int DayOfYear)
     if (planetNames == true)
         DrawTextString(Moon->getName(), Moon->getRadius());
    
-    //Create quadric object
+    //Create quadric object.
     GLUquadric *quad;
     quad = gluNewQuadric();
     
@@ -770,12 +808,14 @@ void DrawMoon(int DayOfYear)
 * Function: Draw Rings
 *
 * Description:
+*
 *   This function draws the rings of saturn. It uses the gluCylinder to draw
 *   the rings. It takes in saturns radius and sets the outside and inside
 *   radii by offsetting that value. A bmp is also mapped to the rings.
 *
 * Parameters:
-*   planetRadius        -the radius of saturn
+*
+*   planetRadius    - The radius of saturn.
 *
 ******************************************************************************/
 void DrawRings(double planetRadius)
@@ -796,7 +836,6 @@ void DrawRings(double planetRadius)
     //Combine texture mapping with lighting material properties.
     glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 
-
     //Create glu quadric object. 
     GLUquadric *quad;
     quad = gluNewQuadric();
@@ -808,10 +847,10 @@ void DrawRings(double planetRadius)
     gluCylinder(quad, planetRadius * SizeScale + 0.5, 
                 planetRadius * SizeScale + 2 ,0.1, Resolution, Resolution);
 
-    //delete the quadric object
+    //Delete the quadric object.
     gluDeleteQuadric( quad );
 
-    //disable drawing backside of polygons
+    //Disable drawing backside of polygons.
     glEnable( GL_CULL_FACE );
 }
 
@@ -823,11 +862,14 @@ void DrawRings(double planetRadius)
 * Function: DrawOrbit
 *
 * Description:
+*
 *   This function draws the orbit path for the planet. It takes in the planet
 *   distance to the surface and draws a circle centered at the sun.
 *
 * Parameters:
-*   planetDistance      -distance of planet to the surface of the sun
+*
+*   planetDistance      - Distance of planet to the surface of the sun.
+*
 ******************************************************************************/
 void DrawOrbit(double planetDistance)
 {
@@ -844,14 +886,14 @@ void DrawOrbit(double planetDistance)
     //Set color to blue.
     glColor3f( 0.0, 0.0, 1.0 );
 
-    //Create quadric object
+    //Create quadric object.
     GLUquadric *quad;
     quad = gluNewQuadric();
 
-    //Enable texture
+    //Enable texture.
     gluQuadricTexture(quad, GL_TRUE);
 
-    //draw orbit uti
+    //Draw orbit.
     gluPartialDisk(quad,planetDistance, planetDistance+0.05,50,50,0,360);
     gluDeleteQuadric( quad );
     
@@ -859,7 +901,7 @@ void DrawOrbit(double planetDistance)
     if ( textureToggle == true )
         glEnable( GL_TEXTURE_2D );
 
-    //Disable of drawing the back of objects
+    //Disable of drawing the back of objects.
     glEnable( GL_CULL_FACE );
 }
 
@@ -878,14 +920,14 @@ void DrawOrbit(double planetDistance)
 *
 * Modifications: 
 *
-*   This function was taken from an example from Dr. Weiss and modified
-*   to fit our needs
+*   This function was taken from an example provided by Dr. Weiss and modified
+*   to fit specific program needs.
 *
 * Parameters:
 *
-*   str         -text that needs to be displayed
+*       str     - text that needs to be displayed
 *
-*   radius      -radius of the planet
+*       radius  - radius of the planet
 *
 ******************************************************************************/
 void DrawTextString( string str, double radius)
@@ -904,19 +946,19 @@ void DrawTextString( string str, double radius)
     GLfloat textColor[] = { 1.0, 1.0, 1.0 };
     glColor3fv( textColor );
 
-    //Special case for moon. Draw it below earth. everything else above the planet
+    //Special case for moon, draw it below earth.
     if(str == "Moon")
         glRasterPos3i( 0,0, radius * SizeScale - 1 );
     else
         glRasterPos3i( 0,0, radius * SizeScale + 1 );
 
-    //draw the text
+    //Draw the text.
     for (int i = 0; i < str.length(); i++)
     {
         glutBitmapCharacter( GLUT_BITMAP_9_BY_15, str[i] );
     }
 
-    //renable texture if turned off
+    //Enable texture if it had been turned off.
     if ( textureToggle == true )
         glEnable( GL_TEXTURE_2D );
 
@@ -931,21 +973,31 @@ void DrawTextString( string str, double radius)
 *
 * Description:
 *
-*
+*   This function is used for referencing texture maps stored in memory and 
+*   setting it up for GL_MODULATE to mesh with material color and lighting in 
+*   the glTexEnvi command.
 *
 * Parameters:
 *
+*   image   - pointer to location of texture map in memory   
+*
+*   nrows   - texture map's number of rows
+*
+*   ncols   - texture map's number of columns
+*
 ******************************************************************************/
-// read texture map from BMP file
-// Ref: Buss, 3D Computer Graphics, 2003.
 int SetTexture( byte* image, int nrows, int ncols )
 {
+    //Set texture parameters.
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );             //##SAVOY
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );         
+
+    //Build minmaps.
     gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, ncols, nrows, GL_RGB, GL_UNSIGNED_BYTE, image );
 
+    //Return success.
     return 0;
 }
 
@@ -957,11 +1009,13 @@ int SetTexture( byte* image, int nrows, int ncols )
 * Function: HandleRotate
 *
 * Description:
+*
 *	This function handles the x,y,z rotation based off of globals that are
 *   set by our user control functions
 *
 * Parameters:
-*   void            -no parameters
+*
+*		void	- No input parameters needed.
 *
 ******************************************************************************/
 void HandleRotate()
@@ -984,10 +1038,13 @@ void HandleRotate()
 * Function: StringToChar
 *
 * Description:
+*
 *   This function converts a string into a * char
 *
 * Parameters:
+*
 *   str         -string to convert to a char *
+*
 ******************************************************************************/
 char * StringToChar (string str)
 {

@@ -6,12 +6,11 @@
 *	Date:  11-18-2016
 *
 *	Description:
-*       Function prototype for the functions in orbits.cpp and callbacks.cpp.
-*       Prototypes seperated by file.
-*       Also, contains the global variables.
+*
+*       Function prototypes and globals for orbits.cpp and callbacks.cpp.
+*       All elements seperated by file.
 *
 *	Modified: Original
-*
 *
 ******************************************************************************/
 
@@ -24,7 +23,6 @@
 typedef unsigned char byte;
 
 
-
 /******************************* Constants **********************************/
 
 //These three variables control the animation's state and speed.
@@ -33,9 +31,7 @@ const float SizeScale = 1.0/15945.0;
 const float PI = 3.14159265358979323846264;
 
 
-
 /*************************** Global Variables *****************************/
-
 
 /* Externs defined in callbacks.cpp: */
 //Mode booleans
@@ -62,10 +58,8 @@ extern float Zrot;
 extern int ScreenHeight;
 extern bool MouseClicked;
 
-
 //Resolution toggling
 extern int Resolution;
-
 
 
 /*************************** Function Prototypes *****************************/

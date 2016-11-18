@@ -1355,8 +1355,7 @@ void SubMenuHandlerControls ( int item )
 * Description:
 *
 *   This function is designed to handle user selection in the "Options" submenu.
-*   These submenu options apply to the drawn objects in the program.
-*
+*   This submenu provides options that apply to objects drawn in the program.
 *
 * Parameters:
 *

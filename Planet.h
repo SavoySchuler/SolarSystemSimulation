@@ -24,13 +24,11 @@
 *       GLfloat getB();
 *
 *	Description:
-*       This class contains all of the size and positional information
-*       for the planet. Its a series of getters and setters abstract
-*       the data for the planets
-*       
+*
+*       This class contains all of the prototypes and attributes for a planet
+*       class.
 *
 *	Modified: Original
-*
 *
 ******************************************************************************/
 
@@ -58,10 +56,10 @@ typedef unsigned char byte;
 * Class: Planet
 *
 * Description:
+*
 *       This class contains all of the size and positional information
 *       for the planet. Its a series of getters and setters abstract
 *       the data for the planets.
-*
 *
 ******************************************************************************/
 class Planet
@@ -85,7 +83,7 @@ public:
     float getHourOfDay();           //returns the hour of day
     int getRows();                  //returns rows
     int getCols();                  //returns columns
-    byte* getImage();               //returns image
+    byte* getImage();               //returns pointer to texture map
     GLfloat getR();                 //returns red value
     GLfloat getG();                 //returns green value
     GLfloat getB();                 //returns blue value

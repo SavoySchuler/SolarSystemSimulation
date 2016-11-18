@@ -24,13 +24,11 @@
 *       GLfloat getB();
 *
 *	Description:
-*       This class contains all of the size and positional information
-*       for the planet. Its a series of getters and setters abstract
-*       the data for the planets
+*
+*       This class contains all of the information for the planet objects. It is
+*       a series of getters and setters for planet specific data.
 *       
-*
 *	Modified: Original
-*
 *
 ******************************************************************************/
 
@@ -103,8 +101,8 @@ Planet::Planet(string name, int hours, int days, int radius, int distance, int n
 * Function:getName
 *
 * Description:
-*       returns name
 *
+*       Returns planet name.
 *
 * Parameters:
 *   
@@ -124,8 +122,8 @@ string Planet::getName()
 * Function:getHoursPerDay
 *
 * Description:
-*       returns HoursPerDay
 *
+*       Returns hours per planet's day.
 *
 * Parameters:
 *   
@@ -145,8 +143,8 @@ float Planet::getHoursPerDay()
 * Function:getDaysPerYear
 *
 * Description:
-*       returns DaysPerYear
 *
+*       Returns days per planet's year.
 *
 * Parameters:
 *   
@@ -165,8 +163,8 @@ float Planet::getDaysPerYear()
 * Function:getRadius
 *
 * Description:
-*       returns Radius
 *
+*   Returns planet's radius.
 *
 * Parameters:
 *   
@@ -185,8 +183,8 @@ int Planet::getRadius()
 * Function:getDistance
 *
 * Description:
-*       returns Distance
-*
+*       
+*   Returns planet's distance from surface of the sun.
 *
 * Parameters:
 *   
@@ -206,8 +204,8 @@ int Planet::getDistance()
 * Function:setDayOfYear
 *
 * Description:
-*       Sets DayOfYear.
-*
+*       
+*   Set's planet's day of year.
 *
 * Parameters:
 *
@@ -227,8 +225,8 @@ void Planet::setDayOfYear(float day)
 * Function:getDayOfYear
 *
 * Description:
-*       returns DayOfYear
-*
+*       
+*   Returns planet's current day of the year.
 *
 * Parameters:
 *   
@@ -248,8 +246,8 @@ float Planet::getDayOfYear()
 * Function:setHourOfDay
 *
 * Description:
-*       Sets HourOfDay.
-*
+*       
+*   Sets planet's hour of the day.
 *
 * Parameters:
 *
@@ -269,8 +267,8 @@ void Planet::setHourOfDay(float hour)
 * Function:getHourOfDay
 *
 * Description:
-*       returns HourOfDay
-*
+*       
+*   Return's planets current hour of the day.
 *
 * Parameters:
 *   
@@ -289,8 +287,8 @@ float Planet::getHourOfDay()
 * Function:getRows
 *
 * Description:
-*       returns Rows
-*
+*       
+*   Returns number of rows in planet's texture map.
 *
 * Parameters:
 *   
@@ -309,8 +307,8 @@ int Planet::getRows()
 * Function:getCols
 *
 * Description:
-*       returns Col
-*
+*       
+*   Returns number of columns in planet's texture map.
 *
 * Parameters:
 *   
@@ -330,8 +328,8 @@ int Planet::getCols()
 * Function:getImage
 *
 * Description:
-*       returns Image
-*
+*       
+*   *   Returns pointer planet's texture map stored in memory.
 *
 * Parameters:
 *   
@@ -351,8 +349,8 @@ byte* Planet::getImage()
 * Function:getR
 *
 * Description:
-*       returns R
-*
+*       
+*   Returns planet's R value (RGB).
 *
 * Parameters:
 *   
@@ -372,8 +370,8 @@ GLfloat Planet::getR()
 * Function:getG
 *
 * Description:
-*       returns G
-*
+*       
+*   Returns planet's G value (RGB).
 *
 * Parameters:
 *   
@@ -393,8 +391,8 @@ GLfloat Planet::getG()
 * Function:getB
 *
 * Description:
-*       returns B
-*
+*       
+*   Returns planet's B value (RGB).
 *
 * Parameters:
 *   
