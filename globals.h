@@ -129,11 +129,13 @@ void SetRingsMatProps(Planet *Rings);
 void SetOrbitMatProps();
 
 //Draw objects.
-void DrawSpace(Planet *space);
-void DrawSun(Planet *sun);
+void DrawSpace (Planet *space);
+void DrawSun (Planet *sun);
 void DrawPlanet(Planet *plant);
-void DrawMoon(int DayOfYear);
-void DrawTextString( string str, double radius);
+void DrawMoon (int DayOfYear);
+void DrawRings (double planetRadius);
+void DrawOrbit(double planetDistance);
+void DrawTextString ( string str, double radius);
 
 //Set up texture map. 
 int SetTexture( byte* image, int rows, int ncols );
