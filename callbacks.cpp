@@ -324,52 +324,52 @@ void SetCelestialBodies()
 	//Load a planet's texure map into memory.
 	//Construct a planet object pointed to by a global pointer (planet's name).
 
-    filename = stringToChar("mercury.bmp");
+    filename = StringToChar("mercury.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Mercury = new Planet( "Mercury", 1416, 88, 2439, 58, nrows, ncols, image, 0.5, 0.25, 0.0 );
 
 
-    filename = stringToChar("venus.bmp");
+    filename = StringToChar("venus.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Venus = new Planet( "Venus", 5832, 225, 6052, 108, nrows, ncols, image, 0.7, 0.4, 0.0 );
 
 
-    filename = stringToChar("earth.bmp");
+    filename = StringToChar("earth.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Earth = new Planet( "Earth", 24, 365,  6378, 150, nrows, ncols, image, 0.0, 0.45, 0.1  );
 
 
-    filename = stringToChar("mars.bmp");
+    filename = StringToChar("mars.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Mars = new Planet( "Mars", 24.6, 687, 3394, 228, nrows, ncols, image, 0.75, 0.0, 0.0  );
 
 
-    filename = stringToChar("jupiter.bmp");
+    filename = StringToChar("jupiter.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Jupiter = new Planet( "Jupiter", 9.8, 4332, 71398/2.0, 779, nrows, ncols, image, 0.75, 0.75, 0.0  );
 
 
-    filename = stringToChar("saturn.bmp");
+    filename = StringToChar("saturn.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Saturn = new Planet( "Saturn", 10.2, 10761, 60270/2.0, 1424, nrows, ncols, image, 1.0, 0.75, 0.0  );
 
 
-    filename = stringToChar("uranus.bmp");
+    filename = StringToChar("uranus.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Uranus = new Planet( "Uranus", 15.5, 30682, 25550, 2867, nrows, ncols, image, 0.0, 0.5, 0.5  );
 
 
-    filename = stringToChar("neptune.bmp");
+    filename = StringToChar("neptune.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Neptune = new Planet( "Neptune", 15.8, 60195.0, 24750, 4492, nrows, ncols, image, 0.0, 1.0, 1.0   );
 
 
-    filename = stringToChar("sun.bmp");
+    filename = StringToChar("sun.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Sun = new Planet( "Sun", 25, 0, 696000.0/10.0 * SizeScale, 0, nrows, ncols, image, 1.0, 1.0, 0.0  );
 
 
-    filename = stringToChar("space.bmp");
+    filename = StringToChar("space.bmp");
     LoadBmpFile( filename, nrows, ncols, image );
     Space = new Planet( "Space", 0, 0, 100, 0, nrows, ncols, image, 1.0, 0.5, 0.0  );
 }

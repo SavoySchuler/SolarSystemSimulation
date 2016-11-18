@@ -39,7 +39,7 @@
 *
 *           //Set object material properties. 
 *
-*       void SetSunLMatProp(Planet *sun);
+*       void SetSunMatProp(Planet *sun);
 *       void SetPlanetMatProps(Planet *plant);
 *       void SetMoonMatProps(Planet *Moon);
 *       void SetRingsMatProps(Planet *Rings);
@@ -797,7 +797,7 @@ void DrawSun(Planet *sun)
 * Parameters:
 *
 ******************************************************************************/
-void SetSunLMatProp(Planet *sun)
+void SetSunMatProp(Planet *sun)
 {
     glColor3f( 1.0, 1.0, 1.0 );
 
