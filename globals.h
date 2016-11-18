@@ -80,21 +80,21 @@ void ResizeWindow( int w, int h );
 
 //Cycle functions
 void Animate( void );
-void setCelestialBodies();
+void SetCelestialBodies();
 
 //Key press functions and handling
 void KeyPressFunc( unsigned char Key, int x, int y );
-void moveBackward();
-void moveForward();
-void moveLeft();
-void moveRight();
-void moveToStartView();
-void moveToTopDownView();
-void resetPlanets();
-void speedUp( void );
-void speedDown( void );
-void startStopAnimation( void );
-void stepAnimation( void );
+void MoveBackward();
+void MoveForward();
+void MoveLeft();
+void MoveRight();
+void MoveToStartView();
+void MoveToTopDownView();
+void ResetPlanets();
+void SpeedUp( void );
+void SpeedDown( void );
+void StartStopAnimation( void );
+void StepAnimation( void );
 
 //Special key press functions and handling
 void SpecialKeyFunc( int Key, int x, int y );
