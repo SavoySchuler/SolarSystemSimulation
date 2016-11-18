@@ -59,7 +59,8 @@
  *      Changing user view by left click and drag.
  *      Pop-up menus on right click
  *      Default views: top-down and Sun's point of view.
- *      Toggling planet names and orbit paths
+ *      Toggling planet names and orbital paths
+ *      Ability to reset planet positions mid animation.
  *
  * @par Modifications:
  *
