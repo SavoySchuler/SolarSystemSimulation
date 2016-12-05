@@ -953,7 +953,7 @@ void DrawTextString( string str, double radius)
         glRasterPos3i( 0,0, radius * SizeScale + 1 );
 
     //Draw the text.
-    for (int i = 0; i < str.length(); i++)
+    for (unsigned int i = 0; i < str.length(); i++)
     {
         glutBitmapCharacter( GLUT_BITMAP_9_BY_15, str[i] );
     }

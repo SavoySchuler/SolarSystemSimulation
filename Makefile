@@ -36,7 +36,7 @@ GL_LIBS = -lglut -lGLU -lGL -lm -s
 
 all:    solar
 
-solar: solar.cpp orbits.cpp callbacks.cpp bmpRead.cpp Planet.o
+solar: solar.o orbits.o callbacks.o bmpRead.o Planet.o
 	$(LINK) -o $@ $^ $(GL_LIBS)
 	
 
