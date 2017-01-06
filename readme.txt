@@ -11,7 +11,7 @@ factor of 1.0/15945.0.
 
 The Sun is displayed at 1/10 its actual size.
 
-Jupiter and Saturn are displayed at half their actual size.
+Jupiter and Saturn are displayed at 50% actual size.
 
 
 Key Assignments
