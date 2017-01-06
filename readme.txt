@@ -4,7 +4,7 @@ Solar System Simulation by Dan Hodgin and Savoy Schuler (2016)
 Display Notes
 -------------
 Planetary orbits are scaled by a constant factor of 1.0/37.5 to maintain a ratio
- of relative distance.
+of relative distance.
 
 All planets, except the Sun, Jupiter, and Saturn, are scaled by a constant 
 factor of 1.0/15945.0.  
